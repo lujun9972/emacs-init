@@ -29,5 +29,5 @@
    (setq pcomplete-cycle-completions nil)))
 
 ;; change listing switches based on OS
-(when (not (eq system-type 'windows-nt))
-  (eshell/alias "ls" "ls --color -h --group-directories-first $*"))
+;; (when (not (eq system-type 'windows-nt))
+;;   (eshell/alias "ls" "ls --color -h --group-directories-first $*"))

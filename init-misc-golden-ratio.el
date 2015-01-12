@@ -19,5 +19,4 @@
                                    "IELM"
                                    "eshell-mode"
 								   "dired-mode"))
-
 (golden-ratio-mode 1)

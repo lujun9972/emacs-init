@@ -44,4 +44,5 @@
 ;; (global-unset-key (kbd "C-h h"))        ; 默认C-h h显示各种语言的hello world
 ;; (define-key 'help-command (kbd "h m") 'discover-my-major)
 
+(global-set-key (kbd "C-x C-b") 'ibuffer)
 

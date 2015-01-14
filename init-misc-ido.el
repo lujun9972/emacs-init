@@ -7,7 +7,7 @@
         ido-everywhere t
         ido-create-new-buffer 'always
 		ido-default-file-method 'selected-window
-        ido-use-filename-at-point 'guess)
+        ido-use-filename-at-point nil)
   
   (add-to-list 'ido-ignore-directories "\\`\\.git/")
   (add-to-list 'ido-ignore-files "\\~\\`")

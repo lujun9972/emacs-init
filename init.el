@@ -19,17 +19,18 @@
 配置文件被划分为不同层次,不同层次间用-来划分. 例如init-program-lisp.el就是init-program.el的下一层次
 因此,在init-program.el中要加载init-program-lisp.el只需要(level-load \"lisp.el\"即可"
   (unless level-load-path
-	(setq level-load-path (file-name-directory (or load-file-name (pwd)))))
+	(setq level-load-path (file-name-directory (or load-file-name default-directory))))
   (add-to-list 'load-path level-load-path)
   (let (level)
 	(setq level (file-name-sans-extension (file-name-base  load-file-name)))
 	(setq level (concat level "-" sublevel))
-	(or (load level t)
-		(load sublevel t)
-		(cond (file-exists-p (expand-file-name (concat level ".org") level-load-path)
-				     (org-babel-load-file (expand-file-name (concat level ".org") level-load-path) t))
-		      (file-exists-p (expand-file-name (concat sublevel ".org") level-load-path)
-				     (org-babel-load-file (expand-file-name (concat sublevel ".org") level-load-path) t))))))
+	(or
+	 (cond ((file-exists-p (expand-file-name (concat level ".org") level-load-path))
+			(org-babel-load-file (expand-file-name (concat level ".org") level-load-path) t))
+		   ((file-exists-p (expand-file-name (concat sublevel ".org") level-load-path))
+			(org-babel-load-file (expand-file-name (concat sublevel ".org") level-load-path) t)))
+	 (load level t)
+	 (load sublevel t))))
 (pcase system-type
   (`windows-nt (level-load "init-windows")) ; 配置windows下使用emacs
   (`gnu/linux (level-load "init-linux")))

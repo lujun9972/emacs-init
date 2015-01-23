@@ -16,7 +16,7 @@
       gnus-newsgroup-ignored-charsets  
       '(unknown-8bit x-unknown iso-8859-1)) 
 
-(setq gnus-secondary-select-methods '((nnml ""))) 
+(setq gnus-secondary-select-methods '((nnml ""))) ;;nnfolder，nnmbox, nnml  
 ;; (add-to-list 'gnus-secondary-select-methods '(nntp "news.yaako.com"))
 (add-to-list 'gnus-secondary-select-methods '(nntp "freenews.netfront.net"))
 (setq mail-sources '((imap :server "imap.gmail.com"
@@ -29,9 +29,32 @@
 (setq mail-source-delete-incoming nil) ;不删除文件,如果为正数,表示删除超过多少天的旧文件
 (setq message-send-mail-function 'smtpmail-send-it
       smtpmail-starttls-credentials '(("smtp.gmail.com" 587 nil nil))
-      smtpmail-auth-credentials '(("smtp.gmail.com" 587
-				   "lujun9972@gmail.com" nil))
+      smtpmail-auth-credentials '(("smtp.gmail.com" ;SMTP服务器
+								   587				;端口
+								   "lujun9972@gmail.com" ;用户名
+								   nil))				 ;密码
       smtpmail-default-smtp-server "smtp.gmail.com"
       smtpmail-smtp-server "smtp.gmail.com"
       smtpmail-smtp-service 587
       gnus-ignored-newsgroups "^to\\.\\|^[0-9. ]+\\( \\|$\\)\\|^[\"]\"[#'()]")
+
+;;;;;;;;;;;;;;;;;;;    
+;;自动显示图片    
+;;;;;;;;;;;;;;;;;;;;    
+(auto-image-file-mode)  
+(setq mm-inline-large-images t)    
+(add-to-list 'mm-attachment-override-types "image/*")  
+  
+    
+(setq gnus-posting-styles    
+      '((".*"    
+     (name "lujun9972")  
+     (address "lujun9972@gmail.com")  
+     (signature "e^pi+1=0")  
+     )))  
+  
+;;html转换成txt查看  
+(eval-after-load "mm-decode"  
+  '(progn  
+     (add-to-list 'mm-discouraged-alternatives "text/html")  
+     (add-to-list 'mm-discouraged-alternatives "text/richtext")))  

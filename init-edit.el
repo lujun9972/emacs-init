@@ -66,3 +66,10 @@
  auto-save-interval 200 ; number of keystrokes between auto-saves (default: 300)
  )
 
+;; 设置 sentence-end 可以识别中文标点  
+(setq sentence-end  
+      "\\([。！？]\\|……\\|[.?!][]\"')}]*\\($\\|[ \t]\\)\\)[ \t\n]*")  
+(setq sentence-end-double-space nil)  	;单个空格表示句子的结束
+
+;; 支持emacs和外部程序的粘贴 
+(setq x-select-enable-clipboard t)  

@@ -6,3 +6,4 @@
 (load "init-GTD-appointment")
 ;org配置
 (load "init-GTD-org")
+(level-load "init-GTD-mobileorg")

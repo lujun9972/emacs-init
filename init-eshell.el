@@ -31,3 +31,9 @@
 ;; change listing switches based on OS
 ;; (when (not (eq system-type 'windows-nt))
 ;;   (eshell/alias "ls" "ls --color -h --group-directories-first $*"))
+;; 定义clear函数
+(defun eshell/clear ()  
+  "clear the eshell buffer."  
+  (interactive)  
+  (let ((inhibit-read-only t))  
+    (erase-buffer)))  

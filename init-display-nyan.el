@@ -2,4 +2,4 @@
 ;; Wavy rainbow (M-x set-variable <ret> nyan-wavy-trail <ret> t), 
 (require 'nyan-mode)
 (cl-case window-system
-  (('x 'w32) (nyan-mode 1)))
+  ((x w32) (nyan-mode 1)))

@@ -45,4 +45,9 @@
 (define-key 'help-command (kbd "h m") 'discover-my-major)
 
 (global-set-key (kbd "C-x C-b") 'ibuffer)
-
+;; 配置golden-ratio
+;; (level-load "golden-ratio")
+;; 使用deft管理笔记
+(level-load "deft")
+;; 使用dict/dictd翻译英文
+(level-load "dict")

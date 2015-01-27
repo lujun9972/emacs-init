@@ -68,7 +68,7 @@
 
 
 ;; 设置pyim输入法
-(level-load "chinese-pyim")
+;; (level-load "chinese-pyim")
 
 ;; 设置 sentence-end 可以识别中文标点  
 (setq sentence-end  

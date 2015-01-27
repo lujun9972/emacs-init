@@ -1,9 +1,11 @@
 ;; 只在编程模式下显示行号
 (add-hook 'prog-mode-hook 'linum-mode) 
 ;; 在编程模式下显示无用的whitespace
-(add-hook 'prog-mode-hook (lambda () (interactive) (setq show-trailing-whitespace 1)))
+;; (add-hook 'prog-mode-hook (lambda () (interactive) (setq show-trailing-whitespace 1)))
 ;;显示光标附近的括号匹配
 (show-paren-mode 1)
+;; 添加pair项
+(add-to-list 'electric-pair-pairs '(?` . ?')) ;添加`'作为匹配项
 ;; 控制缩进
 (load "init-program-indent")
 ;; imenu配置
@@ -35,11 +37,11 @@
 ;; 配置compile
 (load "init-program-compile")
 ;; 配置projectile
-;; (level-load "projectile")
+(level-load "projectile")
 ;; 配置yasnippet
 (level-load "yasnippet")
 ;; 配置GDB
-(load "init-program-gdb")
+(level-load "gdb")
 
 ;; 配置makefile
 (level-load "makefile")

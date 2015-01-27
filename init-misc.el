@@ -40,9 +40,9 @@
 (require 'info+)
 ;; discover-my-major
 ;; Discover key bindings and their meaning for the current Emacs major mode. 
-;; (require 'discover-my-major)
-;; (global-unset-key (kbd "C-h h"))        ; 默认C-h h显示各种语言的hello world
-;; (define-key 'help-command (kbd "h m") 'discover-my-major)
+(require 'discover-my-major)
+(global-unset-key (kbd "C-h h"))        ; 默认C-h h显示各种语言的hello world
+(define-key 'help-command (kbd "h m") 'discover-my-major)
 
 (global-set-key (kbd "C-x C-b") 'ibuffer)
 

@@ -30,8 +30,25 @@
 				     (org-babel-load-file (expand-file-name (concat level ".org") level-load-path) t))
 		      (file-exists-p (expand-file-name (concat sublevel ".org") level-load-path)
 				     (org-babel-load-file (expand-file-name (concat sublevel ".org") level-load-path) t))))))
+(defun level-require (sublevel &optional level-load-path)
+  "加载下一层次的配置信息
+配置文件被划分为不同层次,不同层次间用-来划分. 例如init-program-lisp.el就是init-program.el的下一层次
+因此,在init-program.el中要加载init-program-lisp.el只需要(level-load \"lisp.el\"即可"
+  (unless level-load-path
+	(setq level-load-path (file-name-directory (or load-file-name (pwd)))))
+  (add-to-list 'load-path level-load-path)
+  (let (level)
+	(setq level (file-name-sans-extension (file-name-base  load-file-name)))
+	(setq level (concat level "-" sublevel))
+	(or (require level nil t)
+		(require sublevel nil t)
+		(cond (file-exists-p (expand-file-name (concat level ".org") level-load-path)
+				     (org-babel-load-file (expand-file-name (concat level ".org") level-load-path) t))
+		      (file-exists-p (expand-file-name (concat sublevel ".org") level-load-path)
+				     (org-babel-load-file (expand-file-name (concat sublevel ".org") level-load-path) t))))))
 (pcase system-type
   (`windows-nt (level-load "init-windows")) ; 配置windows下使用emacs
+  (`cygwin (level-load "init-cygwin")) ; 配置cygwin
   (`gnu/linux (level-load "init-linux")))
 
 ;;启动server-start模式，当用emacsclientw打开文件时，使用一个缓冲区打开

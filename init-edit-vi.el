@@ -15,7 +15,9 @@
 				diff-mode
                 eassist-mode
                 gtags-select-mode
+				compile-mode
 				info-mode
+				message-mode
                 magit-status-mode
                 magit-log-mode
                 magit-commit-mode

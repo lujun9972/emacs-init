@@ -31,8 +31,8 @@
 
 ;;;; 使用外部工具生成的db
 ;; enable support for gnu global
-(semanticdb-enable-gnu-global-databases 'c-mode)
-(semanticdb-enable-gnu-global-databases 'c++-mode)
+;; (semanticdb-enable-gnu-global-databases 'c-mode)
+;; (semanticdb-enable-gnu-global-databases 'c++-mode)
 
 
 ;;;; 设置系统目录
@@ -109,8 +109,8 @@ the mru bookmark stack."
 (define-key semantic-mode-map (kbd "C-c , ?") 'semantic-ia-complete-tip)
 (define-key semantic-mode-map (kbd "C-c , >") 'semantic-complete-analyze-inline)
 ;; For C-like languages, user can use the semantic-complete-self-insert command, bound to the . and/or > keys, as this shown below:
-(define-key semantic-mode-map "." 'semantic-complete-self-insert)
-(define-key semantic-mode-map ">" 'semantic-complete-self-insert)
+(define-key c++-mode-map "." 'semantic-complete-self-insert)
+(define-key c++-mode-map ">" 'semantic-complete-self-insert)
 
 ;; 使用ede管理project
 (require 'ede)

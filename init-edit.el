@@ -66,3 +66,5 @@
  auto-save-interval 200 ; number of keystrokes between auto-saves (default: 300)
  )
 
+;; 设置pyim输入法
+(level-load "chinese-pyim")

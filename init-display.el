@@ -1,8 +1,5 @@
 ;;关闭开始屏幕
 (setq inhibit-startup-message t)
-;;set title tobe filename
-(setq frame-title-format '("" "%b"))
-;(setq frame-title-format '("" buffer-file-name))
 ;;关闭开始屏幕
 (setq inhibit-startup-message t)
 ;; you won't need any of the bar thingies
@@ -15,7 +12,7 @@
 
 (setq scroll-margin 0
       scroll-conservatively 100000
-      scroll-preserve-screen-position 1)
+      scroll-preserve-screen-position nil)
 
 ;; more useful frame title, that show either a file or a
 ;; buffer name (if the buffer isn't visiting a file)

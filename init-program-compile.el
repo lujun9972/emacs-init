@@ -17,8 +17,9 @@
 	  t
 	nil))
 (defun compilation-kill-buffer-when-compile-success(compilation-buffer exit-message)
-  (message "%s" (buffer-name compilation-buffer))
-  (when  (and (not (compilation-abnormally-exit-message-p exit-message)) (string= "*Compilation*" (buffer-name compilation-buffer)))
+  ;; (message "%s" (buffer-name compilation-buffer))
+  (message "%s" (buffer-local-value 'major-mode compilation-buffer))
+  (when  (and (not (compilation-abnormally-exit-message-p exit-message)) (string= "compilation-mode" (buffer-local-value 'major-mode compilation-buffer)))
 	(kill-buffer compilation-buffer)))
 
 (add-to-list 'compilation-finish-functions #'compilation-kill-buffer-when-compile-success)

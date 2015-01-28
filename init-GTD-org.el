@@ -68,7 +68,7 @@
 		(message "add %s..." files)
 		(cond ((listp files)
 			   (mapcar 'org-add-attachment-and-link files))
-			  (t (error "为止的文件列表格式"))))))
+			  (t (error "未知的文件列表格式"))))))
 
 
 (defun org-add-attachment-and-link-by-drag-n-drop ()

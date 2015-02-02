@@ -9,3 +9,11 @@
 
 ;; 使用hs-minor-mode进行折叠,
 (add-hook 'c-mode-common-hook   'hs-minor-mode)
+;; 取消使用ac进行补全,使用semantic进行补全
+(add-hook 'c-mode-common-hook  (lambda ()
+								 (enable-prefer-mode 'semantic-mode 'auto-complete-mode)))
+
+(defun set-c-mode-keys()
+  (local-set-key  (kbd ".") 'semantic-complete-self-insert)
+  (local-set-key  (kbd ">") 'semantic-complete-self-insert))
+(add-hook 'c-mode-common-hook 'set-c-mode-keys)

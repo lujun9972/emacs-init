@@ -3,13 +3,13 @@
 ;; 在编程模式下显示无用的whitespace
 ;; (add-hook 'prog-mode-hook (lambda () (interactive) (setq show-trailing-whitespace 1)))
 ;;显示光标附近的括号匹配
-(add-to-list 'electric-pair-pairs '(?` . ?'))
-(add-to-list 'electric-pair-pairs '(?[ . ?]))
-(add-to-list 'electric-pair-pairs '(?{ . ?}))
-(add-to-list 'electric-pair-pairs '(?< . ?>))
 (show-paren-mode 1)
 ;; 添加pair项
 (add-to-list 'electric-pair-pairs '(?` . ?')) ;添加`'作为匹配项
+(add-to-list 'electric-pair-pairs '(?` . ?'))
+(add-to-list 'electric-pair-pairs '(?[ . ?]))
+(add-to-list 'electric-pair-pairs '(?{ . ?}))
+;; (add-to-list 'electric-pair-pairs '(?< . ?>))
 ;; 控制缩进
 (load "init-program-indent")
 ;; imenu配置
@@ -21,7 +21,7 @@
 (load "init-program-dos")
 ;;配置auto-complete
 (require 'popup)
-;; (load "init-program-autocomplete")
+(level-load "init-program-autocomplete")
 ;; 配置company
 ;; (level-load "company")
 ;; 配置TAGS处理

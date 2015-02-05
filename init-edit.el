@@ -14,10 +14,10 @@
 ;; 自动插入引号/括号对
 (electric-pair-mode 1)
 ;; 设置Coding-System
-(set-terminal-coding-system 'utf-8)
-(set-keyboard-coding-system 'utf-8)
-(set-language-environment "UTF-8")
-(prefer-coding-system 'utf-8)
+;; (set-terminal-coding-system 'utf-8)
+;; (set-keyboard-coding-system 'utf-8)
+;; (set-language-environment "UTF-8")
+;; (prefer-coding-system 'utf-8)
 
 (delete-selection-mode 1)
 (global-set-key (kbd "RET") 'newline-and-indent)

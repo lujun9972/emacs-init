@@ -55,6 +55,14 @@
   (mapcar 'try-disable-mode mode-functions)
   (some 'try-enable-mode mode-functions))
 
+(defun filter-valid-files (&rest files)
+  "该函数接收一系列的文件路径,并以列表的形式抽取出其中存在的文件路径"
+  (remove-if-not #'file-exists-p files))
+(defun filter-valid-file (&rest files)
+  "该函数接收一系列的文件路径,并返回第一个存在的文件路径."
+  (or (car (apply #'filter-valid-files files))
+	  ""))
+
 (pcase system-type
   (`windows-nt (level-load "init-windows")) ; 配置windows下使用emacs
   (`cygwin (level-load "init-cygwin")) ; 配置cygwin

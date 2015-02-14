@@ -1,13 +1,8 @@
 (defvar cnaps2-project-root-path
-  (case system-type
-	('windows-nt "e:/git-svn/server")
-	;('cygwin "/cygdrive/e/git-svn/server")
-	(t "~/trunk")))
-(defvar system-include-path 
-  (case system-type
-	('windows-nt '("D:/Program Files/DEV-CPP/Include/c++/3.4.2"))
-	(t '("/usr/include"))))
+  (filter-valid-file "e:/git-svn/server"  "/cygdrive/e/git-svn/server" "~/trunk"))
 
+(defvar system-include-path 
+  (filter-valid-files "D:/Program Files/DEV-CPP/Include/c++/3.4.2" "/usr/include"))
 (ede-cpp-root-project "cnaps2"
                       :file (concat cnaps2-project-root-path "/makeall")
 					  ;; :include-path specifies directories local to your projects that EDE should search first when looking for a header file. :incluide-path is relative to project root specified in :file. 

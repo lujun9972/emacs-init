@@ -1,4 +1,4 @@
-(require 'projectile)
+(require-and-install 'projectile)
 
 ;; 默认全局使用
 (projectile-global-mode)

@@ -3,7 +3,7 @@
 ;(setq viper-want-ctl-h-help t)
 ;(require 'viper)
 ;启用evil-mode
-(require 'evil)
+(require-and-install 'evil)
 (evil-mode 1)
 (setq evil-want-fine-undo t)
 

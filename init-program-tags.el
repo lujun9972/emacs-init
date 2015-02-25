@@ -4,7 +4,7 @@
 (add-to-list 'tags-table-list (concat project-path-root "/etags")) ;;设置etag文件的路径
 ;配置gtags
 (setenv "PATH" (concat "D:/bin/global/bin" (getenv "PATH")))
-;; (require 'ggtags)
+;; (require-and-install 'ggtags)
 ;; (add-hook 'c-mode-common-hook
 ;;           (lambda ()
 ;;             (when (derived-mode-p 'c-mode 'c++-mode 'java-mode 'asm-mode)

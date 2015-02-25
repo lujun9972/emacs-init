@@ -1,5 +1,5 @@
 ;;配置company-mode
-(require 'company)
+(require-and-install 'company)
 ;; 提供头文件的补全
 (setq company-backends (remove 'company-clang company-backends))
 (add-to-list 'company-backends 'company-c-headers)

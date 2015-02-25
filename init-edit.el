@@ -5,7 +5,7 @@
 ;;设置TAB为4个空格
 (setq default-tab-width 4)
 ;; 设置undo-tree,C-/为undo C-?为redo
-(require 'undo-tree)
+(require-and-install 'undo-tree)
 (global-undo-tree-mode 1)
 ;; 设置单词检查
 (load "init-edit-spell")

@@ -1,4 +1,4 @@
-(require 'golden-ratio)
+(require-and-install 'golden-ratio)
 
 ;; do not enable golden-raio in thses modes
 (setq golden-ratio-exclude-modes '("ediff-mode"

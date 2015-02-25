@@ -1,6 +1,6 @@
 (add-to-list 'exec-path "d:/bin/w3m/")
-(require 'w3m) 
-;(require 'mime-w3m)
+(require-and-install 'w3m) 
+;(require-and-install 'mime-w3m)
 (setq w3m-use-favicon nil) 
 ;; 设置w3m主页
 (setq w3m-home-page "http://www.baidu.com")     

@@ -38,6 +38,11 @@
 ;; 配置info+
 ;; Info+ helps you read Info documents more enjoyable with extra highlighting it provides
 (require 'info+)
+(defun set-info-keys()
+  ""
+  (interactive)
+  (local-set-key (kbd "<mouse-4>") 'mwheel-scroll )
+  (local-set-key (kbd "<mouse-5>") 'mwheel-scroll ) )
 ;; discover-my-major
 ;; Discover key bindings and their meaning for the current Emacs major mode. 
 (require 'discover-my-major)

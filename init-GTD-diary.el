@@ -1,5 +1,5 @@
 ;日程安排
-(defvar GTD-HOME-PATH "e:/我的GTD/")
+(defvar GTD-HOME-PATH (filter-valid-file "e:/我的GTD" "~/我的GTD"))
 ;;在mode-line显示时间
 (setq display-time-24hr-format t)
 (setq display-time-day-and-date t)

@@ -14,7 +14,7 @@
 ;; 透明处理压缩文件
 (auto-compression-mode 1)
 ;启用tabbar
-(require 'tabbar)
+(require-and-install 'tabbar)
 (tabbar-mode t)
 ;;设置tramp
 (level-load "tramp")
@@ -37,7 +37,7 @@
 
 ;; 配置info+
 ;; Info+ helps you read Info documents more enjoyable with extra highlighting it provides
-(require 'info+)
+(require-and-install 'info+)
 (defun set-info-keys()
   ""
   (interactive)
@@ -45,7 +45,7 @@
   (local-set-key (kbd "<mouse-5>") 'mwheel-scroll ) )
 ;; discover-my-major
 ;; Discover key bindings and their meaning for the current Emacs major mode. 
-(require 'discover-my-major)
+(require-and-install 'discover-my-major)
 (global-unset-key (kbd "C-h h"))        ; 默认C-h h显示各种语言的hello world
 (define-key 'help-command (kbd "h m") 'discover-my-major)
 

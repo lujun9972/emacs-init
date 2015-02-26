@@ -1,3 +1,4 @@
+(require-and-install 'emms)
 (require 'emms-setup)
 (emms-all) ;(emms-standard)  
 (emms-default-players)  

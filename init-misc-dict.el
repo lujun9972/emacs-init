@@ -1,4 +1,4 @@
-(require 'dictionary)
+(require-and-install 'dictionary)
 (global-set-key [mouse-3] 'dictionary-mouse-popup-matching-words)
 (global-set-key [(control c)(d)] 'dictionary-lookup-definition)
 (global-set-key [(control c)(s)] 'dictionary-search)

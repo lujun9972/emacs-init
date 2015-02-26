@@ -32,6 +32,26 @@
 	 (load level t)
 	 (load sublevel t))))
 
+(defun obj-to-symbol (obj)
+  "转换为symbol"
+  (intern (format "%s" obj)))
+
+(defun package-installable (package-name)
+  "检查package是否有安装源"
+  (require 'package)
+  (unless package--initialized
+	(package-initialize t))
+  (unless package-archive-contents
+	(package-refresh-contents))
+	(memq (obj-to-symbol package-name) (mapcar #'car package-archive-contents)))
+
+(defun require-and-install (package-name &optional filename noerror)
+  ""
+  (unless (require package-name filename t)
+	(when (package-installable package-name)
+	  (package-install (obj-to-symbol package-name))
+	  (require package-name filename noerror))))
+
 (defun try-enable-mode (mode-function)
   "若能开启该mode,则开启它"
   (if (functionp mode-function)
@@ -69,7 +89,7 @@
   (`gnu/linux (level-load "init-linux")))
 
 ;;启动server-start模式，当用emacsclientw打开文件时，使用一个缓冲区打开
-;(server-start)
+										;(server-start)
 ;; 设置显示界面
 (level-load "init-display")
 ;; 设置杂项
@@ -82,12 +102,12 @@
 (level-load "init-file-management")
 ;;;配置shell
 (level-load "init-eshell")
-;编程环境设置
+										;编程环境设置
 (level-load "init-program")
 ;;用rlogin来登录ssh
 (require 'rlogin)
 (setq rlogin-program "plink")
 (setq rlogin-process-connection-type t)
-;娱乐
+										;娱乐
 (level-load "init-life")
 

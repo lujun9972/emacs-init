@@ -20,7 +20,7 @@
 ;; 配置dos模式,编写批处理文件
 (load "init-program-dos")
 ;;配置auto-complete
-(require 'popup)
+(require-and-install 'popup)
 (level-load "init-program-autocomplete")
 ;; 配置company
 ;; (level-load "company")

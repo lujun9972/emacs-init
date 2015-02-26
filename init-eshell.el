@@ -6,7 +6,7 @@
 (add-hook 'comint-output-filter-functions 'comint-strip-ctrl-m)
 ;; 配置eshell
 (require 'eshell)
-(require 'em-smart)
+(require-and-install 'em-smart)
 (setq eshell-where-to-jump 'begin)
 (setq eshell-review-quick-commands nil)
 (setq eshell-smart-space-goes-to-end t)

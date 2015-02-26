@@ -1,1 +1,1 @@
-(require 'mpg123)
+(require-and-install 'mpg123)

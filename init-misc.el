@@ -16,6 +16,21 @@
 ;启用tabbar
 (require-and-install 'tabbar)
 (tabbar-mode t)
+(defvar tabbar-buffer-name-group-alist
+  '(("*tramp.+*" "hidden"))
+  "根据名称的正则表达式来为tabbar提供分组信息
+
+每个原始的car为buffer-name匹配的正则表达式, cdr为分组list")
+(defun my-tabbar-buffer-groups ()
+  "tabbar分组函数
+
+先根据`tabbar-buffer-name-group-alist'与buffer-name查找匹配的分组,否则使用`tabbar-buffer-groups'进行分组"
+  (let ((match-rule (find-if (lambda (match-rule)
+								(string-match-p (car match-rule) (buffer-name))) tabbar-buffer-name-group-alist)))
+	(if match-rule
+		(cdr match-rule)
+	  (tabbar-buffer-groups))))
+(setq tabbar-buffer-groups-function 'my-tabbar-buffer-groups)
 ;;设置tramp
 (level-load "tramp")
 ;; 设置ido和recentf

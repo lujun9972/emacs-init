@@ -12,7 +12,7 @@
 (package-initialize)
 ;; 加载CodeLibrary中的elisp代码片段
 (require 'org)
-
+(require 'cl)
 
 (defun level-load (sublevel &optional level-load-path)
   "加载下一层次的配置信息

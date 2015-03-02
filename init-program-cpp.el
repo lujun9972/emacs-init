@@ -17,3 +17,13 @@
   (local-set-key  (kbd ".") 'semantic-complete-self-insert)
   (local-set-key  (kbd ">") 'semantic-complete-self-insert))
 (add-hook 'c-mode-common-hook 'set-c-mode-keys)
+
+;; 使用flymake-cppcheck动态检查代码质量
+(when (executable-find "cppcheck")
+  (require-and-install 'flymake-cppcheck)
+  ;; 开启flymake-cppcheck
+  (add-hook 'c-mode-hook 'flymake-cppcheck-load)
+  (add-hook 'c++-mode-hook 'flymake-cppcheck-load)
+  (setq flymake-cppcheck-enable "warning"
+		flymake-cppcheck-location 'tempdir)
+  )

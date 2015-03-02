@@ -36,7 +36,7 @@
   "转换为symbol"
   (intern (format "%s" obj)))
 
-(defun package-installable (package-name)
+(defun package-installable-p (package-name)
   "检查package是否有安装源"
   (require 'package)
   (unless package--initialized
@@ -48,7 +48,7 @@
 (defun require-and-install (package-name &optional filename noerror)
   ""
   (unless (require package-name filename t)
-	(when (package-installable package-name)
+	(when (package-installable-p package-name)
 	  (package-install (obj-to-symbol package-name))
 	  (require package-name filename noerror))))
 

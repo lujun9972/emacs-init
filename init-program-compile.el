@@ -7,7 +7,6 @@
       (ansi-color-apply-on-region (point-min) (point-max)))))
 
 ;; 设置compile的默认命令
-(setq compile-command "make")
 (setq compilation-always-kill t)
 (setq compilation-auto-jump-to-first-error t)
 (setq compilation-scroll-output t)
@@ -25,3 +24,5 @@
 (add-to-list 'compilation-finish-functions #'compilation-kill-buffer-when-compile-success)
 ;; F5执行编译
 (global-set-key (kbd "<f5>") 'compile)
+;; 使用smart-compile来编译
+(require-and-install 'smart-compile)

@@ -29,20 +29,32 @@
 	(kill-buffer buf)))
 
 (add-to-list 'compilation-finish-functions #'compilation-kill-buffer-when-compile-success)
+
+;; 记录上次编译失败时的compilation-buffer
+(defvar last-fail-compilation-buffer nil
+  "上一次编译失败的compliation buffer")
+
+(defun log-last-fail-compliation-buffer (buf msg)
+  "记录下上一次编译失败的compliation buffer到`last-fail-compilation-buffer'中"
+  (if (compilation-abnormally-exit-message-p msg)
+	  (setq last-fail-compilation-buffer buf)
+	(setq last-fail-compilation-buffer nil)))
+
+(add-to-list 'compilation-finish-functions #'log-last-fail-compliation-buffer)
 ;; 使用smart-compile来编译
 ;; 通过smart-compile可以根据major-mode或文件名称来选择不同的compile-command
 (require-and-install 'smart-compile)
 
 ;; F5执行编译
-(defun compilation-mode-buffer-alive-p ()
-  "是否有compilation-mode-buffer存在"
-  (some #'compilation-mode-buffer-p (buffer-list)))
-
 (global-set-key (kbd "<f5>") (lambda ()
 							   (interactive)
-							   (if (compilation-mode-buffer-alive-p)
+							   (if (buffer-live-p last-fail-compilation-buffer)
 								   (recompile)
-								 (smart-compile 4)))) ;参数为4时,才重新生成compile-command,否则使用原先的compile-command
+								 (smart-compile 1))))
+
+
+
+
 
 
 

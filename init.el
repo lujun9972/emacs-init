@@ -48,7 +48,8 @@
 (defun require-and-install (package-name &optional filename noerror)
   ""
   (unless (require package-name filename t)
-	(when (package-installable-p package-name)
+	(when (and (package-installable-p package-name)
+			   (not (package-installed-p package-name)))
 	  (package-install (obj-to-symbol package-name))
 	  (require package-name filename noerror))))
 

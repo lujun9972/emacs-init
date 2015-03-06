@@ -30,5 +30,5 @@
 (global-set-key (kbd "<C-wheel-up>") 'text-scale-increase)
 (global-set-key (kbd "<C-wheel-down>") 'text-scale-decrease)
 ;; 设置nyan-mode,该mode会在modeline上显示一直小猫用来指示光标所在文章的位置的
-(level-load "nyan")
+;; (level-load "nyan")
 

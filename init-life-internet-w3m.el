@@ -1,3 +1,4 @@
+(sudo-apt-get-install "w3m")
 (add-to-list 'exec-path "d:/bin/w3m/")
 (require-and-install 'w3m) 
 ;(require-and-install 'mime-w3m)

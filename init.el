@@ -4,9 +4,9 @@
 ;;可以用命令 M-x list-packages 来列出软件包清单，选择一个并且安装。
 ;;如果你知道你所要安装的软件包的名称，也可以直接用命令 M-x package-install [RET] [Package-name] 来安装，这样更加方便。 
 (require 'package)
-;; (add-to-list 'package-archives 
-;;     '("marmalade" .
-;;       "http://marmalade-repo.org/packages/"))
+(add-to-list 'package-archives 
+    '("marmalade" .
+      "http://marmalade-repo.org/packages/"))
 (add-to-list 'package-archives
   '("melpa" . "http://melpa.milkbox.net/packages/") t)
 (package-initialize)
@@ -81,8 +81,13 @@
   (remove-if-not #'file-exists-p files))
 (defun filter-valid-file (&rest files)
   "该函数接收一系列的文件路径,并返回第一个存在的文件路径."
-  (or (car (apply #'filter-valid-files files))
-	  ""))
+  (car (apply #'filter-valid-files files)))
+
+(defun sudo-apt-get-install(soft)
+  "run sudo apt-get install `soft` if found no soft"
+  (unless (executable-find soft)
+    (require 'eshell)
+    (eshell-command (format "sudo apt-get -y install %s" soft))))
 
 (pcase system-type
   (`windows-nt (level-load "init-windows")) ; 配置windows下使用emacs

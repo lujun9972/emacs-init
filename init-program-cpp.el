@@ -19,6 +19,7 @@
 (add-hook 'c-mode-common-hook 'set-c-mode-keys)
 
 ;; 使用flymake-cppcheck动态检查代码质量
+(sudo-apt-get-install "cppcheck")
 (when (executable-find "cppcheck")
   (require-and-install 'flymake-cppcheck)
   ;; 开启flymake-cppcheck

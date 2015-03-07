@@ -86,7 +86,8 @@
 (defun sudo-apt-get-install(soft)
   "run sudo apt-get install `soft` if found no soft"
   (when (and (not (executable-find soft))
-			 (executable-find "sudo"))
+			 (executable-find "sudo")
+			 (executable-find "apt-get"))
     (require 'eshell)
     (eshell-command (format "sudo apt-get -y install %s" soft))))
 

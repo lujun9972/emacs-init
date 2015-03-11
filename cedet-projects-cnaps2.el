@@ -105,4 +105,11 @@
 	       '("recvmb.+\.cpp$" . "plink cnaps2@10.8.6.10 \". ~/.profile;cd app/mb;make recvfrommb;make recvfromclt\""))
   (add-to-list 'smart-compile-alist
 	       '("recvmb.+\.h$" . "plink cnaps2@10.8.6.10 \". ~/.profile;cd app/mb;make recvfrommb;make recvfromclt\""))
+
+  
+  ;; 编译mbcharge
+  (add-to-list 'smart-compile-alist
+	       '("mbcharge\.cpp$" . "plink cnaps2@10.8.6.10 \". ~/.profile;cd app/mb;make\""))
+  (add-to-list 'smart-compile-alist
+	       '("mbcharge\.h$" . "plink cnaps2@10.8.6.10 \". ~/.profile;cd app/mb;make\""))
   )

@@ -8,7 +8,7 @@
 								  ;; activates displaying of information about current tag in the idle time. Requires that global-semantic-idle-scheduler-mode was enabled.
                                   global-semantic-idle-summary-mode
 								  ;; activates displaying of possible name completions in the idle time. Requires that global-semantic-idle-scheduler-mode was enabled;
-								  global-semantic-idle-completions-mode
+								  ;; global-semantic-idle-completions-mode
 								  ;; enables global support for Semanticdb
                                   global-semanticdb-minor-mode 
 								  ;; activates highlighting of first line for current tag (function,class,etc.)

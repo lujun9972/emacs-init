@@ -2,19 +2,31 @@
 #+AUTHOR: lujun9972
 #+OPTIONS: ^:{}
 
+* 使用`hydra'管理常用快捷键
+  #+BEGIN_SRC emacs-lisp
+    (require-and-install 'hydra)
+  #+END_SRC
+
+
 * 定义常用快捷键
 
   #+NAME: shortcuts
-  | C-t e | eshell               | shell        |
-  | C-t d | dired                | file-manager |
-  | C-t w | w3m-goto-url         | web browser  |
-  | C-t n | newsticker-show-news | read rss     |
-  | C-t i | erc                  | irc client   |
+  | e | eshell               | shell        |
+  | d | dired                | file-manager |
+  | w | w3m-goto-url         | web browser  |
+  | r | newsticker-show-news | read rss     |
+  | i | erc                  | irc client   |
 
-
-  #+BEGIN_SRC emacs-lisp :exports code :var data=shortcuts
-    (global-unset-key (kbd "C-t"))
-    (mapc (lambda (x)
-            (global-set-key (kbd (car x)) (intern (cadr x))))
-          data)
+  #+BEGIN_SRC emacs-lisp :exports code :var keys=shortcuts
+    (let ((heads (mapcar (lambda (key)
+                           (let ((k (car key))
+                                 (f (cadr key))
+                                 (h (caddr key)))
+                             (list k (intern f) h)))
+                         keys)))
+      (eval `(defhydra hydra-shortcuts ()
+               "
+    快速通道:"
+               ,@heads))
+      (global-set-key "\C-t" #'hydra-shortcuts/body))
   #+END_SRC

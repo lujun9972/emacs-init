@@ -1,0 +1,20 @@
+#+TITLE: init-keybinding
+#+AUTHOR: lujun9972
+#+OPTIONS: ^:{}
+
+* 定义常用快捷键
+
+  #+NAME: shortcuts
+  | C-t e | eshell               | shell        |
+  | C-t d | dired                | file-manager |
+  | C-t w | w3m-goto-url         | web browser  |
+  | C-t n | newsticker-show-news | read rss     |
+  | C-t i | erc                  | irc client   |
+
+
+  #+BEGIN_SRC emacs-lisp :exports code :var data=shortcuts
+    (global-unset-key (kbd "C-t"))
+    (mapc (lambda (x)
+            (global-set-key (kbd (car x)) (intern (cadr x))))
+          data)
+  #+END_SRC

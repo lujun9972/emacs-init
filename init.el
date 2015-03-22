@@ -110,12 +110,15 @@
 (level-load "init-file-management")
 ;;;配置shell
 (level-load "init-eshell")
-										;编程环境设置
+;; 编程环境设置
 (level-load "init-program")
 ;;用rlogin来登录ssh
 (require 'rlogin)
 (setq rlogin-program "plink")
 (setq rlogin-process-connection-type t)
-										;娱乐
+;; 娱乐
 (level-load "init-life")
+
+;; 设定绑定键
+(level-load "init-keybinding")
 

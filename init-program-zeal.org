@@ -1,0 +1,31 @@
+#+TITLE: init-program-zeal
+#+AUTHOR: lujun9972
+#+OPTIONS: ^:{}
+
+* 加载zeal-at-point插件
+  #+BEGIN_SRC emacs-lisp
+    (require-and-install 'zeal-at-point)
+  #+END_SRC
+
+* 设置快捷键
+
+  运行函数`zeal-at-point'会使用zeal搜索光标所在的单词或选中的region. 若使用前缀参数`C-u',则可以在搜索前对搜索字符串进行修改
+
+  #+BEGIN_SRC emacs-lisp
+    (global-set-key "\C-ch" 'zeal-at-point)
+  #+END_SRC
+
+* 配置
+ 
+  可以通过配置`zeal-at-point-mode-alist'变量指定处于某个major-mode时,查询哪个docset
+
+  #+BEGIN_SRC emacs-lisp
+    ;; (add-to-list 'zeal-at-point-mode-alist '(perl-mode . "perl"))
+  #+END_SRC
+  
+  另外可以通过直接设置buffer-local变量`zeal-at-point-docset'来指定查询时使用哪个docset,来覆盖程序猜测的docset
+
+  #+BEGIN_SRC emacs-lisp
+    ;; (add-hook 'rinari-minor-mode-hook
+    ;;    (lambda () (setq zeal-at-point-docset "rails")))
+  #+END_SRC

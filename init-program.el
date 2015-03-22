@@ -24,6 +24,8 @@
 (level-load "init-program-autocomplete")
 ;; 配置company
 ;; (level-load "company")
+;; 使用zeal查看docset
+(level-load "init-program-zeal")
 ;; 配置TAGS处理
 (load "init-program-tags")
 ;;配置markdown-mode

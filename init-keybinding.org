@@ -11,13 +11,15 @@
 * 定义常用快捷键
 
   #+NAME: shortcuts
-  | e | eshell               | shell        |
-  | d | dired                | file-manager |
-  | w | w3m-goto-url         | web browser  |
-  | r | newsticker-show-news | read rss     |
-  | i | erc                  | irc client   |
-
-  #+BEGIN_SRC emacs-lisp :exports code :var keys=shortcuts
+  | key | function             | hint         |
+  |-----+----------------------+--------------|
+  | e   | eshell               | shell        |
+  | d   | dired                | file-manager |
+  | w   | w3m-goto-url         | web browser  |
+  | r   | newsticker-show-news | read rss     |
+  | i   | erc                  | irc client   |
+  
+  #+BEGIN_SRC emacs-lisp :exports code :var keys=shortcuts[2:-1]
     (let ((heads (mapcar (lambda (key)
                            (let ((k (car key))
                                  (f (cadr key))
@@ -28,5 +30,10 @@
                "
     快速通道:"
                ,@heads))
+      )
+  #+END_SRC
+  
+  #+BEGIN_SRC emacs-lisp
+    (when (functionp 'hydra-shortcuts/body)
       (global-set-key "\C-t" #'hydra-shortcuts/body))
   #+END_SRC

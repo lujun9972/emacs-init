@@ -13,8 +13,8 @@
   #+NAME: shortcuts
   | key | function             | hint         |
   |-----+----------------------+--------------|
-  | e   | eshell               | shell        |
-  | d   | dired                | file-manager |
+  | e   | eshell               |              |
+  | f   | dired                | file-manager |
   | w   | w3m-goto-url         | web browser  |
   | r   | newsticker-show-news | read rss     |
   | i   | erc                  | irc client   |
@@ -22,10 +22,15 @@
   #+BEGIN_SRC emacs-lisp :exports code :var keys=shortcuts[2:-1]
     (let ((heads (mapcar (lambda (key)
                            (let ((k (car key))
-                                 (f (cadr key))
+                                 (f (intern (cadr key)))
                                  (h (caddr key)))
-                             (list k (intern f) h)))
+                             (when (string= "" h) ;若hint为空,默认显示对应的函数名称
+                               (setq h (cadr key)))
+                             (if (functionp f)
+                                 (list k f h)
+                               nil)))
                          keys)))
+      (setq heads (remove nil heads))       ;head不能为nil,需要去除nil
       (eval `(defhydra hydra-shortcuts ()
                "
     快速通道:"

@@ -13,11 +13,13 @@
   #+NAME: shortcuts
   | key | function             | hint         |
   |-----+----------------------+--------------|
-  | e   | eshell               |              |
+  | s   | eshell               | shell        |
   | f   | dired                | file-manager |
   | w   | w3m-goto-url         | web browser  |
   | r   | newsticker-show-news | read rss     |
   | i   | erc                  | irc client   |
+  | g   | gnus                 | gnus         |
+  | c   | calendar             | calendar     |
   
   #+BEGIN_SRC emacs-lisp :exports code :var keys=shortcuts[2:-1]
     (let ((heads (mapcar (lambda (key)

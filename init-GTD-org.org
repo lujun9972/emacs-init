@@ -56,19 +56,59 @@
 	Meetings are special. 
 	They are created in a done state by a capture task.
 	I use the MEETING capture template when someone interrupts what I'm doing with a question or discussion. 
-	This is handled similarly to phone calls where I clock the amount of time spent with whomever it is and record some notes of what was discussed (either during or after the meeting) depending on content, length, and complexity of the discussion. 
+	This is handled similarly to phone calls where I clock the amount of time spent with whomever it is and record some notes of what was discussed (either during or after the meeting) depending on content, length, and complexity of the discussion.
+*** 快速TODO状态切换
 	
+	开启fast todo selection,使得可以使用`C-c C-t'直接选择TODO状态
+	#+BEGIN_SRC emacs-lisp
+      (setq org-use-fast-todo-selection t)
+	#+END_SRC
+
+	当时用S-left和S-rigth更改TODO状态时,仅仅只是更改状态,而不要像正常的更改状态流程那样登记状态更改的时间戳,抓获切换状态时的上下文日志
+	#+BEGIN_SRC emacs-lisp
+      (setq org-treat-S-cursor-todo-selection-as-state-change nil)
+	#+END_SRC
+** TODO状态触发器
+
+   当TODO状态发生更改时,自动添加/删除特定的TAG,这样方便agenda view中过滤任务:
+
+    org-todo-state-tags-triggers的格式为`(state-change (tag . flag) .......)',这里state-change可以是一个表示todo状态的字符串,或者是符号'todo或'done,分别表示所有表示未完成任务的和以完成任务的todo state
+   #+BEGIN_SRC emacs-lisp
+     (setq org-todo-state-tags-triggers
+           (quote (("CANCELLED" ("CANCELLED" . t))
+                   ("WAITING" ("WAITING" . t))
+                   ("HOLD" ("WAITING") ("HOLD" . t))
+                   (done ("WAITING") ("HOLD"))
+                   ("TODO" ("WAITING") ("CANCELLED") ("HOLD"))
+                   ("NEXT" ("WAITING") ("CANCELLED") ("HOLD"))
+                   ("DONE" ("WAITING") ("CANCELLED") ("HOLD")))))
+
+
+     ;; * Moving a task to CANCELLED adds a CANCELLED tag
+     ;; * Moving a task to WAITING adds a WAITING tag
+     ;; * Moving a task to HOLD adds WAITING and HOLD tags
+     ;; * Moving a task to a done state removes WAITING and HOLD tags
+     ;; * Moving a task to TODO removes WAITING, CANCELLED, and HOLD tags
+     ;; * Moving a task to NEXT removes WAITING, CANCELLED, and HOLD tags
+     ;; * Moving a task to DONE removes WAITING, CANCELLED, and HOLD tags
+   #+END_SRC
+* 配置org-capture
+  
   #+BEGIN_SRC emacs-lisp
-    ;; (org-remember-insinuate)
-    ;; org-capture配置
-    (setq org-default-notes-file (concat GTD-HOME-PATH "Inbox.org"))
     (setq org-capture-templates
           '(("t" "TODO" entry (file+headline (concat GTD-HOME-PATH "home.org" ) "Tasks") "** TODO %? %^g Added at %U") 
             ("i" "Idea" entry (file+headline (concat GTD-HOME-PATH "home.org" ) "Ideas") "** %? %x %a") 
             ("o" "other" entry (file+headline (concat GTD-HOME-PATH "home.org" ) "Inbox") "** %? %x %a %f " ) 
             ("n" "Note" entry (file+headline (concat GTD-HOME-PATH "refile.org" ) "Notes") "* %? %x %^g") 
             ("b" "Books" entry (file+headline (concat GTD-HOME-PATH "home.org" ) "Books") "** TODO %^{书籍名称？}  :book:")))
-    ;; 配置agenda view
+  #+END_SRC
+
+* 其他	
+  #+BEGIN_SRC emacs-lisp
+    ;; (org-remember-insinuate)
+    ;; org-capture配置
+    (setq org-default-notes-file (concat GTD-HOME-PATH "Inbox.org"))
+    
 
     ;; 新增org文件时插入模版
     (defun new-org-file-init ()

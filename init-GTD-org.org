@@ -1,0 +1,93 @@
+* 定义快捷键
+  #+NAME: key-bindings
+  | key | function       | comment              |
+  |-----+----------------+----------------------|
+  | r | org-remember   |                      |
+  | l | org-store-link |                      |
+  | c | org-capture    |                      |
+  | a | org-agenda     |                      |
+  | b | org-iswitchb   |                      |
+  | <f11> | org-clock-goto | f11:跳转到正在计时的任务 |
+  |     |                |                      |
+  
+  #+BEGIN_SRC emacs-lisp :var keys=key-bindings[2:-1]
+    (mapc (lambda (key)
+            (let ((k (car key))
+                  (f (intern (cadr key))))
+              (when (functionp f)
+                (global-set-key (kbd k) f))))
+          keys)
+  #+END_SRC
+
+* 配置agenda
+  通过`C-c ['和`C-c ]'可以从`org-agenda-files'中添加/删除当前org文件.
+  
+  org-agenda-files中的元素还可以是目录,这时目录下的所有匹配`org-agenda-file-regexp'的文件都自动加入agenda
+  #+BEGIN_SRC emacs-lisp
+    (setq org-agenda-files (list (concat GTD-HOME-PATH "home.org")
+                                 (concat GTD-HOME-PATH "office.org")
+                                 (concat GTD-HOME-PATH "sms-bank.org")))
+    (setq org-agenda-include-diary t)       ;将diary的事项也纳入agenda中显示
+  #+END_SRC
+* Task and States 
+** TODO关键字设置
+   #+BEGIN_SRC emacs-lisp
+     (setq org-todo-keywords
+           (quote ((sequence "TODO(t)" "NEXT(n)" "|" "DONE(d)")
+                   (sequence "WAITING(w@/!)" "HOLD(h@/!)" "|" "CANCELLED(c@/!)" "PHONE" "MEETING"))))
+
+     (setq org-todo-keyword-faces
+           (quote (("TODO" :foreground "red" :weight bold)
+                   ("NEXT" :foreground "blue" :weight bold)
+                   ("DONE" :foreground "forest green" :weight bold)
+                   ("WAITING" :foreground "orange" :weight bold)
+                   ("HOLD" :foreground "magenta" :weight bold)
+                   ("CANCELLED" :foreground "forest green" :weight bold)
+                   ("MEETING" :foreground "forest green" :weight bold)
+                   ("PHONE" :foreground "forest green" :weight bold))))
+
+   #+END_SRC
+*** 电话
+	Telephone calls are special. They are created in a done state by a capture task.
+	The time of the call is recorded for as long as the capture task is active. 
+	If I need to look up other details and want to close the capture task early
+	I can just C-c C-c to close the capture task (stopping the clock) and then f9 SPC to resume the clock in the phone call while I do other things. 
+*** 会议
+	Meetings are special. 
+	They are created in a done state by a capture task.
+	I use the MEETING capture template when someone interrupts what I'm doing with a question or discussion. 
+	This is handled similarly to phone calls where I clock the amount of time spent with whomever it is and record some notes of what was discussed (either during or after the meeting) depending on content, length, and complexity of the discussion. 
+	
+  #+BEGIN_SRC emacs-lisp
+    ;; (org-remember-insinuate)
+    ;; org-capture配置
+    (setq org-default-notes-file (concat GTD-HOME-PATH "Inbox.org"))
+    (setq org-capture-templates
+          '(("t" "TODO" entry (file+headline (concat GTD-HOME-PATH "home.org" ) "Tasks") "** TODO %? %^g Added at %U") 
+            ("i" "Idea" entry (file+headline (concat GTD-HOME-PATH "home.org" ) "Ideas") "** %? %x %a") 
+            ("o" "other" entry (file+headline (concat GTD-HOME-PATH "home.org" ) "Inbox") "** %? %x %a %f " ) 
+            ("n" "Note" entry (file+headline (concat GTD-HOME-PATH "refile.org" ) "Notes") "* %? %x %^g") 
+            ("b" "Books" entry (file+headline (concat GTD-HOME-PATH "home.org" ) "Books") "** TODO %^{书籍名称？}  :book:")))
+    ;; 配置agenda view
+
+    ;; 新增org文件时插入模版
+    (defun new-org-file-init ()
+      "init new org file template"
+      (interactive)
+      (when (equal "org" (file-name-extension buffer-file-name))
+          (insert (concat "#+TITLE: "(file-name-base buffer-file-name)) "\n")
+          (insert "#+AUTHOR: " user-login-name "\n")
+          (insert "#+OPTIONS: ^:{}")))
+    (add-to-list 'find-file-not-found-hooks 'new-org-file-init)
+
+    ;; 设置org笔记时的缩进
+    (setq org-description-max-ident 5)
+
+    ;; 设置org template
+    (add-to-list 'org-structure-template-alist '("se" "#+BEGIN_SRC emacs-lisp\n?\n#+END_SRC" "<src lang=\"emacs-lisp\">\n?\n</src>"))
+
+    ;; 高亮显示code blocks
+    (setq org-src-fontify-natively t)
+
+    (require 'darksun-org-helper)
+  #+END_SRC

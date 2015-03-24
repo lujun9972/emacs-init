@@ -7,5 +7,5 @@
 ;; 使用taskjuggler来项目管理
 (require 'taskjuggler-mode)
 ;org配置
-(load "init-GTD-org")
+(level-load "init-GTD-org")
 (level-load "init-GTD-mobileorg")

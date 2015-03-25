@@ -38,7 +38,7 @@
      ;; Compact the block agenda view
      (setq org-agenda-compact-blocks t)
 
-     Custom agenda command definitions
+     ;; Custom agenda command definitions
      (setq org-agenda-custom-commands
            '(("n" "Notes" tags "NOTE"
               ((org-agenda-overriding-header "Notes")
@@ -502,7 +502,47 @@
    #+BEGIN_SRC emacs-lisp
      (setq org-time-stamp-rounding-minutes '(1 1))
    #+END_SRC
+* Time Reporting and Tracking   
+  *当生成Time Report时,若有未完结的clock time,则这段时间被认为是0*
+
+  要检查是否有未结束的clock time,可以在agenda中使用`v c'作检查,它会显示出出clock time记录之间的间隔时长,是否各clock time记录之间存在重叠的情况,是否有未结束的clock time记录.
+
+  My agenda org clock report settings show 5 levels of detail with links to the tasks. I like wider reports than the default compact setting so I override the :narrow value. 
+  #+BEGIN_SRC emacs-lisp
+    ;; Agenda clock report parameters
+    (setq org-agenda-clockreport-parameter-plist
+          '(:link t :maxlevel 5 :fileskip0 t :compact t :narrow 80))
+  #+END_SRC
+
+** 工作量评估与Column view
+   通过对比评估的工作量和实际的clock time的值作对比,可以很容易的对自己的评估进行修正
+   #+BEGIN_SRC emacs-lisp
+     ;; Set default column view headings: Task Effort Clock_Summary
+     (setq org-columns-default-format "%80ITEM(Task) %TODO %10Effort(Effort){:} %10CLOCKSUM %TAGS")
+   #+END_SRC
    
+   *对task评估的工作量,需要放到task的Effort property中* 
+
+   使用`C-c C-x C-c'可以进入column view. 在column view中,可以按下`e'来编译光标所在的属性的值.
+
+   使用`C-c C-x i RET'可以插入column block,在这个column block中可以看到你做过的task,评估的工作量和实际的工作量
+
+   `C-c C-x C-d'也能够快速查看当前org文件的clock time summary
+
+** Providing progress reports to others
+   若别人想知道我这段时间做了什么,只需要在agenda中生成一个log report即可,该log report包括了完成了的task,状态改变过的task和计时过的task,以及这些task的相应clock time记录
+   #+BEGIN_SRC emacs-lisp
+     (setq org-agenda-log-mode-items  '(closed state clock))
+   #+END_SRC
+   
+   在agenda界面中按下`R'即可产生agenda clock report. 
+   
+   To generate the report I pull up the agenda for the appropriate time frame (today, yesterday, this week, or last week) and hit the key sequence l R to add the log report (without clocking data lines) and the agenda clock report at the end. 
+   
+   Then it's simply a matter of exporting the resulting agenda in some useful format to provide to other people. C-x C-w /tmp/agenda.html RET exports to HTML and C-x C-w /tmp/agenda.txt RET exports to plain text. Other formats are available but I use these two the most. 
+
+   Combining this export with tag filters and C-u R can limit the report to exactly the tags that people are interested in. 
+
 * 其他	
   #+BEGIN_SRC emacs-lisp
     (defun bh/is-project-p ()

@@ -46,11 +46,19 @@
 (require-and-install 'smart-compile)
 
 ;; F5执行编译
-(global-set-key (kbd "<f5>") (lambda ()
-							   (interactive)
-							   (if (buffer-live-p last-fail-compilation-buffer)
-								   (recompile)
-								 (smart-compile 1))))
+(defun set-compile-key()
+  (local-set-key (kbd "<f5>") (lambda ()
+								(interactive)
+								(if (buffer-live-p last-fail-compilation-buffer)
+									(recompile)
+								  (smart-compile 1)))))
+
+(add-hook 'prog-mode-hook #'set-compile-key)
+;; (global-set-key (kbd "<f5>") (lambda ()
+;; 							   (interactive)
+;; 							   (if (buffer-live-p last-fail-compilation-buffer)
+;; 								   (recompile)
+;; 								 (smart-compile 1))))
 
 
 

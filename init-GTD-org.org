@@ -27,6 +27,8 @@
    #+BEGIN_SRC emacs-lisp
      (setq org-agenda-files (list (concat GTD-HOME-PATH "home.org")
                                   (concat GTD-HOME-PATH "office.org")
+                                  (concat GTD-HOME-PATH "Note.org")
+                                  (concat GTD-HOME-PATH "regular.org")
                                   (concat GTD-HOME-PATH "sms-bank.org")))
      (setq org-agenda-include-diary t)       ;将diary的事项也纳入agenda中显示
    #+END_SRC
@@ -227,43 +229,37 @@
    * A new habit (h) 
 	 
    #+BEGIN_SRC emacs-lisp
-          (setq org-default-notes-file (concat GTD-HOME-PATH "refile.org"))
-          (setq org-capture-templates
-                '(("t" "TODO" entry (file (concat GTD-HOME-PATH "refile.org" ))
-                   "* TODO %? \n%U\n%a\n" :clock-in t :clock-resume t) 
-                  ("r" "respond" entry (file (concat GTD-HOME-PATH "refile.org" ))
-                   "* NEXT Respond to %:from on %:subject\nSCHEDULED: %t\n%U\n%a\n" :clock-in t :clock-resume t :immediate-finish t)
-                  ("n" "Note" entry (file+headline (concat GTD-HOME-PATH "refile.org" ) "Notes")
-                   "* %? %x %^g" :clock-in t :clock-resume t)
-                  ("d" "diary" entry (file+datetree (concat GTD-HOME-PATH "diary.org" ))
-                   "* %?\n%U\n" :clock-in t :clock-resume t)
-                  ("j" "interuption" entry (file+datetree (concat GTD-HOME-PATH "refile.org" ))
-                   "* %?\n" :clock-in t :clock-resume t)
-                  ("w" "org-protocol" entry (file (concat GTD-HOME-PATH "refile.org" ))
-                   "* TODO Review %c\n%U\n" :immediate-finish t)
-                  ("m" "Meeting" entry (file (concat GTD-HOME-PATH "refile.org"))
-                   "* MEETING with %? :MEETING:\n%U" :clock-in t :clock-resume t)
-                  ("p" "Phone call" entry (file (concat GTD-HOME-PATH "refile.org"))
-                   "* PHONE %? :PHONE:\n%U" :clock-in t :clock-resume t)
-                  ("h" "Habit" entry (file (concat GTD-HOME-PATH "refile.org"))
-                   "* NEXT %?\n%U\n%a\nSCHEDULED: %(format-time-string \"<%Y-%m-%d %a .+1d/3d>\")\n:PROPERTIES:\n:STYLE: habit\n:REPEAT_TO_STATE: NEXT\n:END:\n")
-                  ("i" "Idea" entry (file (concat GTD-HOME-PATH "refile.org" ))
-                   "* %? %x %a"  :clock-in t :clock-resume t) 
-                  ("b" "Books" entry (file (concat GTD-HOME-PATH "books.org" ))
-                   "** TODO %^{书籍名称？}  :book:"  :clock-in t :clock-resume t)))
+     (setq org-default-notes-file (concat GTD-HOME-PATH "refile.org"))
+     (setq org-capture-templates
+           '(("t" "TODO" entry (file (concat GTD-HOME-PATH "refile.org" ))
+              "* TODO %? \n%U\n%a\n" :clock-in t :clock-resume t) 
+             ("r" "respond" entry (file (concat GTD-HOME-PATH "refile.org" ))
+              "* NEXT Respond to %:from on %:subject\nSCHEDULED: %t\n%U\n%a\n" :clock-in t :clock-resume t :immediate-finish t)
+             ("R" "Regular" entry (file+datetree (concat GTD-HOME-PATH "regular.org" ))
+              "* %?" :clock-in t :clock-resume t)
+             ("n" "Note" entry (file+headline (concat GTD-HOME-PATH "Note.org" ) "Notes")
+              "* %? %x %^g" :clock-in t :clock-resume t)
+             ("d" "diary" entry (file+datetree (concat GTD-HOME-PATH "diary.org" ))
+              "* %?\n" :clock-in t :clock-resume t)
+             ("j" "interuption" entry (file+datetree (concat GTD-HOME-PATH "refile.org" ))
+              "* %?\n" :clock-in t :clock-resume t)
+             ("w" "org-protocol" entry (file (concat GTD-HOME-PATH "refile.org" ))
+              "* TODO Review %c\n%U\n" :immediate-finish t)
+             ("m" "Meeting" entry (file (concat GTD-HOME-PATH "refile.org"))
+              "* MEETING with %? :MEETING:\n%U" :clock-in t :clock-resume t)
+             ("p" "Phone call" entry (file (concat GTD-HOME-PATH "refile.org"))
+              "* PHONE %? :PHONE:\n%U" :clock-in t :clock-resume t)
+             ("h" "Habit" entry (file (concat GTD-HOME-PATH "refile.org"))
+              "* NEXT %?\n%U\n%a\nSCHEDULED: %(format-time-string \"<%Y-%m-%d %a .+1d/3d>\")\n:PROPERTIES:\n:STYLE: habit\n:REPEAT_TO_STATE: NEXT\n:END:\n")
+             ("i" "Idea" entry (file (concat GTD-HOME-PATH "refile.org" ))
+              "* %? %x %a"  :clock-in t :clock-resume t) 
+             ("b" "Books" entry (file (concat GTD-HOME-PATH "books.org" ))
+              "** TODO %^{书籍名称？}  :book:"  :clock-in t :clock-resume t)))
    #+END_SRC
    
    通过设置`:clock-in t'使得在captre task时自动开始clock in. 设置`:clock-resume t'则使得capture task完成后,自动恢复原task的clock in.
    但这就会产生一个问题,若capture task的时间小于1分钟,则可能有大量的计时为0:00的记录存在,这些记录需要清理
    
-   * TODO Since I remove clocking lines with 0:00 length I end up with a clock drawer like this: 
-	 #+BEGIN_SRC org
-       ,* TODO New Capture Task
-         :LOGBOOK:  
-         :END:      
-         [2010-05-08 Sat 13:53]
-	 #+END_SRC
-
    #+BEGIN_SRC emacs-lisp
      ;; Remove empty LOGBOOK drawers on clock out
      (defun bh/remove-empty-drawer-on-clock-out ()
@@ -324,7 +320,7 @@
   If I am working on some task, then I simply clock in on the task. Clocking out moves the clock up to a parent task with a todo keyword (if any) which keeps the clock time in the same subtree. If there is no parent task with a todo keyword then the clock moves back to the default clocking task until I punch out or clock in some other task. When an interruption occurs I start a capture task which keeps clocked time on the interruption task until I close it with C-c C-c. 
 ** Clock setup
    #+BEGIN_SRC emacs-lisp
-     ;;
+     (require 'org-clock)
      ;; Resume clocking task when emacs is restarted
      (org-clock-persistence-insinuate)
      ;;
@@ -543,7 +539,229 @@
 
    Combining this export with tag filters and C-u R can limit the report to exactly the tags that people are interested in. 
 
-* 其他	
+* Tag
+  在每个单独的org文件中,可以使用`#+FILETAGS:'来定义所包含的entry自动继承的TAGS
+
+  可以为每个单独的org文件设置自己的TAG列表
+  #+BEGIN_SRC org
+    ,#+TAGS:  { @work(w)  @home(h)  @tennisclub(t) }  laptop(l)  pc(p)
+  #+END_SRC
+  这里{}表示其内部的TAG是互斥的,只能选择其中之一.
+
+  可以通过设置`org-tag-alist'的值来设置全局的tag列表. 其中可以使用`:startgroup`和`:endgroup`来代替`{`和`}`. 
+  
+  如果你有一些tag是每个文件都要用到的,你可以把这些tag放入变量`org-tag-persistent-alist`中,这样org文件除了具有TAGS选项所设定的tag外,还具有这个变量所定义的那些tag. 
+  #+BEGIN_SRC emacs-lisp
+    (setq org-tag-persistent-alist '((:startgroup)
+                          ("@office" . ?o)
+                          ("@home" . ?h)
+                          ("@traffice" . ?t)
+                          ("@market" . ?m)
+                          (:endgroup)
+                          ("HOME" . ?H)
+                          ("OFFICE" . ?O)
+                          ("WAITING" . ?w)
+                          ("HOLD" . ?h)
+                          ("NOTE" . ?n)
+                          ("CANCELLED" . ?c)))
+
+    ; Allow setting single tags without the menu
+    ;; (setq org-fast-tag-selection-single-key (quote expert))
+
+    ; For tag searches ignore tasks with scheduled and deadline dates
+    ;; (setq org-agenda-tags-todo-honor-ignore-options t)
+
+  #+END_SRC
+  
+  如果某个文件不想包含该变量所定义的tag,只需要在STARTUP选项行中添加: `noptag'
+  #+BEGIN_SRC org
+    ,#+STARTUP: noptag
+  #+END_SRC
+
+* GTD相关
+** 周总结
+   可以设定一个循环任务,每周一开始weekly review
+   #+BEGIN_SRC org
+     ,* NEXT Weekly Review [0/6]
+       SCHEDULED: <2009-05-18 Mon ++1w> 
+       :LOGBOOK:...
+       :PROPERTIES:...
+       
+       What to review:
+       
+        - [ ] Check follow-up folder
+        - [ ] Review weekly agenda =C-c a a w //=
+        - [ ] Check clocking data for past week =v c=
+        - [ ] Review clock report for past week =R=
+          - Check where we spent time (too much or too little) and rectify this week
+        - [ ] Look at entire agenda for today  =C-c a SPC=
+        - [ ] Review projects =C-c a SPC //= and =V= repeatedly to view each project
+          
+        - start work
+          - daily agenda first - knock off items
+          - then work on NEXT tasks
+
+   #+END_SRC
+   
+   The first item [ ] Check follow-up folder makes me pull out the paper file I dump stuff into all week long - things I need to take care of but are in no particular hurry to deal with. Stuff I get in the mail etc. that I don't want to deal with now. I just toss it in my Follow-Up folder in the filing cabinet and forget about it until the weekly review
+** Project definition and finding stuck projects
+   通过设置`org-stuck-projects'可以设定规则来表示哪些task是属于project的,哪些是project又是stucked的.
+
+   `org-stuck-projects'是一个由4个元素组成的list:
+   #+BEGIN_SRC emacs-lisp
+     ;; 所有有子任务的task都被认为是project
+     ;; 若project的子树中有"NEXT"状态task的,不认为是stucked
+     (setq org-stuck-projects '("+LEVEL=2/-DONE" ("NEXT") nil ""))
+   #+END_SRC
+   1. 元素一为一个字符串,用来根据tags/todo/projecty来标示哪些task是project
+
+   2. 元素二为一个TODO关键字组成的list, 若project的子树中有处于该状态的sub-task,则不认为是stuck project
+
+   3. 元素三为一个由TAG组成的list, 若project的子树中有标注该tag的sub-task,则不认为是stuck project
+
+   4. 元素四为一个表示正则表达式的字符串,任何匹配该正则的project,都不被认为是stuck project
+
+
+* 归档
+  * 归档时保持TODO state不变
+
+	#+BEGIN_SRC emacs-lisp
+      (setq org-archive-mark-done nil)
+	#+END_SRC
+
+  * 通过设置`org-archive-mark-done'可以指定归档的位置
+	#+BEGIN_SRC emacs-lisp
+      ;; (setq org-archive-location "%s_archive::* Archived Tasks")
+	#+END_SRC
+
+  * 带有`Archive' tag的entry,默认情况下不会被展开,但可以使用`C-TAB'强制展开
+
+* Publishing and Exporting
+** Export配置信息
+   #+BEGIN_SRC emacs-lisp
+     ;; 允许使用单字母bullets
+     (setq org-list-allow-alphabetical t)
+
+     ;; Explicitly load required exporters
+     (require 'ox-html)
+     ;; (require 'ox-latex)
+     (require 'ox-ascii)
+   #+END_SRC
+** Publish配置信息
+   #+BEGIN_SRC emacs-lisp
+     ;; experimenting with docbook exports - not finished
+     ;; (setq org-export-docbook-xsl-fo-proc-command "fop %s %s")
+     ;; (setq org-export-docbook-xslt-proc-command "xsltproc --output %s /usr/share/xml/docbook/stylesheet/nwalsh/fo/docbook.xsl %s")
+
+     ;; 导出html时,嵌入图片,而不是创建图片的链接
+     (setq org-html-inline-images t)
+     ;; 导出时不转仪"_"和"^"
+     (setq org-export-with-sub-superscripts nil)
+     ;; 设置导出时,每个页面使用指定的样式css
+     ;; (setq org-html-head-extra "<link rel=\"stylesheet\" href=\"http://doc.norang.ca/org.css\" type=\"text/css\" />")
+     ;; 不使用默认的样式
+     ;; (setq org-html-head-include-default-style nil)
+     ;; Do not generate internal css formatting for HTML exports
+     ;; (setq org-export-htmlize-output-type 'css)
+     ;; Export with LaTeX fragments
+     ;; (setq org-export-with-LaTeX-fragments t)
+     ;; 设置导出的级别
+     (setq org-export-headline-levels 6)
+
+     ;; List of projects
+     ;; my_note       - http://www.norang.ca/
+     ;; my_gtd          - miscellaneous todo lists for publishing
+     (setq org-publish-project-alist
+           `(("my_note"
+                    :base-directory ,(filter-valid-file "~/我的笔记" "e:/我的笔记") ;导出的源代码路径
+                    :publishing-directory ,(filter-valid-file "d:/www/my_note" "/cygdrive/d/www/my_note" "/var/www/my_note") ;导出的目的代码路径
+                    :recursive t
+                    :table-of-contents nil
+                    :base-extension "org"    ;只导出.org文件
+                    :publishing-function org-html-publish-to-html
+                    :style-include-default t
+                    :section-numbers nil
+                    :table-of-contents nil
+                    :auto-sitemap t
+                    :sitemap-filename "index.html"
+                    :sitemap-title "My NOTE"
+                    :sitemap-style "tree"
+                    ;; :html-head "<link rel=\"stylesheet\" href=\"norang.css\" type=\"text/css\" />"
+                    ;; :author-info nil
+                    ;; :creator-info nil
+                    )
+                   ("my_gtd"
+                    :base-directory ,(filter-valid-file "~/我的GTD" "e:/我的GTD")
+                    :publishing-directory ,(filter-valid-file "d:/www/my_gtd" "/cygdrive/d/www/my_gtd" "/var/www/my_gtd") ;导出的目的代码路径
+                    :recursive nil
+                    :section-numbers nil
+                    :table-of-contents nil
+                    :base-extension "org"
+                    :publishing-function (org-html-publish-to-html org-org-publish-to-org)
+                    :style-include-default t
+                    :auto-sitemap t
+                    :sitemap-filename "index.html"
+                    :sitemap-title "My GTD"
+                    :sitemap-style "tree"
+                    ;; :html-head "<link rel=\"stylesheet\" href=\"/org.css\" type=\"text/css\" />"
+                    ;; :author-info nil
+                    ;; :creator-info nil
+                    )))
+
+     ; I'm lazy and don't want to remember the name of the project to publish when I modify
+     ; a file that is part of a project.  So this function saves the file, and publishes
+     ; the project that includes this file
+     ;
+     ; It's bound to C-S-F12 so I just edit and hit C-S-F12 when I'm done and move on to the next thing
+     (defun bh/save-then-publish (&optional force)
+       (interactive "P")
+       (save-buffer)
+       (org-save-all-org-buffers)
+       (let ((org-html-head-extra)
+             (org-html-validation-link "<a href=\"http://validator.w3.org/check?uri=referer\">Validate XHTML 1.0</a>"))
+         (org-publish-current-project force)))
+
+     (global-set-key (kbd "C-s-<f12>") 'bh/save-then-publish)
+
+   #+END_SRC
+* org-babel配置
+  #+BEGIN_SRC emacs-lisp
+    (add-hook 'org-babel-after-execute-hook 'bh/display-inline-images 'append)
+
+    ;; Make babel results blocks lowercase
+    ;; (setq org-babel-results-keyword "results")
+
+    (defun bh/display-inline-images ()
+      (condition-case nil
+          (org-display-inline-images)
+        (error nil)))
+
+    ;; 设置可以load的代码块
+    (org-babel-do-load-languages
+     'org-babel-load-languages
+     '((emacs-lisp . t)
+       (dot . t)
+       (ditaa . t)
+       (R . t)
+       (python . t)
+       (ruby . t)
+       (gnuplot . t)
+       (clojure . t)
+       (sh . t)
+       (ledger . t)
+       (org . t)
+       (plantuml . t)
+       (latex . t)))
+
+    ;; C-c C-c执行代码块时,不需要确认
+    (setq org-confirm-babel-evaluate nil)
+
+    ;; 当使用C-c'编辑sqC代码块时,使用c++ mode
+    (add-to-list 'org-src-lang-modes '("sqC" . c++))
+
+  #+END_SRC
+* 其他辅助函数	
+  下面是一些helper function
   #+BEGIN_SRC emacs-lisp
     (defun bh/is-project-p ()
       "Any task with a todo keyword subtask"
@@ -786,10 +1004,33 @@
         (if (bh/is-subproject-p)
             nil
           next-headline)))
+
+    (defun bh/skip-non-archivable-tasks ()
+      "Skip trees that are not available for archiving"
+      (save-restriction
+        (widen)
+        ;; Consider only tasks with done todo headings as archivable candidates
+        (let ((next-headline (save-excursion (or (outline-next-heading) (point-max))))
+              (subtree-end (save-excursion (org-end-of-subtree t))))
+          (if (member (org-get-todo-state) org-todo-keywords-1)
+              (if (member (org-get-todo-state) org-done-keywords)
+                  (let* ((daynr (string-to-int (format-time-string "%d" (current-time))))
+                         (a-month-ago (* 60 60 24 (+ daynr 1)))
+                         (last-month (format-time-string "%Y-%m-" (time-subtract (current-time) (seconds-to-time a-month-ago))))
+                         (this-month (format-time-string "%Y-%m-" (current-time)))
+                         (subtree-is-current (save-excursion
+                                               (forward-line 1)
+                                               (and (< (point) subtree-end)
+                                                    (re-search-forward (concat last-month "\\|" this-month) subtree-end t)))))
+                    (if subtree-is-current
+                        subtree-end ; Has a date in this month or last month, skip it
+                      nil))  ; available to archive
+                (or subtree-end (point-max)))
+            next-headline))))
+
   #+END_SRC
+* 其他
   #+BEGIN_SRC emacs-lisp
-    ;; (org-remember-insinuate)
-    ;; org-capture配置
     
     ;; 新增org文件时插入模版
     (defun new-org-file-init ()

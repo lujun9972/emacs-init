@@ -216,6 +216,9 @@
      ;; * Moving a task to DONE removes WAITING, CANCELLED, and HOLD tags
    #+END_SRC
 * 配置org-capture
+  #+BEGIN_SRC emacs-lisp
+    (require 'org-capture)
+  #+END_SRC
 ** Capure模板  
    所有caputre的task都先暂存入refile.org中,再refile到各个org文件中
 
@@ -262,11 +265,11 @@
    
    #+BEGIN_SRC emacs-lisp
      ;; Remove empty LOGBOOK drawers on clock out
-     (defun bh/remove-empty-drawer-on-clock-out ()
-       (interactive)
-       (save-excursion
-         (beginning-of-line 0)
-         (org-remove-empty-drawer-at (point))))
+     ;; (defun bh/remove-empty-drawer-on-clock-out ()
+     ;;   (interactive)
+     ;;   (save-excursion
+     ;;     (beginning-of-line 0)
+     ;;     (org-remove-empty-drawer-at (point))))
 
      ;; (add-hook 'org-clock-out-hook 'bh/remove-empty-drawer-on-clock-out 'append)
 
@@ -348,7 +351,7 @@
      ;; Include current clocking task in clock reports
      (setq org-clock-report-include-clocking-task t)
 
-     (setq bh/keep-clock-running nil)
+     (defvar bh/keep-clock-running nil)
 
      (defun bh/clock-in-to-next (kw)
        "Switch a task from TODO to NEXT when clocking in.
@@ -623,6 +626,9 @@
 
 
 * 归档
+  #+BEGIN_SRC emacs-lisp
+    (require 'org-archive)
+  #+END_SRC
   * 归档时保持TODO state不变
 
 	#+BEGIN_SRC emacs-lisp
@@ -779,6 +785,12 @@
                 (setq has-subtask t))))
           (and is-a-task has-subtask))))
 
+    (defun bh/is-habit-p ()
+      "Any task with a habit tag"
+      (save-restriction
+        (widen)
+        (member "habit" (org-get-tags))
+        ))
     (defun bh/is-project-subtree-p ()
       "Any task with a todo keyword that is in a project subtree.
     Callers of this function already widen the buffer view."
@@ -902,7 +914,7 @@
           (cond
            ((bh/is-project-p)
             subtree-end)
-           ((org-is-habit-p)
+           ((bh/is-habit-p)
             subtree-end)
            (t
             nil)))))
@@ -913,7 +925,7 @@
         (widen)
         (let ((next-headline (save-excursion (or (outline-next-heading) (point-max)))))
           (cond
-           ((org-is-habit-p)
+           ((bh/is-habit-p)
             next-headline)
            ((and bh/hide-scheduled-and-waiting-next-tasks
                  (member "WAITING" (org-get-tags-at)))
@@ -937,7 +949,7 @@
           (cond
            ((bh/is-project-p)
             next-headline)
-           ((org-is-habit-p)
+           ((bh/is-habit-p)
             subtree-end)
            ((and (not limit-to-project)
                  (bh/is-project-subtree-p))
@@ -958,7 +970,7 @@
           (cond
            ((bh/is-project-p)
             subtree-end)
-           ((org-is-habit-p)
+           ((bh/is-habit-p)
             subtree-end)
            ((bh/is-project-subtree-p)
             subtree-end)
@@ -975,7 +987,7 @@
           (cond
            ((bh/is-project-p)
             next-headline)
-           ((org-is-habit-p)
+           ((bh/is-habit-p)
             subtree-end)
            ((and (bh/is-project-subtree-p)
                  (member (org-get-todo-state) (list "NEXT")))
@@ -993,7 +1005,7 @@
           (cond
            ((bh/is-project-p)
             subtree-end)
-           ((org-is-habit-p)
+           ((bh/is-habit-p)
             subtree-end)
            (t
             nil)))))
@@ -1014,7 +1026,7 @@
               (subtree-end (save-excursion (org-end-of-subtree t))))
           (if (member (org-get-todo-state) org-todo-keywords-1)
               (if (member (org-get-todo-state) org-done-keywords)
-                  (let* ((daynr (string-to-int (format-time-string "%d" (current-time))))
+                  (let* ((daynr (string-to-number (format-time-string "%d" (current-time))))
                          (a-month-ago (* 60 60 24 (+ daynr 1)))
                          (last-month (format-time-string "%Y-%m-" (time-subtract (current-time) (seconds-to-time a-month-ago))))
                          (this-month (format-time-string "%Y-%m-" (current-time)))
@@ -1043,7 +1055,7 @@
     (add-to-list 'find-file-not-found-hooks 'new-org-file-init)
 
     ;; 设置org笔记时的缩进
-    (setq org-description-max-ident 5)
+    ;; (setq org-description-max-ident 5)
 
     ;; 设置org template
     (add-to-list 'org-structure-template-alist '("se" "#+BEGIN_SRC emacs-lisp\n?\n#+END_SRC" "<src lang=\"emacs-lisp\">\n?\n</src>"))

@@ -121,6 +121,39 @@
                (alltodo ""))
               nil)))
 
+     ;; 当搜索文本时,也从归档文件中查找
+     (setq org-agenda-text-search-extra-files (quote (agenda-archives)))
+
+     ;; Show all future entries for repeating tasks
+     (setq org-agenda-repeating-timestamp-show-all t)
+
+     ;; Show all agenda dates - even if they are empty
+     (setq org-agenda-show-all-dates t)
+
+     ;; Sorting order for tasks on the agenda
+     ;; (setq org-agenda-sorting-strategy
+     ;;       '((agenda habit-down time-up user-defined-up effort-up category-keep)
+     ;;      (todo category-up effort-up)
+     ;;      (tags category-up effort-up)
+     ;;      (search category-up)))
+
+     ;; Start the weekly agenda on Monday
+     (setq org-agenda-start-on-weekday 1)
+
+     ;; Enable display of the time grid so we can see the marker for the current time
+     ;; (setq org-agenda-time-grid (quote ((daily today remove-match)
+     ;;                                    #("----------------" 0 16 (org-heading t))
+     ;;                                    (0900 1100 1300 1500 1700))))
+
+     ;; Display tags farther right
+     (setq org-agenda-tags-column -102)
+
+   #+END_SRC
+   
+   Sticky agendas allow you to have more than one agenda view created simultaneously. You can quickly switch to the view without incurring an agenda rebuild by invoking the agenda custom command key that normally generates the agenda. If it already exists it will display the existing view. g forces regeneration of the agenda view. 
+   #+BEGIN_SRC emacs-lisp
+     ;; Use sticky agenda's so they persist
+     (setq org-agenda-sticky t)
    #+END_SRC
 ** Automatically removing context based tasks with / RET
    / RET in the agenda is really useful. It removes tasks automatically by filtering based on a user-provided function. 
@@ -142,7 +175,38 @@
 	 在log mode下显示agenda,这时会高亮显示今天的clock记录. 
 
 	 将光标放在某条clock记录处按下TAB后,会跳转到源org文件的相应位置
-	 
+
+   * C-c C-x < 
+   
+     turns on the agenda restriction lock for the current subtree. This keeps your agenda focused on only this subtree
+
+   * C-c a < a
+
+     limits the agenda view to just this file
+** Keep tasks with timestamps visible on the global todo lists
+   #+BEGIN_SRC emacs-lisp
+     ;; Keep tasks with dates on the global todo lists
+     (setq org-agenda-todo-ignore-with-date nil)
+
+     ;; Keep tasks with deadlines on the global todo lists
+     (setq org-agenda-todo-ignore-deadlines nil)
+
+     ;; Keep tasks with scheduled dates on the global todo lists
+     (setq org-agenda-todo-ignore-scheduled nil)
+
+     ;; Keep tasks with timestamps on the global todo lists
+     (setq org-agenda-todo-ignore-timestamp nil)
+
+     ;; Remove completed deadline tasks from the agenda view
+     (setq org-agenda-skip-deadline-if-done t)
+
+     ;; Remove completed scheduled tasks from the agenda view
+     (setq org-agenda-skip-scheduled-if-done t)
+
+     ;; Remove completed items from search results
+     (setq org-agenda-skip-timestamp-if-done t)
+   #+END_SRC
+   
 * Task and States 
 ** TODO关键字设置
    * A NEXT task 
@@ -215,6 +279,22 @@
      ;; * Moving a task to NEXT removes WAITING, CANCELLED, and HOLD tags
      ;; * Moving a task to DONE removes WAITING, CANCELLED, and HOLD tags
    #+END_SRC
+** Org Task structure and presentation
+   * 隐藏headline前面多余的*
+	 #+BEGIN_SRC emacs-lisp
+       ;; 改为使用org-ident-mode隐藏
+       ;; (setq org-hide-leading-stars nil)
+	 #+END_SRC
+   * 启用org-indent-mode
+
+     It removes the indentation in the org-file but displays it as if it was indented while you are working on the org file buffer. 
+     #+BEGIN_SRC emacs-lisp
+       (setq org-startup-indented t)
+     #+END_SRC
+   * 不显示headline之间的空白行
+     #+BEGIN_SRC emacs-lisp
+       (setq org-cycle-separator-lines 0)
+     #+END_SRC
 * 配置org-capture
   #+BEGIN_SRC emacs-lisp
     (require 'org-capture)

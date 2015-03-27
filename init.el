@@ -96,6 +96,14 @@
   (`cygwin (level-load "init-cygwin")) ; 配置cygwin
   (`gnu/linux (level-load "init-linux")))
 
+;;----------------------------------------------------------------------------
+;; Handier way to add modes to auto-mode-alist
+;;----------------------------------------------------------------------------
+(defun add-auto-mode (mode &rest patterns)
+  "Add entries to `auto-mode-alist' to use `MODE' for all given file `PATTERNS'."
+  (dolist (pattern patterns)
+    (add-to-list 'auto-mode-alist (cons pattern mode))))
+
 ;;启动server-start模式，当用emacsclientw打开文件时，使用一个缓冲区打开
 										;(server-start)
 ;; 设置显示界面

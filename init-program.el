@@ -36,6 +36,10 @@
 (load "init-program-lua")
 ;; 配置cpp编程
 (load "init-program-cpp")
+;; 配置ruby编程
+(require-and-install 'ruby-mode)
+(add-hook 'ruby-mode-hook (lambda ()
+							(require 'init-program-ruby)))
 ;; 配置cedet
 (load "init-program-cedet")
 ;; 配置SQL

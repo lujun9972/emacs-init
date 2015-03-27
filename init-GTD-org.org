@@ -369,6 +369,7 @@
    
    可以设置clock tracking的时间到达预估工作量时的提醒声音
    #+BEGIN_SRC emacs-lisp
+     (require 'org-clock)
      (setq org-clock-sound t)
    #+END_SRC
    

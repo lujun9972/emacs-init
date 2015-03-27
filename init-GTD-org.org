@@ -1,14 +1,14 @@
 * 定义快捷键
   #+NAME: key-bindings
-  | key | function       | comment              |
-  |-----+----------------+----------------------|
-  | r | org-remember   |                      |
-  | l | org-store-link |                      |
-  | c | org-capture    |                      |
-  | a | org-agenda     |                      |
-  | b | org-iswitchb   |                      |
+  | key   | function       | comment                  |
+  |-------+----------------+--------------------------|
+  | r   | org-remember   |                          |
+  | l   | org-store-link |                          |
+  | c   | org-capture    |                          |
+  | a   | org-agenda     |                          |
+  | b   | org-iswitchb   |                          |
   | <f11> | org-clock-goto | f11:跳转到正在计时的任务 |
-  |     |                |                      |
+  |       |                |                          |
   
   #+BEGIN_SRC emacs-lisp :var keys=key-bindings[2:-1]
     (mapc (lambda (key)
@@ -150,11 +150,25 @@
 
    #+END_SRC
    
-   Sticky agendas allow you to have more than one agenda view created simultaneously. You can quickly switch to the view without incurring an agenda rebuild by invoking the agenda custom command key that normally generates the agenda. If it already exists it will display the existing view. g forces regeneration of the agenda view. 
+   Sticky agendas 允许你同时产生多个agenda view. You can quickly switch to the view without incurring an agenda rebuild by invoking the agenda custom command key that normally generates the agenda. If it already exists it will display the existing view. g forces regeneration of the agenda view. 
    #+BEGIN_SRC emacs-lisp
      ;; Use sticky agenda's so they persist
      (setq org-agenda-sticky t)
    #+END_SRC
+   
+   设置还有多少天到deadline的task,显示到agenda view中
+   #+BEGIN_SRC emacs-lisp
+     (setq org-deadline-warning-days 10)
+   #+END_SRC
+   
+   要特殊设置某个task在deadline的前N天就显示在agenda view中,可以在该task的deadline上加上`-Nd'. 例如
+   #+BEGIN_SRC org
+     ,* TODO Pay Wages
+       DEADLINE: <2009-07-01 Wed +1m -2d>
+
+   #+END_SRC
+   
+   
 ** Automatically removing context based tasks with / RET
    / RET in the agenda is really useful. It removes tasks automatically by filtering based on a user-provided function. 
    
@@ -234,6 +248,8 @@
                    ("PHONE" :foreground "forest green" :weight bold))))
 
    #+END_SRC
+   
+
 *** 电话
 	Telephone calls are special. They are created in a done state by a capture task.
 	The time of the call is recorded for as long as the capture task is active. 
@@ -244,7 +260,7 @@
 	They are created in a done state by a capture task.
 	I use the MEETING capture template when someone interrupts what I'm doing with a question or discussion. 
 	This is handled similarly to phone calls where I clock the amount of time spent with whomever it is and record some notes of what was discussed (either during or after the meeting) depending on content, length, and complexity of the discussion.
-*** 快速TODO状态切换
+*** TODO状态切换
 	
 	开启fast todo selection,使得可以使用`C-c C-t'直接选择TODO状态
 	#+BEGIN_SRC emacs-lisp
@@ -254,6 +270,13 @@
 	当时用S-left和S-rigth更改TODO状态时,仅仅只是更改状态,而不要像正常的更改状态流程那样登记状态更改的时间戳,抓获切换状态时的上下文日志
 	#+BEGIN_SRC emacs-lisp
       (setq org-treat-S-cursor-todo-selection-as-state-change nil)
+	#+END_SRC
+	
+	在子task都变为完成状态的前,不能切换父级task变为完成状态
+	#+BEGIN_SRC emacs-lisp
+      ;; 任何未完成的子任务会阻止父任务变为完成状态,若像临时屏蔽该功能,可以为该任务添加`:NOBLOCKING: t'属性
+      ;; 若父任务中设置了属性`:ORDERED: t',则表示其子任务必须依照顺序从上到下完成
+      (setq org-enforce-todo-dependencies t)
 	#+END_SRC
 ** TODO状态触发器
 
@@ -281,20 +304,74 @@
    #+END_SRC
 ** Org Task structure and presentation
    * 隐藏headline前面多余的*
+
 	 #+BEGIN_SRC emacs-lisp
        ;; 改为使用org-ident-mode隐藏
        ;; (setq org-hide-leading-stars nil)
 	 #+END_SRC
+
    * 启用org-indent-mode
 
      It removes the indentation in the org-file but displays it as if it was indented while you are working on the org file buffer. 
+
      #+BEGIN_SRC emacs-lisp
        (setq org-startup-indented t)
      #+END_SRC
+
    * 不显示headline之间的空白行
+
      #+BEGIN_SRC emacs-lisp
        (setq org-cycle-separator-lines 0)
      #+END_SRC
+
+   * 设置保持note的位置
+
+	 `C-c C-z'可以为task添加note,可以通过设置`org-reverse-note-order'来指定note保持在task的头部,还是尾部
+	 #+BEGIN_SRC emacs-lisp
+       ;; 将note放在task的首部显示
+       (setq org-reverse-note-order nil)
+
+	 #+END_SRC
+** Logging
+   * task完成后,自动记录完成时间
+	 #+BEGIN_SRC emacs-lisp
+       (setq org-log-done (quote time))
+	 #+END_SRC
+
+   * 将log存入drawer中
+	 #+BEGIN_SRC emacs-lisp
+       (setq org-log-into-drawer t)
+	 #+END_SRC
+
+   * 设置log存放在task的哪个位置
+	 #+BEGIN_SRC emacs-lisp
+       (setq org-log-state-notes-insert-after-drawers nil)
+	 #+END_SRC
+
+   * todo keywords的定义也与log息息相关
+	 
+	 Each keyword may also specify if a timestamp or a note should be recorded when entering or leaving the state, by adding additional characters in the parenthesis after the keyword. 
+     This looks like this: "WAIT(w@/!)". 
+     "@" means to add a note (with time), 
+     "!" means to record only the time of the state change. 
+     With X and Y being either "@" or "!", "X/Y" means use X when entering the state, and use Y when leaving the state if and only if the *target* state does not define X. 
+     You may omit any of the fast-selection key or X or /Y, so WAIT(w@), WAIT(w/@) and WAIT(@/@) are all valid.
+** 评估任务的工作量
+
+   通过为task增加`Effort'属性,可以为任务设置一个评估的工作量,若clock tracking的时间超过了这个评估的工作量,则会提出警告:
+   #+BEGIN_SRC org
+     ,* NEXT Document my use of org-mode
+       :PROPERTIES:
+       :CLOCK_MODELINE_TOTAL: today
+       :Effort:   1:00
+       :END:
+   #+END_SRC
+   
+   可以设置clock tracking的时间到达预估工作量时的提醒声音
+   #+BEGIN_SRC emacs-lisp
+     (setq org-clock-sound t)
+   #+END_SRC
+   
 * 配置org-capture
   #+BEGIN_SRC emacs-lisp
     (require 'org-capture)
@@ -581,6 +658,8 @@
    #+BEGIN_SRC emacs-lisp
      (setq org-time-stamp-rounding-minutes '(1 1))
    #+END_SRC
+
+** 
 * Time Reporting and Tracking   
   *当生成Time Report时,若有未完结的clock time,则这段时间被认为是0*
 
@@ -704,7 +783,15 @@
 
    4. 元素四为一个表示正则表达式的字符串,任何匹配该正则的project,都不被认为是stuck project
 
+* Attach
+  * 使用`C-c C-a a'添加附件
 
+  * 使用`C-c C-a o'打开附件
+
+  * 设置org-id的生成方法
+	#+BEGIN_SRC emacs-lisp
+      (setq org-id-method 'org)               ;使用org内置的方法生成
+	#+END_SRC
 * 归档
   #+BEGIN_SRC emacs-lisp
     (require 'org-archive)
@@ -732,6 +819,13 @@
      (require 'ox-html)
      ;; (require 'ox-latex)
      (require 'ox-ascii)
+   #+END_SRC
+   
+   在org-table上按`M-x org-table-export'可以导出org-table为其他格式,如csv,tsv等.
+
+   我们设置默认导出格式为csv:
+   #+BEGIN_SRC emacs-lisp
+     (setq org-table-export-default-format "orgtbl-to-csv")
    #+END_SRC
 ** Publish配置信息
    #+BEGIN_SRC emacs-lisp
@@ -1122,6 +1216,14 @@
 
   #+END_SRC
 * 其他
+** Searching and showing results
+   
+   I have org-mode show the hierarchy of tasks above the matched entries and also the immediately following sibling task (but not all siblings) with the following settings:
+   #+BEGIN_SRC emacs-lisp
+     ;; (setq org-show-following-heading t)
+     ;; (setq org-show-hierarchy-above t)
+     ;; (setq org-show-siblings '((default)))
+   #+END_SRC
   #+BEGIN_SRC emacs-lisp
     
     ;; 新增org文件时插入模版

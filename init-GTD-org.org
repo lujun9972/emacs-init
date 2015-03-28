@@ -1,3 +1,27 @@
+#+FILETAGS: 
+* 加载必要的库
+#+BEGIN_SRC emacs-lisp
+  ; Enable habit tracking (and a bunch of other modules)
+  (mapc (lambda (pkg)
+          (require pkg nil t))
+        '(org-bbdb
+          org-bibtex
+          org-crypt
+          org-gnus
+          org-id
+          org-info
+          org-jsinfo
+          org-habit
+          org-inlinetask
+          org-irc
+          org-mew
+          org-mhe
+          org-protocol
+          org-rmail
+          org-vm
+          org-wl
+          org-w3m))
+#+END_SRC
 * 定义快捷键
   #+NAME: key-bindings
   | key   | function       | comment                  |
@@ -372,7 +396,34 @@
      (require 'org-clock)
      (setq org-clock-sound t)
    #+END_SRC
-   
+
+* Habits
+一个habit与普通的task极其类似,但它具有如下特征:
+1) 通过配置变量`org-modules`,启用了`habits`模块
+2) 是一个未完成的任务,有一个未完成的状态标示该任务有下一步的行动
+3) `STYLE`属性值设置成了`habit`
+4) 该事项带有规划日期,而且规划日期中可以有`.+时间间隔`用来表示两次重复之间的间隔. `++时间间隔`表示该习惯有时间上的约束(比如,必须在周末完成),`+时间间隔`则表示改习惯不是一个经常性的事项,它可以在之前积压未办之事,然后在未来补完它(比如补写周报)
+5) 改习惯也可以使用类似`.+2d/3d`这样的符号标示最小/最大的间隔时间. `.+2d/3d`的意思是,你希望至少每三条做一次这个工作,但是最多每两天做一次这个工作
+6) 你最好为完结状态设置记录行为,这样会保留一些历史数据,这些历史数据可以以连线图的方式展现出来. 你不是必须要这样做,但是由此产生的连线图的意义就不大了.
+	
+下面时一个habit的栗子
+#+BEGIN_SRC org
+  ,* TODO Update Org Mode Doc
+  SCHEDULED: <2009-11-21 Sat .+7d/30d>
+  [2009-11-14 Sat 11:45]
+  :PROPERTIES: 
+  :STYLE:    habit
+  :END:
+#+END_SRC
+
+一般情况下,habit任务只有在完成后才记录相关Note,而cancel时不需要记录任何Note. 因此一般会设置habit task的`:LOGGING:'属性为"DONE(!)". 例如
+#+BEGIN_SRC org
+  ,* Habits
+  :PROPERTIES: 
+  :LOGGING:  DONE(!)
+  :ARCHIVE:  %s_archive::* Habits
+  :END:
+#+END_SRC
 * 配置org-capture
   #+BEGIN_SRC emacs-lisp
     (require 'org-capture)
@@ -941,6 +992,20 @@
     (add-to-list 'org-src-lang-modes '("sqC" . c++))
 
   #+END_SRC
+* 关于加密 
+#+BEGIN_SRC emacs-lisp
+  (require 'org-crypt)
+  ;; 保存前,自动为headline加密
+  (org-crypt-use-before-save-magic)
+  ;; 设置crypt标签不参与继承,这样就避免出现加密数据中包含加密数据的情况,由于每层加密数据都需要输一次密码解密,这样显得太麻烦了.
+  (setq org-tags-exclude-from-inheritance  '("crypt"))
+  ;; GPG key to use for encryption
+  ;; 设置默认的org加密密钥,可以被"CRYPTKEY" property的值所覆盖
+  (setq org-crypt-key "123456")
+#+END_SRC
+
+要想解密headline,则需要在光标定位到加密内容处,然后执行`M-x org-decrypt-entry'
+
 * 其他辅助函数	
   下面是一些helper function
   #+BEGIN_SRC emacs-lisp

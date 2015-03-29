@@ -244,8 +244,16 @@
      ;; Remove completed items from search results
      (setq org-agenda-skip-timestamp-if-done t)
    #+END_SRC
-   
-* Task and States 
+
+** Agenda persistent filters
+
+开启Agenda persistent filters意味着,当你使用`/ TAB SomeTag'来过滤agenda时,该过滤条件会一直生效,直到你明确的修改该过滤条件.
+#+BEGIN_SRC emacs-lisp
+  ;; (setq org-agenda-persistent-filter t)
+#+END_SRC
+
+当开启了该特性后,会在mode-line上显示"{+SomeTag}"样式,以方便你快捷地知道现在的过滤条件为何.
+* Entry and States 
 ** TODO关键字设置
    * A NEXT task 
 
@@ -304,28 +312,45 @@
 	#+END_SRC
 ** TODO状态触发器
 
-   当TODO状态发生更改时,自动添加/删除特定的TAG,这样方便agenda view中过滤任务:
+*** 当TODO状态发生更改时,自动添加/删除特定的TAG,这样方便agenda view中过滤任务:
 
-    org-todo-state-tags-triggers的格式为`(state-change (tag . flag) .......)',这里state-change可以是一个表示todo状态的字符串,或者是符号'todo或'done,分别表示所有表示未完成任务的和以完成任务的todo state
-   #+BEGIN_SRC emacs-lisp
-     (setq org-todo-state-tags-triggers
-           (quote (("CANCELLED" ("CANCELLED" . t))
-                   ("WAITING" ("WAITING" . t))
-                   ("HOLD" ("WAITING") ("HOLD" . t))
-                   (done ("WAITING") ("HOLD"))
-                   ("TODO" ("WAITING") ("CANCELLED") ("HOLD"))
-                   ("NEXT" ("WAITING") ("CANCELLED") ("HOLD"))
-                   ("DONE" ("WAITING") ("CANCELLED") ("HOLD")))))
+org-todo-state-tags-triggers的格式为`(state-change (tag . flag) .......)',这里state-change可以是一个表示todo状态的字符串,或者是符号'todo或'done,分别表示所有表示未完成任务的和以完成任务的todo state
+#+BEGIN_SRC emacs-lisp
+  (setq org-todo-state-tags-triggers
+        (quote (("CANCELLED" ("CANCELLED" . t))
+                ("WAITING" ("WAITING" . t))
+                ("HOLD" ("WAITING") ("HOLD" . t))
+                (done ("WAITING") ("HOLD"))
+                ("TODO" ("WAITING") ("CANCELLED") ("HOLD"))
+                ("NEXT" ("WAITING") ("CANCELLED") ("HOLD"))
+                ("DONE" ("WAITING") ("CANCELLED") ("HOLD")))))
 
+  ;; * Moving a task to CANCELLED adds a CANCELLED tag
+  ;; * Moving a task to WAITING adds a WAITING tag
+  ;; * Moving a task to HOLD adds WAITING and HOLD tags
+  ;; * Moving a task to a done state removes WAITING and HOLD tags
+  ;; * Moving a task to TODO removes WAITING, CANCELLED, and HOLD tags
+  ;; * Moving a task to NEXT removes WAITING, CANCELLED, and HOLD tags
+  ;; * Moving a task to DONE removes WAITING, CANCELLED, and HOLD tags
+#+END_SRC
 
-     ;; * Moving a task to CANCELLED adds a CANCELLED tag
-     ;; * Moving a task to WAITING adds a WAITING tag
-     ;; * Moving a task to HOLD adds WAITING and HOLD tags
-     ;; * Moving a task to a done state removes WAITING and HOLD tags
-     ;; * Moving a task to TODO removes WAITING, CANCELLED, and HOLD tags
-     ;; * Moving a task to NEXT removes WAITING, CANCELLED, and HOLD tags
-     ;; * Moving a task to DONE removes WAITING, CANCELLED, and HOLD tags
-   #+END_SRC
+*** 当task变为project时,自动将NEXT状态改为TODO状态
+
+由于NEXT只给具体的task使用,而不是给project使用的,因此当一个subtask添加了todo标志或开始clock in时,自动将其父task状态由NEXT改为TODO,因为这时它已经成为一个project了
+#+BEGIN_SRC emacs-lisp
+   (defun bh/mark-next-parent-tasks-todo ()
+    "Visit each parent task and change NEXT states to TODO"
+    (let ((mystate (nth 2 (org-heading-components))))
+      (when mystate
+        (save-excursion
+          (while (org-up-heading-safe)
+            (when (member (nth 2 (org-heading-components)) (list "NEXT"))
+              (org-todo "TODO")))))))
+
+  (add-hook 'org-after-todo-state-change-hook 'bh/mark-next-parent-tasks-todo 'append)
+  (add-hook 'org-clock-in-hook 'bh/mark-next-parent-tasks-todo 'append)
+#+END_SRC
+
 ** Org Task structure and presentation
    * 隐藏headline前面多余的*
 
@@ -397,6 +422,50 @@
      (setq org-clock-sound t)
    #+END_SRC
 
+** 创建新headline时,自动添加inactive timestamp
+#+BEGIN_SRC emacs-lisp
+  ;; 由于一般使用org来做笔记,因此默认不自动添加inactive timestamp
+  (defvar bh/insert-inactive-timestamp nil)
+
+  (defun bh/toggle-insert-inactive-timestamp ()
+    (interactive)
+    (setq bh/insert-inactive-timestamp (not bh/insert-inactive-timestamp))
+    (message "Heading timestamps are %s" (if bh/insert-inactive-timestamp "ON" "OFF")))
+
+  ;; <f9> t 用来切换是否自动添加inactive timestamp
+  (global-set-key (kbd "<f9> t") 'bh/toggle-insert-inactive-timestamp)
+
+  (defun bh/insert-inactive-timestamp ()
+    (interactive)
+    (org-insert-time-stamp nil t t nil nil nil))
+
+  (defun bh/insert-heading-inactive-timestamp ()
+    (save-excursion
+      (when bh/insert-inactive-timestamp
+        (org-return)
+        (org-cycle)
+        (bh/insert-inactive-timestamp))))
+
+  (add-hook 'org-insert-heading-hook 'bh/insert-heading-inactive-timestamp 'append)
+#+END_SRC
+
+在导出时,不导出时间戳
+#+BEGIN_SRC emacs-lisp
+  (setq org-export-with-timestamps nil)
+#+END_SRC
+** 当克隆subtree时,去掉对应的id属性
+#+BEGIN_SRC emacs-lisp
+  (setq org-clone-delete-id t)
+#+END_SRC
+** 让正文中的plain list也具有折叠的能力
+#+BEGIN_SRC emacs-lisp
+  (setq org-cycle-include-plain-lists t)
+#+END_SRC
+** Create unique IDs for tasks when linking
+The following setting creates a unique task ID for the heading in the PROPERTY drawer when I use C-c l. This allows me to move the task around arbitrarily in my org files and the link to it still works. 
+#+BEGIN_SRC emacs-lisp
+  (setq org-id-link-to-org-use-id 'create-if-interactive-and-no-custom-id)
+#+END_SRC
 * Habits
 一个habit与普通的task极其类似,但它具有如下特征:
 1) 通过配置变量`org-modules`,启用了`habits`模块
@@ -711,7 +780,16 @@
      (setq org-time-stamp-rounding-minutes '(1 1))
    #+END_SRC
 
-** 
+** 设置mode-line
+当总计的时间超过了预估的时间时,替换mode-line背景色为红色,以示提醒
+#+BEGIN_SRC emacs-lisp
+  (custom-set-faces
+    ;; custom-set-faces was added by Custom.
+    ;; If you edit it by hand, you could mess it up, so be careful.
+    ;; Your init file should contain only one such instance.
+    ;; If there is more than one, they won't work right.
+   '(org-mode-line-clock ((t (:foreground "red" :box (:line-width -1 :style released-button)))) t))
+#+END_SRC
 * Time Reporting and Tracking   
   *当生成Time Report时,若有未完结的clock time,则这段时间被认为是0*
 
@@ -992,7 +1070,11 @@
     (add-to-list 'org-src-lang-modes '("sqC" . c++))
 
   #+END_SRC
+
 * 关于加密 
+
+使用`org-crypt'库,可以自动将带":crypt:"tag的headline,在写入时加密存储. 该功能对于想要将密码等隐私消息存入org文件带来便利.
+
 #+BEGIN_SRC emacs-lisp
   (require 'org-crypt)
   ;; 保存前,自动为headline加密
@@ -1001,12 +1083,63 @@
   (setq org-tags-exclude-from-inheritance  '("crypt"))
   ;; GPG key to use for encryption
   ;; 设置默认的org加密密钥,可以被"CRYPTKEY" property的值所覆盖
-  (setq org-crypt-key "123456")
+  ;; (setq org-crypt-key "passwd")
 #+END_SRC
 
 要想解密headline,则需要在光标定位到加密内容处,然后执行`M-x org-decrypt-entry'
 
-* 其他辅助函数	
+默认情况下,Emacs会定时自动保持在编辑的文件,若此时在编辑的文件为密码文件且内容已经被解密,则可能存在将解密后的文本保存到磁盘上,从而造成敏感信息泄露的情况,因此一般我们在编辑crypt文件时,取消自动保存功能
+#+BEGIN_SRC emacs-lisp
+  (setq org-crypt-disable-auto-save t)
+#+END_SRC
+
+* org-speed-commands
+
+org-speed-commands特性允许当光标处于headline的开头位置时,可以使用单个字符快速触发某个命令,着就跟agenda中的快捷键类似.
+
+开启org-speed-commands特性
+#+BEGIN_SRC emacs-lisp
+  ;; 由于开起了evil-mode,基本上speed commands key都被evil-mode下的key所覆盖了,所以作用不大
+  ;; (setq org-use-speed-commands t)
+#+END_SRC
+
+变量`org-speed-commands-default'已经预设了很多speed command key. 要定义自己的speed command key可以通过设置`org-speed-commands-user'来实现
+* 处理email
+** 设置打开mail link的方法
+
+mail link的格式类似=<mailto:arthur@galaxy.org::this subject>=
+
+通过设置`org-link-mailto-program'的值可以指定如何打开mail link.
+
+这里`org-link-mailto-program'为一个list,其中第一个参数为调用的函数名,其他的为传入函数的参数,其中"%a"会被替换为mail link中的电子邮件地址,而"%s"会被替换成mail link中的subject
+
+#+BEGIN_SRC emacs-lisp
+  (setq org-link-mailto-program '(compose-mail "%a" "%s"))
+#+END_SRC
+** Using org-mime to email
+#+BEGIN_SRC emacs-lisp
+  (require 'org-mime nil t)
+#+END_SRC
+** Composing mail from org mode subtrees
+
+It's possible to create mail from an org-mode subtree.
+I use C-c M-o to start an email message with the details filled in from the current subtree.
+I use this for repeating reminder tasks where I need to send an email to someone else.
+The email contents are already contained in the org-mode subtree and all I need to do is C-c M-o and any minor edits before sending it off.
+** Using orgstruct mode for mail
+orgstruct++-mode is enabled in Gnus message buffers to aid in creating structured email messages. 
+#+BEGIN_SRC emacs-lisp
+  (add-hook 'message-mode-hook 'orgstruct++-mode 'append)
+  (add-hook 'message-mode-hook 'turn-on-auto-fill 'append)
+  (add-hook 'message-mode-hook 'bbdb-define-all-aliases 'append)
+  (add-hook 'message-mode-hook 'orgtbl-mode 'append)
+  ;; (add-hook 'message-mode-hook 'turn-on-flyspell 'append)
+  (add-hook 'message-mode-hook
+            '(lambda () (setq fill-column 72))
+            'append)
+#+END_SRC
+* 其他
+** 其他辅助函数	
   下面是一些helper function
   #+BEGIN_SRC emacs-lisp
     (defun bh/is-project-p ()
@@ -1281,18 +1414,64 @@
             next-headline))))
 
   #+END_SRC
-* 其他
 ** Searching and showing results
    
-   I have org-mode show the hierarchy of tasks above the matched entries and also the immediately following sibling task (but not all siblings) with the following settings:
-   #+BEGIN_SRC emacs-lisp
-     ;; (setq org-show-following-heading t)
-     ;; (setq org-show-hierarchy-above t)
-     ;; (setq org-show-siblings '((default)))
-   #+END_SRC
+I have org-mode show the hierarchy of tasks above the matched entries and also the immediately following sibling task (but not all siblings) with the following settings:
+#+BEGIN_SRC emacs-lisp
+  ;; (setq org-show-following-heading t)
+  ;; (setq org-show-hierarchy-above t)
+  ;; (setq org-show-siblings '((default)))
+#+END_SRC
+
+** 允许使用字母作为list bullet
+#+BEGIN_SRC emacs-lisp
+  (setq org-alphabetical-lists t)
+#+END_SRC
+
+** 自动切换list bullet
+
+若每个层级的list都使用同样的list bullet,则可能造成难于区分哪个list entry时属于哪个层级的. org-mode提供了当改变list层级时自动改变list bullet的机制
+#+BEGIN_SRC emacs-lisp
+  (setq org-list-demote-modify-bullet '(("+" . "-")
+                                        ("*" . "-")
+                                        ("1." . "-")
+                                        ("1)" . "-")
+                                        ("A)" . "-")
+                                        ("B)" . "-")
+                                        ("a)" . "-")
+                                        ("b)" . "-")
+                                        ("A." . "-")
+                                        ("B." . "-")
+                                        ("a." . "-")
+                                        ("b." . "-")))
+#+END_SRC
+
+** org文件中,本地高亮显示code blocks中的代码
+#+BEGIN_SRC emacs-lisp
+  ;; 高亮显示code blocks
+  (setq org-src-fontify-natively t)
+#+END_SRC
+
+** 设置打开文档中file link的方法
+#+BEGIN_SRC emacs-lisp
+  (setq org-file-apps '((auto-mode . emacs)
+                        ("\\.mm\\'" . system)
+                        ("\\.x?html?\\'" . system)
+                        ("\\.pdf\\'" . system)
+                        (t . system)))
+#+END_SRC
+
+** 配置org template
+#+BEGIN_SRC emacs-lisp
+  (add-to-list 'org-structure-template-alist '("se" "#+BEGIN_SRC emacs-lisp\n?\n#+END_SRC" "<src lang=\"emacs-lisp\">\n?\n</src>"))
+#+END_SRC
+
+** 防止不小心编辑了省略部分的内容
+#+BEGIN_SRC emacs-lisp
+  (setq org-catch-invisible-edits 'smart)
+#+END_SRC
+** 新增org文件时插入模版
   #+BEGIN_SRC emacs-lisp
-    
-    ;; 新增org文件时插入模版
     (defun new-org-file-init ()
       "init new org file template"
       (interactive)
@@ -1302,14 +1481,11 @@
           (insert "#+OPTIONS: ^:{}")))
     (add-to-list 'find-file-not-found-hooks 'new-org-file-init)
 
-    ;; 设置org笔记时的缩进
-    ;; (setq org-description-max-ident 5)
-
-    ;; 设置org template
-    (add-to-list 'org-structure-template-alist '("se" "#+BEGIN_SRC emacs-lisp\n?\n#+END_SRC" "<src lang=\"emacs-lisp\">\n?\n</src>"))
-
-    ;; 高亮显示code blocks
-    (setq org-src-fontify-natively t)
-
-    (require 'darksun-org-helper)
   #+END_SRC
+** 其他
+#+BEGIN_SRC emacs-lisp
+  ;; 设置org笔记时的缩进
+  ;; (setq org-description-max-ident 5)
+
+  (require 'darksun-org-helper)
+#+END_SRC

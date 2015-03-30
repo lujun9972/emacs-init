@@ -11,6 +11,7 @@
   '("melpa" . "http://melpa.milkbox.net/packages/") t)
 (package-initialize)
 ;; 加载CodeLibrary中的elisp代码片段
+(add-to-list 'load-path "~/org-mode/contrib/lisp")
 (require 'org)
 (require 'cl)
 

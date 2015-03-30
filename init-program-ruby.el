@@ -1,11 +1,6 @@
 ;;; Basic ruby setup
 (require-and-install 'ruby-hash-syntax)
 
-(add-auto-mode 'ruby-mode
-               "Rakefile\\'" "\\.rake\\'" "\\.rxml\\'"
-               "\\.rjs\\'" "\\.irbrc\\'" "\\.pryrc\\'" "\\.builder\\'" "\\.ru\\'"
-               "\\.gemspec\\'" "Gemfile\\'" "Kirkfile\\'")
-
 ;; (setq ruby-use-encoding-map nil)
 
 (with-eval-after-load 'ruby-mode

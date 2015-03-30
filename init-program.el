@@ -38,6 +38,10 @@
 (load "init-program-cpp")
 ;; 配置ruby编程
 (require-and-install 'ruby-mode)
+(add-auto-mode 'ruby-mode
+               "Rakefile\\'" "\\.rake\\'" "\\.rxml\\'"
+               "\\.rjs\\'" "\\.irbrc\\'" "\\.pryrc\\'" "\\.builder\\'" "\\.ru\\'"
+               "\\.gemspec\\'" "Gemfile\\'" "Kirkfile\\'")
 (add-hook 'ruby-mode-hook (lambda ()
 							(require 'init-program-ruby)))
 ;; 配置cedet

@@ -1,26 +1,27 @@
 #+FILETAGS: 
 * 加载必要的库
 #+BEGIN_SRC emacs-lisp
-  ; Enable habit tracking (and a bunch of other modules)
-  (mapc (lambda (pkg)
-          (require pkg nil t))
-        '(org-bbdb
-          org-bibtex
-          org-crypt
-          org-gnus
-          org-id
-          org-info
-          org-jsinfo
-          org-habit
-          org-inlinetask
-          org-irc
-          org-mew
-          org-mhe
-          org-protocol
-          org-rmail
-          org-vm
-          org-wl
-          org-w3m))
+    ; Enable habit tracking (and a bunch of other modules)
+    (mapc (lambda (pkg)
+            (require pkg nil t))
+          '(org-agenda
+            org-bbdb
+            org-bibtex
+            org-crypt
+            org-gnus
+            org-id
+            org-info
+            org-jsinfo
+            org-habit
+            org-inlinetask
+            org-irc
+            org-mew
+            org-mhe
+            org-protocol
+            org-rmail
+            org-vm
+            org-wl
+            org-w3m))
 #+END_SRC
 * 定义快捷键
   #+NAME: key-bindings

@@ -1,0 +1,93 @@
+#+TITLE: init-GTD-bbdb
+#+AUTHOR: DarkSun
+#+OPTIONS: ^:{}
+
+* 加载库
+#+BEGIN_SRC emacs-lisp
+  (require-and-install 'bbdb)
+  (require 'bbdb-com)
+
+#+END_SRC
+
+* 将gnus和bbdb结合起来
+#+BEGIN_SRC emacs-lisp
+  (bbdb-initialize 'gnus 'message)
+  (bbdb-insinuate-message)
+  (add-hook 'gnus-startup-hook 'bbdb-insinuate-gnus)
+  (setq bbdb-send-mail-style 'gnus)
+#+END_SRC
+
+* 设置bbdb存储文件的路径
+保存到GTD目录下,方便同步
+#+BEGIN_SRC emacs-lisp
+  (setq bbdb-file "~/我的GTD/bbdb")  
+#+END_SRC
+
+* 联系人自动补全
+#+BEGIN_SRC emacs-lisp
+  (setq bbdb-complete-name-full-completion t)
+  (setq bbdb-completion-type 'primary-or-name)
+  (setq bbdb-complete-name-allow-cycling t)
+#+END_SRC
+
+* 修改bbdb-parse-phone,让其正确处理中国手机和电话
+#+BEGIN_SRC emacs-lisp
+  (defun format-chinese-phone(args)
+    "格式化中国的手机为(+86)13xxxxxxxxx
+    格式化中国的电话号码为(区号)xxxxxx"
+    (let ((phone-number (remove ?\s (car args)))
+          (style (cadr args)))
+      (when (= 11 (length phone-number))
+        (if (string-prefix-p "1" phone-number)
+            (setq phone-number (format "(+86)%s" phone-number))
+          (setq phone-number (format "(%s)%s" (substring phone-number 0 4) (substring phone-number 4)))))
+      (list phone-number style)))
+
+  (advice-add 'bbdb-parse-phone :filter-args #'format-chinese-phone)
+#+END_SRC
+* 其他设置
+#+BEGIN_SRC emacs-lisp
+  (setq bbdb-offer-save 1
+        bbdb-use-pop-up t
+        bbdb-electric-p t
+        bbdb-popup-target-lines  1)
+#+END_SRC
+
+* 自定义函数
+#+BEGIN_SRC emacs-lisp
+
+    (global-set-key (kbd "<f9> p") 'bh/phone-call)
+
+    ;;
+    ;; Phone capture template handling with BBDB lookup
+    ;; Adapted from code by Gregory J. Grubbs
+    (defun bh/phone-call ()
+      "Return name and company info for caller from bbdb lookup"
+      (interactive)
+      (let* (name rec caller)
+        (setq name (completing-read "Who is calling? "
+                                    (bbdb-hashtable)
+                                    'bbdb-completion-predicate
+                                    'confirm))
+        (when (> (length name) 0)
+          ; Something was supplied - look it up in bbdb
+          (setq rec
+                (or (first
+                     (or (bbdb-search (bbdb-records) name nil nil)
+                         (bbdb-search (bbdb-records) nil name nil)))
+                    name)))
+
+        ; Build the bbdb link if we have a bbdb record, otherwise just return the name
+        (setq caller (cond ((and rec (vectorp rec))
+                            (let ((name (bbdb-record-name rec))
+                                  (company (bbdb-record-company rec)))
+                              (concat "[[bbdb:"
+                                      name "]["
+                                      name "]]"
+                                      (when company
+                                        (concat " - " company)))))
+                           (rec)
+                           (t "NameOfCaller")))
+        (insert caller)))
+
+#+END_SRC

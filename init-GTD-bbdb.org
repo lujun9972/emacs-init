@@ -59,7 +59,7 @@
   ;; Phone capture template handling with BBDB lookup
   ;; Adapted from code by Gregory J. Grubbs
   (defun bh/phone-call ()
-    "Return name and company info for caller from bbdb lookup"
+    "Return name and Organization info for caller from bbdb lookup"
     (interactive)
     (let* (name rec caller)
       (setq name (completing-read "Who is calling? "
@@ -77,12 +77,12 @@
       ; Build the bbdb link if we have a bbdb record, otherwise just return the name
       (setq caller (cond ((and rec (vectorp rec))
                           (let ((name (bbdb-record-name rec))
-                                (company (bbdb-record-company rec)))
+                                (Organization (bbdb-record-organization rec)))
                             (concat "[[bbdb:"
                                     name "]["
                                     name "]]"
-                                    (when company
-                                      (concat " - " company)))))
+                                    (when Organization
+                                      (concat " - " Organization)))))
                          (rec)
                          (t "NameOfCaller")))
       (insert caller)))

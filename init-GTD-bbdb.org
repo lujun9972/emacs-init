@@ -14,7 +14,7 @@
   (bbdb-initialize 'gnus 'message)
   (bbdb-insinuate-message)
   (add-hook 'gnus-startup-hook 'bbdb-insinuate-gnus)
-  (setq bbdb-send-mail-style 'gnus)
+  (setq bbdb-mail-user-agent 'gnus-user-agent)
 #+END_SRC
 
 * 设置bbdb存储文件的路径
@@ -25,9 +25,9 @@
 
 * 联系人自动补全
 #+BEGIN_SRC emacs-lisp
-  (setq bbdb-complete-name-full-completion t)
-  (setq bbdb-completion-type 'primary-or-name)
-  (setq bbdb-complete-name-allow-cycling t)
+  (setq bbdb-complete-mail t)
+  (setq bbdb-completion-list t)
+  (setq bbdb-complete-mail-allow-cycling t)
 #+END_SRC
 
 * 修改bbdb-parse-phone,让其正确处理中国手机和电话
@@ -47,48 +47,45 @@
 #+END_SRC
 * 其他设置
 #+BEGIN_SRC emacs-lisp
-  (setq bbdb-offer-save 1
-        bbdb-use-pop-up t
-        bbdb-electric-p t
-        bbdb-popup-target-lines  1)
+  (setq bbdb-electric t)
 #+END_SRC
 
 * 自定义函数
 #+BEGIN_SRC emacs-lisp
 
-  ;; (global-set-key (kbd "<f9> p") 'bh/phone-call)
+  (global-set-key (kbd "<f9> p") 'bh/phone-call)
 
   ;;
   ;; Phone capture template handling with BBDB lookup
   ;; Adapted from code by Gregory J. Grubbs
-  ;; (defun bh/phone-call ()
-  ;;   "Return name and company info for caller from bbdb lookup"
-  ;;   (interactive)
-  ;;   (let* (name rec caller)
-  ;;     (setq name (completing-read "Who is calling? "
-  ;;                                 (bbdb-hashtable)
-  ;;                                 'bbdb-completion-predicate
-  ;;                                 'confirm))
-  ;;     (when (> (length name) 0)
-  ;;       ; Something was supplied - look it up in bbdb
-  ;;       (setq rec
-  ;;             (or (first
-  ;;                  (or (bbdb-search (bbdb-records) name nil nil)
-  ;;                      (bbdb-search (bbdb-records) nil name nil)))
-  ;;                 name)))
+  (defun bh/phone-call ()
+    "Return name and company info for caller from bbdb lookup"
+    (interactive)
+    (let* (name rec caller)
+      (setq name (completing-read "Who is calling? "
+                                  bbdb-hashtable
+                                  'bbdb-completion-predicate
+                                  'confirm))
+      (when (> (length name) 0)
+        ; Something was supplied - look it up in bbdb
+        (setq rec
+              (or (first
+                   (or (bbdb-search (bbdb-records) name nil nil)
+                       (bbdb-search (bbdb-records) nil name nil)))
+                  name)))
 
-  ;;     ; Build the bbdb link if we have a bbdb record, otherwise just return the name
-  ;;     (setq caller (cond ((and rec (vectorp rec))
-  ;;                         (let ((name (bbdb-record-name rec))
-  ;;                               (company (bbdb-record-company rec)))
-  ;;                           (concat "[[bbdb:"
-  ;;                                   name "]["
-  ;;                                   name "]]"
-  ;;                                   (when company
-  ;;                                     (concat " - " company)))))
-  ;;                        (rec)
-  ;;                        (t "NameOfCaller")))
-  ;;     (insert caller)))
+      ; Build the bbdb link if we have a bbdb record, otherwise just return the name
+      (setq caller (cond ((and rec (vectorp rec))
+                          (let ((name (bbdb-record-name rec))
+                                (company (bbdb-record-company rec)))
+                            (concat "[[bbdb:"
+                                    name "]["
+                                    name "]]"
+                                    (when company
+                                      (concat " - " company)))))
+                         (rec)
+                         (t "NameOfCaller")))
+      (insert caller)))
 
 #+END_SRC
 

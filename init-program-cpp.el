@@ -13,6 +13,10 @@
 ;; (add-hook 'c-mode-common-hook  (lambda ()
 ;; 								 (enable-prefer-mode 'semantic-mode 'auto-complete-mode)))
 
+;; 设置tab用来缩进或插入tab
+(setq c-tab-always-indent nil
+      c-insert-tab-function 'indent-for-tab-command)
+
 (defun set-c-mode-keys()
   (local-set-key  (kbd ".") 'semantic-complete-self-insert)
   (local-set-key  (kbd ">") 'semantic-complete-self-insert))

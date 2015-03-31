@@ -11,7 +11,7 @@
 
 * 将gnus和bbdb结合起来
 #+BEGIN_SRC emacs-lisp
-  (bbdb-initialize 'gnus 'message)
+  (bbdb-initialize 'gnus 'message 'mail)
   (bbdb-insinuate-message)
   (add-hook 'gnus-startup-hook 'bbdb-insinuate-gnus)
   (setq bbdb-mail-user-agent 'gnus-user-agent)

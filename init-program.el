@@ -16,9 +16,6 @@
 (load "init-program-imenu")
 ;; 配置版本控制
 (load "init-program-vc")
-(require 'darksun-cpp-helper)
-;; 配置dos模式,编写批处理文件
-(load "init-program-dos")
 ;;配置auto-complete
 (require-and-install 'popup)
 (level-load "init-program-autocomplete")
@@ -36,6 +33,9 @@
 (load "init-program-lua")
 ;; 配置cpp编程
 (load "init-program-cpp")
+(require 'darksun-cpp-helper)
+;; 配置dos模式,编写批处理文件
+(load "init-program-dos")
 ;; 配置ruby编程
 (require-and-install 'ruby-mode)
 (add-auto-mode 'ruby-mode

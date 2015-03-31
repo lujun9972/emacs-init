@@ -20,9 +20,9 @@
 	* org-mobile-files
 	  这个变量告诉电脑端Org需要与MobileOrg同步哪些Org,默认情况下它的值跟变量org-agenda-files的值一样的
 	  #+BEGIN_SRC emacs-lisp
-		(setq org-mobile-files '("~/我的GTD/office.org"
-									 "~/我的GTD/home.org"
-									 ))
+        ;; (setq org-mobile-files '("~/我的GTD/office.org"
+        ;;                              "~/我的GTD/home.org"
+        ;;                              ))
 	  #+END_SRC
   * org-directory
 	这个变量告诉电脑端Org,若org-mobile-files中配置的是相对路径,则表示的是相对于org-directory所代表的目录来说的

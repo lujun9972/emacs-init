@@ -45,6 +45,20 @@
 
   (advice-add 'bbdb-parse-phone :filter-args #'format-chinese-phone)
 #+END_SRC
+* 修改BBDB创建联系人的流程
+#+BEGIN_SRC emacs-lisp
+  (defun bbdb-read-record-advise-function(record)
+    "提示存储生日,QQ,微信号"
+    (bbdb-record-set-field record 'birthdate
+                           (bbdb-read-string "Birthdate (YYYY.MM.DD): "))
+    (bbdb-record-set-field record 'QQ
+                           (bbdb-read-string "QQ:"))
+    (bbdb-record-set-field record 'WeChat
+                           (bbdb-read-string "WeChat:"))
+    record)
+
+  (advice-add 'bbdb-read-record :filter-return #'bbdb-read-record-advise-function)
+#+END_SRC
 * 其他设置
 #+BEGIN_SRC emacs-lisp
   (setq bbdb-electric t)

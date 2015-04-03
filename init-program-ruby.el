@@ -1,3 +1,8 @@
+(require-and-install 'ruby-mode)
+(add-auto-mode 'ruby-mode
+               "Rakefile\\'" "\\.rake\\'" "\\.rxml\\'"
+               "\\.rjs\\'" "\\.irbrc\\'" "\\.pryrc\\'" "\\.builder\\'" "\\.ru\\'"
+               "\\.gemspec\\'" "Gemfile\\'" "Kirkfile\\'")
 ;;; Basic ruby setup
 (require-and-install 'ruby-hash-syntax)
 
@@ -13,6 +18,12 @@
                 (run-hooks 'prog-mode-hook)))))
 
 (add-hook 'ruby-mode-hook 'subword-mode)
+
+;; 设置ruby-mode下的代码折叠
+(add-to-list 'hs-special-modes-alist
+             '(ruby-mode
+               "\\(class\\|def\\|do\\|if\\)" "\\(end\\)" "#"
+               (lambda (arg) (ruby-end-of-block)) nil))
 
 ;; TODO: hippie-expand ignoring : for names in ruby-mode
 ;; TODO: hippie-expand adaptor for auto-complete sources

@@ -35,6 +35,7 @@
 (level-load "tramp")
 ;; 设置ido和recentf
 (level-load "ido")
+(level-load "smex")
 ;; 保存session
 (level-load "session")
 ;; 配置keyfreq用来记录按键频率,使用keyfre-show查看

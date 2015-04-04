@@ -7,11 +7,13 @@
 						(java-mode . "java"))
 	  c-basic-offset 4)
 
-;; 使用hs-minor-mode进行折叠,
-(add-hook 'c-mode-common-hook   'hs-minor-mode)
 ;; 取消使用ac进行补全,使用semantic进行补全
 ;; (add-hook 'c-mode-common-hook  (lambda ()
 ;; 								 (enable-prefer-mode 'semantic-mode 'auto-complete-mode)))
+
+;; 设置tab用来缩进或插入tab
+(setq c-tab-always-indent nil
+      c-insert-tab-function 'indent-for-tab-command)
 
 (defun set-c-mode-keys()
   (local-set-key  (kbd ".") 'semantic-complete-self-insert)

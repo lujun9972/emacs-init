@@ -23,8 +23,13 @@
  )
 
 ;; 自动刷新Dired-mode
+(setq global-auto-revert-non-file-buffers t)
+(setq auto-revert-verbose nil)
 (add-hook 'dired-mode-hook 'auto-revert-mode)
 
+;; 隐藏某些文件
+(setq dired-omit-files "^\\..*$\\|^\\.$")
+(dired-omit-mode 1)
 ;; if it is not Windows, use the following listing switches
 (when (not (eq system-type 'windows-nt))
   (setq dired-listing-switches "-lha --group-directories-first"))

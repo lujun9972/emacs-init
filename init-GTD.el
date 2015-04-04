@@ -8,6 +8,6 @@
 (require 'taskjuggler-mode)
 ;org配置
 (level-load "init-GTD-org")
-(level-load "init-GTD-mobileorg")
+;; (level-load "init-GTD-mobileorg")
 ;; 使用bbdb来管理联系人
 (level-load "init-GTD-bbdb")

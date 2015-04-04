@@ -1,5 +1,7 @@
 ;; 只在编程模式下显示行号
 (add-hook 'prog-mode-hook 'linum-mode) 
+;; 在编程模式下启用折叠特性
+(add-hook 'prog-mode-hook 'hs-minor-mode) 
 ;; 在编程模式下显示无用的whitespace
 ;; (add-hook 'prog-mode-hook (lambda () (interactive) (setq show-trailing-whitespace 1)))
 ;;显示光标附近的括号匹配
@@ -37,13 +39,7 @@
 ;; 配置dos模式,编写批处理文件
 (load "init-program-dos")
 ;; 配置ruby编程
-(require-and-install 'ruby-mode)
-(add-auto-mode 'ruby-mode
-               "Rakefile\\'" "\\.rake\\'" "\\.rxml\\'"
-               "\\.rjs\\'" "\\.irbrc\\'" "\\.pryrc\\'" "\\.builder\\'" "\\.ru\\'"
-               "\\.gemspec\\'" "Gemfile\\'" "Kirkfile\\'")
-(add-hook 'ruby-mode-hook (lambda ()
-							(require 'init-program-ruby)))
+(require 'init-program-ruby)
 ;; 配置cedet
 (load "init-program-cedet")
 ;; 配置SQL

@@ -31,4 +31,6 @@
 (global-set-key (kbd "<C-wheel-down>") 'text-scale-decrease)
 ;; 设置nyan-mode,该mode会在modeline上显示一直小猫用来指示光标所在文章的位置的
 ;; (level-load "nyan")
-
+;; fullframe可以在一个fullframe中执行某些命令,并在显示之前前保存window-configuration,当命令完成后,会还原该window-configuration
+(require-and-install 'fullframe)
+(fullframe magit-status magit-mode-quit-window nil)

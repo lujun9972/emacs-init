@@ -65,6 +65,14 @@
 (global-unset-key (kbd "C-h h"))        ; 默认C-h h显示各种语言的hello world
 (define-key 'help-command (kbd "h m") 'discover-my-major)
 
+;; 使用discover可以为其他package增加context-menu,以方便使用
+;; 使用discover-add-context-menu函数可以为第三方的package增加context-menu
+;; 默认,discover-mode已经为dired-mode增加了context-menu,绑定到?上了
+;; Useful Helper Commands:
+;; You can get the name of the command that reveals a given context menu by calling discover-get-context-menu-command-name. If you just want to funcall the returned symbol, the function discover-show-context-menu will do this for you.
+(require-and-install 'discover)
+(global-discover-mode 1)
+
 (global-set-key (kbd "C-x C-b") 'ibuffer)
 ;; 配置golden-ratio
 ;; (level-load "golden-ratio")

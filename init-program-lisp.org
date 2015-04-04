@@ -1,0 +1,52 @@
+* eldoc编辑elisp时提示
+#+BEGIN_SRC emacs-lisp
+  (require 'eldoc)
+  (add-hook 'emacs-lisp-mode-hook 'turn-on-eldoc-mode)
+  (add-hook 'lisp-interaction-mode-hook 'turn-on-eldoc-mode)
+  (add-hook 'ielm-mode-hook 'turn-on-eldoc-mode)
+#+END_SRC
+* 设置lisp的命令地址
+#+BEGIN_SRC emacs-lisp
+  (setq inferior-lisp-program "C:/Program Files/clisp-2.49/clisp.exe")
+#+END_SRC
+* lispy
+lispy:Navigating to LISP tags in a directory using CEDET
+#+BEGIN_SRC emacs-lisp
+  (require-and-install 'lispy)
+#+END_SRC
+
+;; lispy-command-name-face用于标识
+** 命令
++ g (lispy-goto) :: 本目录下查询tag,不包括子目录
++ G (lispy-goto-local) :: 本buffer内查询tag
++ (lispy-goto-recursive) :: 本目录下查询tag,包括子目录
+** 配置
+*** lispy-completion-method
+
+搜索tag时的补全方式,可选值为:
+
+- 'ivy(默认)
+
+- 'helm
+
+- 'ido(only usable with ido-vertical-mode)
+
+- 'default (icomplete-mode and icy-mode also fall here if you have them)
+
+*** lispy-tag-arity
+
+指明每个function中要将多少个参数信息保存入tag文件中
+
+例如(defmethod . 2)表示defmethod后的两参数信息保存入tag文件中
+
+*** lispy-command-name-face
+  
+改变量只对elisp有用,用来将elisp中的command和普通function区分开来
+
+*** lispy-helm-columns
+  
+这是一个由两个数字组成的list,其中
+
+第一个数字表示tag name的最大长度
+
+第二个数字表示tag name和tag file的最大总长度

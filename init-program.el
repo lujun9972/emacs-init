@@ -30,7 +30,7 @@
 ;;配置markdown-mode
 (load "init-program-markdown")
 ;; 配置各种lisp编程
-(load "init-program-lisp")
+(level-load "init-program-lisp")
 ;; 配置lua编程
 (load "init-program-lua")
 ;; 配置cpp编程

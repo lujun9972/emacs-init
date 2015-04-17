@@ -5,3 +5,5 @@
 (global-set-key [(control c)(m)] 'dictionary-match-words)
 ;; choose a dictionary server
 (setq dictionary-server "localhost")
+
+(provide 'init-misc-dict)

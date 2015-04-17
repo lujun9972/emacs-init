@@ -38,3 +38,5 @@
 (holiday-fixed 9 23 "她的生日")
 (holiday-fixed 10 1 "国庆节")
 (holiday-fixed 12 25 "圣诞节")))
+
+(provide 'init-GTD-calendar)

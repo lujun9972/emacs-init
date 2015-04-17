@@ -6,3 +6,5 @@
 
 (add-hook 'makefile-mode-hook (lambda ()
                                 (run-hooks 'prelude-makefile-mode-hook)))
+
+(provide 'init-program-makefile)

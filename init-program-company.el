@@ -8,3 +8,4 @@
   (add-to-list 'company-c-headers-path-system "D:/Program Files/DEV-CPP/Include/c++/3.4.2"))
 
 
+(provide 'init-program-company)

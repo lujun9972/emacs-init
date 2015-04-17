@@ -43,3 +43,5 @@
       (replace-match " "))                                
     (set-buffer-multibyte t))                          
   (set-buffer-modified-p nil))
+
+(provide 'init-life-internet-w3m)

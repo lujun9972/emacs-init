@@ -63,3 +63,5 @@
 ;; (define-key dired-mode-map "Y"  'dired-do-relsymlink)
 ;; (define-key dired-mode-map "%Y" 'dired-do-relsymlink-regexp)
 ;; (define-key dired-mode-map "V" 'dired-do-run-mail)
+
+(provide 'init-file-management-dired)

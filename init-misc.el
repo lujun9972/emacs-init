@@ -32,14 +32,14 @@
 	  (tabbar-buffer-groups))))
 (setq tabbar-buffer-groups-function 'my-tabbar-buffer-groups)
 ;;设置tramp
-(level-load "tramp")
+(level-require "tramp")
 ;; 设置ido和recentf
-(level-load "ido")
-(level-load "smex")
+(level-require "ido")
+(level-require "smex")
 ;; 保存session
-(level-load "session")
+(level-require "session")
 ;; 配置keyfreq用来记录按键频率,使用keyfre-show查看
-(level-load "keyfreq")
+(level-require "keyfreq")
 ;; clean-buffers
 (require 'darksun-clean-buffers)
 ;; (run-with-idle-timer 5 t #'kill-useless-buffers) ;自动清理超过无用的buffer
@@ -77,6 +77,8 @@
 ;; 配置golden-ratio
 ;; (level-load "golden-ratio")
 ;; 使用deft管理笔记
-(level-load "deft")
+(level-require "deft")
 ;; 使用dict/dictd翻译英文
-(level-load "dict")
+(level-require "dict")
+
+(provide 'init-misc)

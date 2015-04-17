@@ -1,9 +1,5 @@
-(require-and-install 'ruby-mode)
-(add-auto-mode 'ruby-mode
-               "Rakefile\\'" "\\.rake\\'" "\\.rxml\\'"
-               "\\.rjs\\'" "\\.irbrc\\'" "\\.pryrc\\'" "\\.builder\\'" "\\.ru\\'"
-               "\\.gemspec\\'" "Gemfile\\'" "Kirkfile\\'")
 ;;; Basic ruby setup
+(require-and-install 'ruby-mode)
 (require-and-install 'ruby-hash-syntax)
 
 ;; (setq ruby-use-encoding-map nil)

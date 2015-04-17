@@ -120,3 +120,5 @@ the mru bookmark stack."
 ;; 配置srecode
 (require 'srecode)
 (global-srecode-minor-mode 1)
+
+(provide 'init-program-cedet)

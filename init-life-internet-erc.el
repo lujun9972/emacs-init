@@ -106,3 +106,5 @@ When I ignore someone, I want them *gone*."
   "deop myself (from: http://paste.lisp.org/display/97466)"  
   (interactive)  
   (erc-cmd-DEOP (format "%s" (erc-current-nick))))  
+
+(provide 'init-life-internet-erc)

@@ -49,3 +49,5 @@
 (global-set-key (kbd "C-c e n") 'emms-next)
 (global-set-key (kbd "C-c e p") 'emms-previous)
 (global-set-key (kbd "C-c e f") 'emms-show)  
+
+(provide 'init-life-media-emms)

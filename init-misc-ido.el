@@ -1,4 +1,3 @@
-
 ;; 开启ido-mode
 (when (> emacs-major-version 21)
   (ido-mode 'both)
@@ -16,3 +15,5 @@
   (add-to-list 'ido-ignore-files "\\~\\`")
   (add-to-list 'ido-ignore-files "\\.doc\\`"))
 
+
+(provide 'init-misc-ido)

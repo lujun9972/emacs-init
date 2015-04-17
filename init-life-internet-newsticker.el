@@ -14,3 +14,5 @@
 (setq newsticker-html-renderer 'w3m-region) ;使用w3m来格式化html
 (setq newsticker-automatically-mark-items-as-old nil) ;不自动将item设置为已读
 (setq newsticker-show-all-news-elements t)
+
+(provide 'init-life-internet-newsticker)

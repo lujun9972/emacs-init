@@ -1,5 +1,5 @@
 ;;配置dired
-(load "init-file-management-dired")
+(level-require "init-file-management-dired")
 ;;使用pdf2txt查看pdf
 (add-to-list 'auto-mode-alist '("\\.pdf\\'" . pdf2txt)) 
 (defun pdf2txt () 
@@ -12,3 +12,5 @@
 	 (current-buffer) 
 	 t) 
 	(set-buffer-modified-p modified)))
+
+(provide 'init-file-management)

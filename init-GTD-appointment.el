@@ -3,3 +3,5 @@
 (setq appt-display-mode-line t)         ;在mode-line上显示appointment的倒计时
 (add-hook 'diary-hook 'appt-make-list)
 (setq appt-issue-message t)
+
+(provide 'init-GTD-appointment)

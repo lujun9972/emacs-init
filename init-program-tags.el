@@ -18,3 +18,5 @@
 ;; (define-key ggtags-mode-map (kbd "C-c g u") 'ggtags-update-tags)
 ;; (define-key ggtags-mode-map (kbd "C-c g t") 'ggtags-find-tag-dwim)
 ;; (define-key ggtags-mode-map (kbd "C-c g b") 'pop-tag-mark)
+
+(provide 'init-program-tags)

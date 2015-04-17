@@ -74,5 +74,4 @@
   (< (buffer-size other-buffer) (* 1 1024 1024)))
 (setq dabbrev-friend-buffer-function 'sanityinc/dabbrev-friend-buffer)
 
-
-
+(provide 'init-program-autocomplete)

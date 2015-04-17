@@ -4,3 +4,5 @@
 
 (cl-case window-system
   ((x w32) (nyan-mode 1)))
+
+(provide 'init-display-nyan)

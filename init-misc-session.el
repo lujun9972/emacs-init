@@ -5,3 +5,5 @@
 (setq desktop-base-file-name (file-name-nondirectory (format "%s.emacs.desktop" system-type)))
 (desktop-save-mode 1)
 (toggle-save-place-globally 1)			;保存各buffer的光标位置
+
+(provide 'init-misc-session)

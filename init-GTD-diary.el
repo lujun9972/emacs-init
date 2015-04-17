@@ -1,5 +1,4 @@
 ;日程安排
-(defvar GTD-HOME-PATH (filter-valid-file "e:/我的GTD/" "~/我的GTD/"))
 ;;在mode-line显示时间
 (setq display-time-24hr-format t)
 (setq display-time-day-and-date t)
@@ -11,3 +10,5 @@
 (setq diary-mail-addr "lujun9972@sina.com")
 (add-hook 'diary-hook 'appt-make-list)
 (setq calendar-date-style 'iso)         ;设置diary中的date格式
+
+(provide 'init-GTD-diary)

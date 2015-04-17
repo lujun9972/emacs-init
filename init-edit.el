@@ -84,3 +84,5 @@
 
 ;; 支持emacs和外部程序的粘贴 
 (setq x-select-enable-clipboard t)  
+
+(provide 'init-edit)

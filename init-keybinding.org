@@ -44,3 +44,7 @@
     (when (functionp 'hydra-shortcuts/body)
       (global-set-key "\C-t" #'hydra-shortcuts/body))
   #+END_SRC
+* provide feature
+#+BEGIN_SRC emacs-lisp
+  (provide 'init-keybinding)
+#+END_SRC

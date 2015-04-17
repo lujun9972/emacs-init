@@ -59,11 +59,6 @@
 
   (advice-add 'bbdb-read-record :filter-return #'bbdb-read-record-advise-function)
 #+END_SRC
-* 其他设置
-#+BEGIN_SRC emacs-lisp
-  (setq bbdb-electric t)
-#+END_SRC
-
 * 自定义函数
 #+BEGIN_SRC emacs-lisp
 
@@ -102,6 +97,7 @@
       (insert caller)))
 
 #+END_SRC
-
-#+RESULTS:
-
+* 其他设置
+#+BEGIN_SRC emacs-lisp
+  (provide 'init-GTD-bbdb)
+#+END_SRC

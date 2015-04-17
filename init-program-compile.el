@@ -60,19 +60,4 @@
 ;; 								   (recompile)
 ;; 								 (smart-compile 1))))
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+(provide 'init-program-compile)

@@ -58,3 +58,5 @@
   '(progn  
      (add-to-list 'mm-discouraged-alternatives "text/html")  
      (add-to-list 'mm-discouraged-alternatives "text/richtext")))  
+
+(provide 'init-life-gnus)

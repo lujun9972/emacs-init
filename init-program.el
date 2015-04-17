@@ -13,45 +13,79 @@
 (add-to-list 'electric-pair-pairs '(?{ . ?}))
 ;; (add-to-list 'electric-pair-pairs '(?< . ?>))
 ;; 控制缩进
-(load "init-program-indent")
+(level-require "init-program-indent")
 ;; imenu配置
-(load "init-program-imenu")
+(level-require "init-program-imenu")
 ;; 配置版本控制
-(load "init-program-vc")
+(level-require "init-program-vc")
 ;;配置auto-complete
 (require-and-install 'popup)
-(level-load "init-program-autocomplete")
+(level-require "init-program-autocomplete")
 ;; 配置company
-;; (level-load "company")
+;; (level-require "company")
 ;; 使用zeal查看docset
-(level-load "init-program-zeal")
+(level-require "init-program-zeal")
 ;; 配置TAGS处理
-(load "init-program-tags")
+(level-require "init-program-tags")
 ;;配置markdown-mode
-(load "init-program-markdown")
+(package-install-new 'markdown-mode)
+(autoload 'markdown-mode "markdown-mode"
+   "Major mode for editing Markdown files" t)
+(add-to-list 'auto-mode-alist '("\\.text\\'" . markdown-mode))
+(add-to-list 'auto-mode-alist '("\\.markdown\\'" . markdown-mode))
+(add-to-list 'auto-mode-alist '("\\.md\\'" . markdown-mode))
+(level-require "init-program-markdown")
 ;; 配置各种lisp编程
-(level-load "init-program-lisp")
+(require 'eldoc)
+(add-hook 'emacs-lisp-mode-hook 'turn-on-eldoc-mode)
+(add-hook 'lisp-interaction-mode-hook 'turn-on-eldoc-mode)
+(add-hook 'ielm-mode-hook 'turn-on-eldoc-mode)
+(level-require "init-program-lisp")
 ;; 配置lua编程
-(load "init-program-lua")
+(package-install-new 'lua-mode)
+(autoload 'lua-mode "lua-mode" "Lua editing mode." t)
+(add-to-list 'auto-mode-alist '("\\.lua$" . lua-mode))
+(add-to-list 'interpreter-mode-alist '("lua" . lua-mode)) 
+(level-require "init-program-lua")
 ;; 配置cpp编程
-(load "init-program-cpp")
+(add-to-list 'auto-mode-alist '("\\.Sqc\\'" . c++-mode))
+(add-hook 'c-mode-hook
+		  (lambda ()
+			(level-require "init-program-cpp")))
+(add-hook 'c++-mode-hook
+		  (lambda ()
+			(level-require "init-program-cpp")))
 (require 'darksun-cpp-helper)
 ;; 配置dos模式,编写批处理文件
-(load "init-program-dos")
+(package-install-new 'dos)
+(autoload 'dos-mode "dos" "Bat editing mode." t)
+(add-to-list 'auto-mode-alist '("\\.bat\\'" . dos-mode))
+(add-hook 'dos-mode-hook
+		  (lambda ()
+			(level-require "init-program-dos")))
 ;; 配置ruby编程
-(require 'init-program-ruby)
+(autoload 'ruby-mode "ruby-mode" "ruby editing mode." t)
+(add-auto-mode 'ruby-mode
+               "Rakefile\\'" "\\.rake\\'" "\\.rxml\\'"
+               "\\.rjs\\'" "\\.irbrc\\'" "\\.pryrc\\'" "\\.builder\\'" "\\.ru\\'"
+               "\\.gemspec\\'" "Gemfile\\'" "Kirkfile\\'")
+(add-hook 'ruby-mode-hook
+		  (lambda ()
+			(level-require "init-program-ruby")))
 ;; 配置cedet
-(load "init-program-cedet")
+(level-require "init-program-cedet")
 ;; 配置SQL
-(load "init-program-sql")
+(level-require "init-program-sql")
 ;; 配置compile
-(load "init-program-compile")
+(level-require "init-program-compile")
 ;; 配置projectile
-(level-load "projectile")
+(level-require "projectile")
 ;; 配置yasnippet
-(level-load "yasnippet")
+(level-require "yasnippet")
 ;; 配置GDB
-(level-load "gdb")
+(level-require "gdb")
 
 ;; 配置makefile
-(level-load "makefile")
+(level-require "makefile")
+
+(provide 'init-program)

@@ -29,3 +29,8 @@
     ;; (add-hook 'rinari-minor-mode-hook
     ;;    (lambda () (setq zeal-at-point-docset "rails")))
   #+END_SRC
+
+* provide feature
+#+BEGIN_SRC emacs-lisp
+  (provide 'init-program-zeal)
+#+END_SRC

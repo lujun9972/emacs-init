@@ -50,3 +50,8 @@ lispy:Navigating to LISP tags in a directory using CEDET
 第一个数字表示tag name的最大长度
 
 第二个数字表示tag name和tag file的最大总长度
+
+* provide feature
+#+BEGIN_SRC emacs-lisp
+  (provide 'init-program-lisp)
+#+END_SRC

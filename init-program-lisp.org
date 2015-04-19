@@ -1,14 +1,8 @@
-* eldoc编辑elisp时提示
-#+BEGIN_SRC emacs-lisp
-  (require 'eldoc)
-  (add-hook 'emacs-lisp-mode-hook 'turn-on-eldoc-mode)
-  (add-hook 'lisp-interaction-mode-hook 'turn-on-eldoc-mode)
-  (add-hook 'ielm-mode-hook 'turn-on-eldoc-mode)
-#+END_SRC
 * 设置lisp的命令地址
 #+BEGIN_SRC emacs-lisp
   (setq inferior-lisp-program "C:/Program Files/clisp-2.49/clisp.exe")
 #+END_SRC
+* Redshank可以用来对lisp代码进行重构
 * lispy
 lispy:Navigating to LISP tags in a directory using CEDET
 #+BEGIN_SRC emacs-lisp

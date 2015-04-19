@@ -4,6 +4,8 @@
 (add-hook 'prog-mode-hook 'hs-minor-mode) 
 ;; 在编程模式下显示无用的whitespace
 ;; (add-hook 'prog-mode-hook (lambda () (interactive) (setq show-trailing-whitespace 1)))
+;; 关于括号
+(require-and-install 'paredit)
 ;;显示光标附近的括号匹配
 (show-paren-mode 1)
 ;; 添加pair项
@@ -35,11 +37,17 @@
 (add-to-list 'auto-mode-alist '("\\.markdown\\'" . markdown-mode))
 (add-to-list 'auto-mode-alist '("\\.md\\'" . markdown-mode))
 (level-require "init-program-markdown")
-;; 配置各种lisp编程
-(require 'eldoc)
+;; 配置lisp编程
+;; 开启eldoc
 (add-hook 'emacs-lisp-mode-hook 'turn-on-eldoc-mode)
-(add-hook 'lisp-interaction-mode-hook 'turn-on-eldoc-mode)
 (add-hook 'ielm-mode-hook 'turn-on-eldoc-mode)
+(add-hook 'lisp-interaction-mode-hook 'turn-on-eldoc-mode)
+
+;; redshank用于重构
+(require-and-install 'redshank)
+(add-hook 'emacs-lisp-mode-hook 'turn-on-redshank-mode)
+(add-hook 'ielm-mode-hook 'turn-on-redshank-mode)
+(add-hook 'lisp-interaction-mode-hook 'turn-on-redshank-mode)
 (level-require "init-program-lisp")
 ;; 配置lua编程
 (package-install-new 'lua-mode)

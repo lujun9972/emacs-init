@@ -18,8 +18,15 @@
 (load "init-edit-spell")
 ;; 模拟vi
 (load "init-edit-vi")
+;;显示光标附近的括号匹配
+(show-paren-mode 1)
 ;; 自动插入引号/括号对
 (electric-pair-mode 1)
+;; 添加pair项
+(add-to-list 'electric-pair-pairs '(?` . ?')) ;添加`'作为匹配项
+(add-to-list 'electric-pair-pairs '(?` . ?'))
+(add-to-list 'electric-pair-pairs '(?[ . ?]))
+(add-to-list 'electric-pair-pairs '(?{ . ?}))
 ;; 设置Coding-System
 ;; (set-terminal-coding-system 'utf-8)
 ;; (set-keyboard-coding-system 'utf-8)

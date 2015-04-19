@@ -6,13 +6,6 @@
 ;; (add-hook 'prog-mode-hook (lambda () (interactive) (setq show-trailing-whitespace 1)))
 ;; 关于括号
 (require-and-install 'paredit)
-;;显示光标附近的括号匹配
-(show-paren-mode 1)
-;; 添加pair项
-(add-to-list 'electric-pair-pairs '(?` . ?')) ;添加`'作为匹配项
-(add-to-list 'electric-pair-pairs '(?` . ?'))
-(add-to-list 'electric-pair-pairs '(?[ . ?]))
-(add-to-list 'electric-pair-pairs '(?{ . ?}))
 ;; (add-to-list 'electric-pair-pairs '(?< . ?>))
 ;; 控制缩进
 (level-require "init-program-indent")

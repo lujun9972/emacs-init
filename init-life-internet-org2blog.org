@@ -1,0 +1,1 @@
+/home/Administrator/我的笔记/emacs/org2blog--将org发布到wordpress.org

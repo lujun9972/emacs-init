@@ -12,5 +12,6 @@
 ;;默认链接网络浏览器打开  
 (setq browse-url-generic-program (executable-find "firefox")  
      browse-url-browser-function 'w3m-browse-url)  
-
+;; 配置org2blog写博客
+(level-require "init-life-internet-org2blog")
 (provide 'init-life-internet)

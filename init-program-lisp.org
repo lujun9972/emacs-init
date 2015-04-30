@@ -45,6 +45,10 @@ lispy:Navigating to LISP tags in a directory using CEDET
 
 第二个数字表示tag name和tag file的最大总长度
 
+* deferred为elisp提供了一些简单的异步封装
+#+BEGIN_SRC emacs-lisp
+  (package-install-new 'deferred)
+#+END_SRC
 * provide feature
 #+BEGIN_SRC emacs-lisp
   (provide 'init-program-lisp)

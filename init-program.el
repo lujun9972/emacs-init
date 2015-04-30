@@ -89,4 +89,10 @@
 ;; 配置makefile
 (level-require "makefile")
 
+;; 保存时,检查文件是否包含#!,若包含则给文件添加执行权限
+(defun mark-executable-when-save ()
+  (add-hook 'after-save-hook
+			'executable-make-buffer-file-executable-if-script-p nil t))
+(add-hook 'prog-mode-hook #'mark-executable-when-save)
+
 (provide 'init-program)

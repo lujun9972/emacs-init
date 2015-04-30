@@ -73,12 +73,19 @@
 (require-and-install 'discover)
 (global-discover-mode 1)
 
+;; 使用C-h C-f查看函数的源代码
+(defun find-function-view-mode (fun)
+  (interactive (find-function-read))
+  (find-function-do-it fun nil 'switch-to-buffer)
+  (view-mode 1))
+
+(global-set-key (kbd "C-h C-f") 'find-function-view-mode)
 (global-set-key (kbd "C-x C-b") 'ibuffer)
-;; 配置golden-ratio
-;; (level-load "golden-ratio")
 ;; 使用deft管理笔记
 (level-require "deft")
 ;; 使用dict/dictd翻译英文
 (level-require "dict")
 
+;; 为防止不小心按到C-c C-x,在退出Emacs前需要确认
+(setq confirm-kill-emacs (lambda (prompt) (y-or-n-p-with-timeout "是否退出Emacs:(" 10 "y")))
 (provide 'init-misc)

@@ -87,7 +87,22 @@
 ;; 设置 sentence-end 可以识别中文标点  
 (setq sentence-end  
       "\\([。！？]\\|……\\|[.?!][]\"')}]*\\($\\|[ \t]\\)\\)[ \t\n]*")  
-(setq sentence-end-double-space nil)  	;单个空格表示句子的结束
+;; 自动判断单个/双个空格表示句子的结束
+(defvar sentence-end-double-space-threshold 2
+  "How many occurrences of \".  \" per kilobyte should be enough
+  to declare this file as using two spaces after sentences.")
+
+(defun set-sentence-end-double-space ()
+  "Set `sentence-end-double-space' according to how often the
+  literal string \".  \" occurs in the current buffer."
+  (make-local-variable 'sentence-end-double-space)
+  (if (>= (* (count-matches "\\.  ") 1024)
+	  (* (buffer-size) sentence-end-double-space-threshold))
+      (setq sentence-end-double-space t)
+    (setq sentence-end-double-space nil)))
+
+(add-hook 'find-file-hook 'set-sentence-end-double-space)	
+;; (setq sentence-end-double-space nil)  	;单个空格表示句子的结束
 
 ;; 支持emacs和外部程序的粘贴 
 (setq x-select-enable-clipboard t)  

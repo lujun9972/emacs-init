@@ -1,0 +1,27 @@
+* 配置magit
+#+BEGIN_SRC emacs-lisp
+  (sudo-apt-get-install "git")
+  (add-to-list 'load-path "D:/program files/emacs-24.3/site-lisp/git-modes")
+  (add-to-list 'load-path "D:/program files/emacs-24.3/site-lisp/magit")
+  (require-and-install 'magit)
+  (setq magit-auto-revert-mode nil)
+  (setq magit-last-seen-setup-instructions "1.4.0")
+#+END_SRC
+* git-timemachine
+git-timemachine允许访问当前buffer编辑的文件的任意历史版本.
+#+BEGIN_SRC emacs-lisp
+  (package-install-new 'git-timemachine)
+  (provide 'init-program-vc)
+#+END_SRC
+** 使用方法
+M-x git-timemachine
+
+然后可以使用如下快捷键来导航文件的历史版本
++ p :: 访问上一个历史版本
++ n :: 访问下一个历史版本
++ w :: 拷贝当前历史版本的hash值
++ q :: 退出git-timemachine
+* provide feature
+#+BEGIN_SRC emacs-lisp
+  (provide 'init-program-vc)
+#+END_SRC

@@ -83,4 +83,6 @@
   ;; (define-key dired-mode-map "V" 'dired-do-run-mail)
 #+END_SRC
 * provide feature
-(provide 'init-file-management-dired)
+#+BEGIN_SRC emacs-lisp
+  (provide 'init-file-management-dired)
+#+END_SRC

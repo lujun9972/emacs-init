@@ -95,4 +95,6 @@
 			'executable-make-buffer-file-executable-if-script-p nil t))
 (add-hook 'prog-mode-hook #'mark-executable-when-save)
 
+;; gist for emacs
+(level-require "gist")
 (provide 'init-program)

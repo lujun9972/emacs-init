@@ -18,6 +18,8 @@
 				compile-mode
 				info-mode
 				message-mode
+				sx-question-mode
+				sx-question-list-mode
                 magit-status-mode
                 magit-log-mode
                 magit-commit-mode

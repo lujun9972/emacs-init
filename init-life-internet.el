@@ -14,4 +14,8 @@
      browse-url-browser-function 'w3m-browse-url)  
 ;; 配置org2blog写博客
 (level-require "init-life-internet-org2blog")
+;; 配置weibo上微薄
+(level-require "init-life-internet-weibo")
+;; 配置Stack Exchange for Emacs
+(level-require "init-life-internet-sx")
 (provide 'init-life-internet)

@@ -1,49 +1,30 @@
 ;-*-coding: utf-8-*-
 (require 'org)
 (require 'cl)
+(defun filter-valid-files (&rest files)
+  "该函数接收一系列的文件路径,并以列表的形式抽取出其中存在的文件路径"
+  (remove-if-not #'file-exists-p files))
+(defun filter-valid-file (&rest files)
+  "该函数接收一系列的文件路径,并返回第一个存在的文件路径."
+  (car (apply #'filter-valid-files files)))
 ;使用Emacs内置的Marmalade，安装扩展包，就像 Ubuntu 的新立得一样可以自动安装软件。
 ;;可以用命令 M-x list-packages 来列出软件包清单，选择一个并且安装。
 ;;如果你知道你所要安装的软件包的名称，也可以直接用命令 M-x package-install [RET] [Package-name] 来安装，这样更加方便。
 (require 'package)
-(add-to-list 'package-archives
-	'("marmalade" .
-	  "http://marmalade-repo.org/packages/"))
+;; (add-to-list 'package-archives
+;; 	'("marmalade" .
+;; 	  "http://marmalade-repo.org/packages/"))
 (add-to-list 'package-archives
   '("melpa" . "http://melpa.milkbox.net/packages/") t)
 (package-initialize)
+;; 加载package相关辅助函数
+(add-to-list 'load-path (filter-valid-file "~/MyLisp" "e:/MyLisp"))
+(require 'package-helper)
 
 (defun obj-to-symbol (obj)
   "转换为symbol"
   (intern (format "%s" obj)))
 
-(defun package-installable-p (package-name)
-  "检查package是否有安装源"
-  (require 'package)
-  (unless package--initialized
-	(package-initialize t))
-  (unless package-archive-contents
-	(package-refresh-contents))
-	(memq (obj-to-symbol package-name) (mapcar #'car package-archive-contents)))
-
-(defun require-and-install (package-name &optional filename noerror)
-  ""
-  (unless (require package-name filename t)
-	(when (and (package-installable-p package-name)
-			   (not (package-installed-p package-name)))
-	  (package-refresh-contents)
-	  (package-install (obj-to-symbol package-name))
-	  (require package-name filename noerror))))
-(defun package-loadable-p (package)
-  "判断`package'是否能被加载"
-  (require 'cl)
-  (let ((load-file (concat (format "%s" package) ".el")))
-	(cl-some (lambda (dir)
-			   (file-exists-p (expand-file-name load-file dir))) load-path)))
-(defun package-install-new (package)
-  "当不存在package时才安装package"
-  (when (and  (not (package-installed-p package))
-			  (package-installable-p package))
-	(package-install package)))
 (defun get-load-or-default-directory()
   (file-name-directory (or load-file-name default-directory)))
 
@@ -128,13 +109,6 @@
 该函数从前往后遍历mode-functions. 开启存在的第一个mode,其他mode全部关闭"
   (mapcar 'try-disable-mode mode-functions)
   (some 'try-enable-mode mode-functions))
-
-(defun filter-valid-files (&rest files)
-  "该函数接收一系列的文件路径,并以列表的形式抽取出其中存在的文件路径"
-  (remove-if-not #'file-exists-p files))
-(defun filter-valid-file (&rest files)
-  "该函数接收一系列的文件路径,并返回第一个存在的文件路径."
-  (car (apply #'filter-valid-files files)))
 
 (defun sudo-apt-get-install(soft)
   "run sudo apt-get install `soft` if found no soft"

@@ -16,4 +16,5 @@
   (add-to-list 'ido-ignore-files "\\.doc\\`"))
 
 
+(advice-add 'ido-find-file :after #'alternate-current-file-as-root)
 (provide 'init-misc-ido)

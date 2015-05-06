@@ -16,5 +16,15 @@
   (add-to-list 'ido-ignore-files "\\.doc\\`"))
 
 
+;; 若打开文件没有权限,自动使用sudo方式打开
+(defun alternate-current-file-as-root (&rest args)
+  "以sudo方式打开当前buffer文件"
+  (interactive)
+  (let ((file (buffer-file-name)))
+	(when (and file
+			   (not (file-writable-p file))
+			   (not (file-remote-p file))
+			   (y-or-n-p-with-timeout "是否使用sudo方式打开当前文件" 10 "n"))
+	  (find-alternate-file (concat "/sudo:root@localhost:" file)))))
 (advice-add 'ido-find-file :after #'alternate-current-file-as-root)
 (provide 'init-misc-ido)

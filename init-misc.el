@@ -1,9 +1,10 @@
 ;; 若打开文件没有权限,自动使用sudo方式打开
-(defun alternate-current-file-as-root ()
+(defun alternate-current-file-as-root (&rest args)
   "以sudo方式打开当前buffer文件"
   (interactive)
   (let ((file (buffer-file-name)))
-	(when (and (not (file-writable-p file))
+	(when (and file
+			   (not (file-writable-p file))
 			   (not (file-remote-p file))
 			   (y-or-n-p-with-timeout "是否使用sudo方式打开当前文件" 10 "n"))
 	  (find-alternate-file (concat "/sudo:root@localhost:" file)))))
@@ -24,7 +25,7 @@
 (windmove-default-keybindings 'shift)
 ;; 透明处理压缩文件
 (auto-compression-mode 1)
-;启用tabbar
+										;启用tabbar
 (require-and-install 'tabbar)
 (tabbar-mode t)
 (defvar tabbar-buffer-name-group-alist
@@ -37,7 +38,7 @@
 
 先根据`tabbar-buffer-name-group-alist'与buffer-name查找匹配的分组,否则使用`tabbar-buffer-groups'进行分组"
   (let ((match-rule (find-if (lambda (match-rule)
-								(string-match-p (car match-rule) (buffer-name))) tabbar-buffer-name-group-alist)))
+							   (string-match-p (car match-rule) (buffer-name))) tabbar-buffer-name-group-alist)))
 	(if match-rule
 		(cdr match-rule)
 	  (tabbar-buffer-groups))))

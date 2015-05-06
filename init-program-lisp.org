@@ -1,6 +1,13 @@
-* 设置lisp的命令地址
+* 设置slime
 #+BEGIN_SRC emacs-lisp
-  (setq inferior-lisp-program "C:/Program Files/clisp-2.49/clisp.exe")
+  (setq inferior-lisp-program "/usr/bin/clisp.exe")
+  (require 'slime)
+  (slime-setup)
+  (require 'slime-autoloads)
+
+  ;;按回车键后下一行代码自动缩进
+  (add-hook 'lisp-mode-hook '(lambda ()
+        (local-set-key (kbd "RET") 'newline-and-indent))) 
 #+END_SRC
 * Redshank可以用来对lisp代码进行重构
 * lispy

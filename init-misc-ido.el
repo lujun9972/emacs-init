@@ -25,6 +25,6 @@
 			   (not (file-writable-p file))
 			   (not (file-remote-p file))
 			   (y-or-n-p-with-timeout "是否使用sudo方式打开当前文件" 10 "n"))
-	  (find-alternate-file (concat "/sudo:root@localhost:" file)))))
+	  (find-alternate-file (concat "/sudo::" file)))))
 (advice-add 'ido-find-file :after #'alternate-current-file-as-root)
 (provide 'init-misc-ido)

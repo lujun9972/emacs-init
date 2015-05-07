@@ -1479,10 +1479,10 @@ I have org-mode show the hierarchy of tasks above the matched entries and also t
              (dir (file-relative-name (file-name-directory path)
                                       note-dir)))
         (if (file-in-directory-p dir note-dir)
-            (if (string-match ".+[/\\]\\([^/\\]+\\)[/\\]$" dir) ;若不在"我的笔记目录下",则取其所在的目录名称为类别
-                (match-string 1 dir)
-              dir)
-          (replace-regexp-in-string "[/\\]" ", " dir))))
+            (replace-regexp-in-string "[/\\]" ", " dir)
+          (if (string-match ".+[/\\]\\([^/\\]+\\)[/\\]$" dir) ;若不在"我的笔记目录下",则取其所在的目录名称为类别
+              (match-string 1 dir)
+            dir) )))
     (defun new-org-file-init ()
       "init new org file template"
       (interactive)

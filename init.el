@@ -58,7 +58,9 @@
 	(setq level-load-path (get-load-or-default-directory)))
   (add-to-list 'load-path level-load-path)
   (let (level)
-	(setq level (file-name-sans-extension (file-name-base  load-file-name)))
+	(setq level (file-name-sans-extension (file-name-base  (or load-file-name
+															   (buffer-file-name)
+															   "~/emacs-init/init.el"))))
 	(setq level (concat level "-" sublevel))
 	(cond ((file-exists-p (expand-file-name (concat level ".org") level-load-path))
 		   (org-babel-tangle-newer-elisp-file (expand-file-name (concat level ".org") level-load-path)))
@@ -77,7 +79,9 @@
 	(setq level-load-path (get-load-or-default-directory)))
   (add-to-list 'load-path level-load-path)
   (let (level)
-	(setq level (file-name-sans-extension (file-name-base  load-file-name)))
+	(setq level (file-name-sans-extension (file-name-base  (or load-file-name
+															   (buffer-file-name)
+															   "~/emacs-init/init.el"))))
 	(setq level (concat level "-" sublevel))
 	(or
 	 (cond ((file-exists-p (expand-file-name (concat level ".org") level-load-path))

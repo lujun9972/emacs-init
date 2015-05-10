@@ -1,7 +1,7 @@
 * 设置slime
 #+BEGIN_SRC emacs-lisp
   (setq inferior-lisp-program "/usr/bin/clisp.exe")
-  (require 'slime)
+  (require-and-install 'slime)
   (slime-setup)
   (require 'slime-autoloads)
 

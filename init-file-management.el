@@ -1,7 +1,7 @@
 ;;配置dired
 (level-require "init-file-management-dired")
 ;; 配置sunrise-commander
-(level-require "init-file-management-sunrise-commander")
+;; (level-require "init-file-management-sunrise-commander")
 ;;使用pdf2txt查看pdf
 (add-to-list 'auto-mode-alist '("\\.pdf\\'" . pdf2txt)) 
 (defun pdf2txt () 

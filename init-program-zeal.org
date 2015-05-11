@@ -9,26 +9,32 @@
 
 * 设置快捷键
 
-  运行函数`zeal-at-point'会使用zeal搜索光标所在的单词或选中的region. 若使用前缀参数`C-u',则可以在搜索前对搜索字符串进行修改
+运行函数`zeal-at-point'会使用zeal搜索光标所在的单词或选中的region. 若使用前缀参数`C-u',则可以在搜索前对搜索字符串进行修改
 
-  #+BEGIN_SRC emacs-lisp
+#+BEGIN_SRC emacs-lisp
     (global-set-key "\C-ch" 'zeal-at-point)
-  #+END_SRC
+#+END_SRC
+
+函数`zeal-at-point'会调用Zeal命令,因此若在win环境下,还需要将zeal命令的安装目录加入exec-path目录中
+
+#+BEGIN_SRC emacs-lisp
+  (add-to-list 'exec-path (filter-valid-file "C:/Program Files/Zeal" "/cygdrive/c/Program Files/Zeal/"))
+#+END_SRC
 
 * 配置
- 
-  可以通过配置`zeal-at-point-mode-alist'变量指定处于某个major-mode时,查询哪个docset
 
-  #+BEGIN_SRC emacs-lisp
+可以通过配置`zeal-at-point-mode-alist'变量指定处于某个major-mode时,查询哪个docset
+
+#+BEGIN_SRC emacs-lisp
     ;; (add-to-list 'zeal-at-point-mode-alist '(perl-mode . "perl"))
-  #+END_SRC
-  
-  另外可以通过直接设置buffer-local变量`zeal-at-point-docset'来指定查询时使用哪个docset,来覆盖程序猜测的docset
+#+END_SRC
 
-  #+BEGIN_SRC emacs-lisp
+另外可以通过直接设置buffer-local变量`zeal-at-point-docset'来指定查询时使用哪个docset,来覆盖程序猜测的docset
+
+#+BEGIN_SRC emacs-lisp
     ;; (add-hook 'rinari-minor-mode-hook
     ;;    (lambda () (setq zeal-at-point-docset "rails")))
-  #+END_SRC
+#+END_SRC
 
 * provide feature
 #+BEGIN_SRC emacs-lisp

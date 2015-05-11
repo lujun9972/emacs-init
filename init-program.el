@@ -5,8 +5,7 @@
 ;; 在编程模式下显示无用的whitespace
 ;; (add-hook 'prog-mode-hook (lambda () (interactive) (setq show-trailing-whitespace 1)))
 ;; 关于括号
-(require-and-install 'paredit)
-;; (add-to-list 'electric-pair-pairs '(?< . ?>))
+;; (require-and-install 'paredit)
 ;; 控制缩进
 (level-require "init-program-indent")
 ;; imenu配置
@@ -74,7 +73,7 @@
 		  (lambda ()
 			(level-require "init-program-ruby")))
 ;; 配置cedet
-(level-require "init-program-cedet")
+;; (level-require "init-program-cedet")
 ;; 配置SQL
 (level-require "init-program-sql")
 ;; 配置compile

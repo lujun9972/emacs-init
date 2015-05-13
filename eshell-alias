@@ -1,0 +1,2 @@
+alias work cd ~/work/$1
+alias vi find-files $*

@@ -73,7 +73,7 @@
 		  (lambda ()
 			(level-require "init-program-ruby")))
 ;; 配置cedet
-;; (level-require "init-program-cedet")
+(level-require "init-program-cedet")
 ;; 配置SQL
 (level-require "init-program-sql")
 ;; 配置compile

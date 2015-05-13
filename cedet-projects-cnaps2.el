@@ -30,4 +30,5 @@
   (add-to-list 'semantic-lex-c-preprocessor-symbol-file (concat cnaps2-project-root-path "/comm/inc/mqagent.h"))
   (add-to-list 'semantic-lex-c-preprocessor-symbol-file (concat cnaps2-project-root-path "/esbapi/inc/esb_front_internal.h"))
   (add-to-list 'semantic-lex-c-preprocessor-symbol-file (concat cnaps2-project-root-path "/pub/inc/basic.h"))
+  )
 

@@ -148,9 +148,7 @@
 ;;;文件管理
 (level-require "init-file-management")
 ;;;配置shell
-(add-hook 'eshell-mode-hook
-		  (lambda ()
-			(level-require "init-eshell")))
+(level-require "init-eshell")
 ;; 编程环境设置
 (level-require "init-program")
 ;;用rlogin来登录ssh

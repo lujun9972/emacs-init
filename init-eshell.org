@@ -5,7 +5,7 @@
 #+END_SRC
 * 设置alias存储路径
 #+BEGIN_SRC emacs-lisp
-  (setq eshell-aliases-file (file-concat (filter-valid-file "~/emacs-init" "d:/emacs-init") "eshell-alias"))
+  (setq eshell-aliases-file (concat (filter-valid-file "~/emacs-init/" "d:/emacs-init/") "eshell-alias"))
 #+END_SRC
 * 设置命令提示符
 #+BEGIN_SRC emacs-lisp

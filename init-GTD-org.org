@@ -1473,6 +1473,7 @@ I have org-mode show the hierarchy of tasks above the matched entries and also t
 #+END_SRC
 ** 新增org文件时插入模版
   #+BEGIN_SRC emacs-lisp
+    (require 'subr-x)
     (defun get-category-from-path (path)
       "根据路径生成类别"
       (let* ((note-dir (filter-valid-file "e:/我的笔记" "~/我的笔记"))

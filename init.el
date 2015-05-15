@@ -136,7 +136,7 @@
 	(add-to-list 'auto-mode-alist (cons pattern mode))))
 
 ;;启动server-start模式，当用emacsclientw打开文件时，使用一个缓冲区打开
-										;(server-start)
+(server-start)
 ;; 设置显示界面
 (level-require "init-display")
 ;; 设置杂项

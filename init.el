@@ -18,7 +18,7 @@
   '("melpa" . "http://melpa.milkbox.net/packages/") t)
 (package-initialize)
 ;; 加载package相关辅助函数
-(add-to-list 'load-path (filter-valid-file "~/MyLisp" "e:/MyLisp"))
+(add-to-list 'load-path (filter-valid-file "~/MyLisp" "e:/MyLisp" "d:/MyLisp"))
 (require 'package-helper)
 
 (defun obj-to-symbol (obj)

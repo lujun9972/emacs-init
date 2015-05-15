@@ -20,7 +20,7 @@
 * 设置bbdb存储文件的路径
 保存到GTD目录下,方便同步
 #+BEGIN_SRC emacs-lisp
-  (setq bbdb-file "~/我的GTD/bbdb")  
+  (setq bbdb-file (file-concat MY-GTD-PATH "bbdb"))  
 #+END_SRC
 
 * 联系人自动补全

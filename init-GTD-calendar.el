@@ -1,4 +1,4 @@
-(setq cal-html-directory (filter-valid-file "e:/我的GTD" "~/我的GTD"))   ;设置导出calendar的为html时的默认存放目录
+(setq cal-html-directory MY-GTD-PATH)   ;设置导出calendar的为html时的默认存放目录
 ;; 让emacs能计算日出日落的时间，在 calendar 上用 S 即可看到
 (setq calendar-longitude +113.31)
 (setq calendar-latitude +22.39)

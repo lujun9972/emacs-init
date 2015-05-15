@@ -17,8 +17,15 @@
 (add-to-list 'package-archives
   '("melpa" . "http://melpa.milkbox.net/packages/") t)
 (package-initialize)
+
+;; 定义几个常用目录的路径
+(defconst MY-LISP-PATH (filter-valid-file "~/MyLisp" "e:/MyLisp" "d:/MyLisp"))
+(defconst CODE-LIBRARY-PATH (filter-valid-file "~/CodeLibrary/elisp.org" "d:/CodeLibrary/elisp.org"  "e:/CodeLibrary/elisp.org"))
+(defconst MY-GTD-PATH (filter-valid-file "~/我的GTD" "e:/我的GTD" "d:/我的GTD"))
+(defconst MY-NOTE-PATH (filter-valid-file "~/我的笔记" "e:/我的笔记" "d:/我的笔记"))
+
 ;; 加载package相关辅助函数
-(add-to-list 'load-path (filter-valid-file "~/MyLisp" "e:/MyLisp" "d:/MyLisp"))
+(add-to-list 'load-path MY-LISP-PATH)
 (require 'package-helper)
 
 (defun obj-to-symbol (obj)
@@ -29,6 +36,7 @@
   (file-name-directory (or load-file-name default-directory)))
 
 ;; 加载CodeLibrary中的elisp代码片段
+(org-babel-load-file CODE-LIBRARY-PATH)
 (add-to-list 'load-path "~/org-mode/contrib/lisp")
 (defun org-babel-tangle-newer-file (FILE &optional TARGET-FILE LANG)
   "tangle only if the file is newer than the target-file"

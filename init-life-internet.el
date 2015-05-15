@@ -1,5 +1,5 @@
 ;;设置w3m
-(level-require "init-life-internet-w3m")
+(ignore-errors (level-require "init-life-internet-w3m")) ;w3m在win下安装不上,可能失败
 ;; 设置eww
 (level-require "init-life-internet-eww")
 ;;设置newsticker,阅读RSS

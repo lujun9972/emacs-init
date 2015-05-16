@@ -55,7 +55,7 @@
 (add-hook 'c++-mode-hook
 		  (lambda ()
 			(level-require "init-program-cpp")))
-(require 'darksun-cpp-helper)
+(require 'cpp-helper)
 ;; 配置dos模式,编写批处理文件
 (package-install-new 'dos)
 (autoload 'dos-mode "dos" "Bat editing mode." t)

@@ -1501,7 +1501,7 @@ I have org-mode show the hierarchy of tasks above the matched entries and also t
   ;; 设置org笔记时的缩进
   ;; (setq org-description-max-ident 5)
   (require 'org-realtime-preview)         ;写笔记时,可以开启实时预览
-  (require 'darksun-org-helper)
+  (require 'org-helper)
 #+END_SRC
 * 配置MobileOrg
   
@@ -1533,7 +1533,7 @@ I have org-mode show the hierarchy of tasks above the matched entries and also t
   * org-mobile-inbox-for-pull
 	当要把MobileOrg所做的修改同步到电脑端Org时,电脑端Org会先把MobileOrg的修改动作记录到该变量指定的文件中,然后再根据该文件中所记录的操作对电脑端Org进行修改
 	#+BEGIN_SRC emacs-lisp
-      (setq org-mobile-inbox-for-pull (file-concat MY-GTD-PATH "from-mobile.org"))
+      (setq org-mobile-inbox-for-pull (concat (file-name-as-directory MY-GTD-PATH) "from-mobile.org"))
 	#+END_SRC
   * org-mobile-checksum-binary
 	MobileOrg只会同步签名值改变了的文件,这个变量配置了计算签名值的程序所在的地址(可以同时配置多个地址),电脑端Org会使用第一个可用的程序计算签名

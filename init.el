@@ -24,13 +24,14 @@
 (defconst MY-GTD-PATH (filter-valid-file "~/我的GTD" "e:/我的GTD" "d:/我的GTD"))
 (defconst MY-NOTE-PATH (filter-valid-file "~/我的笔记" "e:/我的笔记" "d:/我的笔记"))
 
-;; 加载package相关辅助函数
-(add-to-list 'load-path MY-LISP-PATH)
-(require 'package-helper)
-
 (defun obj-to-symbol (obj)
   "转换为symbol"
   (intern (format "%s" obj)))
+;; 加载相关辅助函数
+(add-to-list 'load-path MY-LISP-PATH)
+(dolist (helper-package (directory-files MY-LISP-PATH nil "helper\.el"))
+  (require (obj-to-symbol (file-name-base helper-package))))
+
 
 (defun get-load-or-default-directory()
   (file-name-directory (or load-file-name default-directory)))

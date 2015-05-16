@@ -41,7 +41,7 @@
 ;; 配置keyfreq用来记录按键频率,使用keyfre-show查看
 (level-require "keyfreq")
 ;; clean-buffers
-(require 'darksun-clean-buffers)
+(require 'clean-buffers)
 ;; (run-with-idle-timer 5 t #'kill-useless-buffers) ;自动清理超过无用的buffer
 (run-with-timer 0 5 #'kill-useless-buffers) ;自动清理超过无用的buffer
 ;; sr-speedbar

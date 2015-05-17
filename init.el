@@ -143,7 +143,7 @@
   "Add entries to `auto-mode-alist' to use `MODE' for all given file `PATTERNS'."
   (dolist (pattern patterns)
 	(add-to-list 'auto-mode-alist (cons pattern mode))))
-
+(level-require "init-benchmarking");
 ;;启动server-start模式，当用emacsclientw打开文件时，使用一个缓冲区打开
 (require 'server)
 (unless (server-running-p)

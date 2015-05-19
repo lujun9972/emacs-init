@@ -86,6 +86,8 @@
 ;; 使用dict/dictd翻译英文
 (level-require "dict")
 
+;; showkey可以显示操作的按键及运行的函数
+(package-install-new 'showkey)
 ;; 为防止不小心按到C-c C-x,在退出Emacs前需要确认
 (setq confirm-kill-emacs (lambda (prompt) (y-or-n-p-with-timeout "是否退出Emacs:(" 10 "y")))
 

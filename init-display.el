@@ -33,6 +33,7 @@
 ;; (level-require "nyan")
 ;; fullframe可以在一个fullframe中执行某些命令,并在显示之前前保存window-configuration,当命令完成后,会还原该window-configuration
 (require-and-install 'fullframe)
+(fullframe list-packages quit-window)	;执行list-packages命令会全屏显示,执行quit-window后会自动还原原window配置信息.
 (fullframe magit-status magit-mode-quit-window nil)
 
 (provide 'init-display)

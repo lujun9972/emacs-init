@@ -1,6 +1,8 @@
-* 启用dired-x
+* 加载其他扩展库
 #+BEGIN_SRC emacs-lisp
-(require 'dired-x)               ; 有些特殊的功能
+  (require 'dired-x)               ; 有些特殊的功能
+  (require-and-install 'dired+)    ;
+  (require-and-install 'dired-sort)    ;
 #+END_SRC
 * dired中使用外部程序打开文件.
 默认情况下,! (dired-do-shell-command)不知道如何打开某些文件类型. 为它增加一些打开方式

@@ -13,7 +13,11 @@
              load-path)))))
 
 (sanityinc/add-subdirs-to-load-path
- (expand-file-name "site-lisp/" user-emacs-directory))
+ (let ((site-lisp-dir 
+	(expand-file-name "site-lisp/" user-emacs-directory)))
+   (unless (file-exists-p site-lisp-dir)
+     (make-directory site-lisp-dir t))
+   site-lisp-dir))
 
 ;;; Utilities for grabbing upstream libs
 

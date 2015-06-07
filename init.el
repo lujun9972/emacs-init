@@ -100,29 +100,6 @@
 	 (load level t)
 	 (load sublevel t))))
 
-(defun try-enable-mode (mode-function)
-  "若能开启该mode,则开启它"
-  (if (functionp mode-function)
-	  (progn
-		(funcall mode-function 1)
-		t)
-	nil))
-
-(defun try-disable-mode (mode-function)
-  "若能关闭该mode,则关闭它"
-  (if (functionp mode-function)
-	  (progn
-		(funcall mode-function -1)
-		t)
-	nil))
-
-(defun enable-prefer-mode (&rest mode-functions)
-  "从多个类似的mode中选择启用其中一个mode
-
-该函数从前往后遍历mode-functions. 开启存在的第一个mode,其他mode全部关闭"
-  (mapcar 'try-disable-mode mode-functions)
-  (some 'try-enable-mode mode-functions))
-
 (defun sudo-apt-get-install(soft)
   "run sudo apt-get install `soft` if found no soft"
   (when (and (not (executable-find soft))
@@ -130,19 +107,15 @@
 			 (executable-find "apt-get"))
 	(require 'eshell)
 	(eshell-command (format "sudo apt-get -y install %s" soft))))
-(level-require 'init-site-lisp)
+
 (pcase system-type
   (`windows-nt (level-load "init-windows")) ; 配置windows下使用emacs
   (`cygwin (level-load "init-cygwin")) ; 配置cygwin
   (`gnu/linux (level-load "init-linux")))
 
-;;----------------------------------------------------------------------------
-;; Handier way to add modes to auto-mode-alist
-;;----------------------------------------------------------------------------
-(defun add-auto-mode (mode &rest patterns)
-  "Add entries to `auto-mode-alist' to use `MODE' for all given file `PATTERNS'."
-  (dolist (pattern patterns)
-	(add-to-list 'auto-mode-alist (cons pattern mode))))
+;; 管理使用url下载的插件
+(level-require "init-site-lisp")
+;; 评测加载各插件的速度
 (level-require "init-benchmarking");
 ;;启动server-start模式，当用emacsclientw打开文件时，使用一个缓冲区打开
 (require 'server)

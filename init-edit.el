@@ -107,4 +107,6 @@
 ;; 支持emacs和外部程序的粘贴 
 (setq x-select-enable-clipboard t)  
 
+;; 使用wgrep可以直接修改grep buffer,并将修改映射回原文件
+(package-install-new 'wgrep)
 (provide 'init-edit)

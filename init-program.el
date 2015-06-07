@@ -97,6 +97,9 @@
 ;; gist for emacs
 (level-require "gist")
 (setq-default grep-scroll-output t)		;随着grep输出结果的增多,buffer自动滚动
-;; 设置grep
+;; diff-hl高亮显示未提交的代码
+(package-install-new 'diff-hl)
+(add-hook 'prog-mode-hook 'turn-on-diff-hl-mode)
+(add-hook 'vc-dir-mode-hook 'turn-on-diff-hl-mode)
 
 (provide 'init-program)

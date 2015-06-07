@@ -130,7 +130,7 @@
 			 (executable-find "apt-get"))
 	(require 'eshell)
 	(eshell-command (format "sudo apt-get -y install %s" soft))))
-
+(level-require 'init-site-lisp)
 (pcase system-type
   (`windows-nt (level-load "init-windows")) ; 配置windows下使用emacs
   (`cygwin (level-load "init-cygwin")) ; 配置cygwin

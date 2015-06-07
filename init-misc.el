@@ -7,13 +7,19 @@
 ;;使用目录名来区分同名buffer
 (require 'uniquify)
 (setq uniquify-buffer-name-style 'forward)
+(setq uniquify-after-kill-buffer-p t)
+(setq uniquify-ignore-buffers-re "^\\*")
 ;;开启winner-mode,可以undo /redo 对windows的操作 C-c <- 或 C-c ->
 (winner-mode 1)
 ;;开启windmove,使用shift-方向键切换window
 (windmove-default-keybindings 'shift)
+;; 使用switch-window插件,使得C-x o在多个window时提示你要跳转到哪个window
+(require-and-install 'switch-window)
+(setq switch-window-shortcut-style 'alphabet)
+(global-set-key (kbd "C-x o") 'switch-window)
 ;; 透明处理压缩文件
 (auto-compression-mode 1)
-										;启用tabbar
+;; 启用tabbar
 (require-and-install 'tabbar)
 (tabbar-mode t)
 (defvar tabbar-buffer-name-group-alist
@@ -33,7 +39,7 @@
 (setq tabbar-buffer-groups-function 'my-tabbar-buffer-groups)
 ;;设置tramp
 (level-require "tramp")
-;; 设置ido和recentf
+;; 设置ido和smex
 (level-require "ido")
 (level-require "smex")
 ;; 保存session
@@ -80,7 +86,7 @@
   (view-mode 1))
 
 (global-set-key (kbd "C-h C-f") 'find-function-view-mode)
-(global-set-key (kbd "C-x C-b") 'ibuffer)
+(level-require "ibuffer")
 ;; 使用deft管理笔记
 (level-require "deft")
 ;; 使用dict/dictd翻译英文

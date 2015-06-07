@@ -96,4 +96,7 @@
 
 ;; gist for emacs
 (level-require "gist")
+(setq-default grep-scroll-output t)		;随着grep输出结果的增多,buffer自动滚动
+;; 设置grep
+
 (provide 'init-program)

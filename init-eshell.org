@@ -55,9 +55,9 @@
       "使用find-file打开多个文件"
       (mapc #'find-file (mapcar #'expand-file-name (eshell-flatten-list (reverse args))))))
 #+END_SRC
-** 定义eshell/j函数用于选择跳转到之前的哪个目录
+** 定义eshell/c函数用于选择跳转到之前的哪个目录
 #+BEGIN_SRC emacs-lisp
-  (defun eshell/j ()
+  (defun eshell/c ()
     "Quickly jump to previous directories."
     (eshell/cd (ido-completing-read "Jump to directory: "
                                     (delete-dups (ring-elements eshell-last-dir-ring)))))
@@ -85,6 +85,19 @@
                                      nil
                                      input)))))
 
+#+END_SRC
+
+** 定义eshell/c使用ido方式选择cd某个bookmark中的目录
+#+BEGIN_SRC emacs-lisp
+   (defun eshell/c ()
+      "Quickly jump to bookmark directories."
+      (let* ((directory-bookmarks (remove-if-not (lambda (bookmark)
+                                                   (file-directory-p (bookmark-get-filename bookmark))) bookmark-alist))
+             (directory-bookmark-names (mapcar #'car directory-bookmarks))
+             (directory-bookmark-name (ido-completing-read "Jump to directory: "
+                                                           (delete-dups directory-bookmark-names)))
+             (directory-bookmark-directory (bookmark-get-filename directory-bookmark-name)))
+        (eshell/cd directory-bookmark-directory)))
 #+END_SRC
 
 * provide features

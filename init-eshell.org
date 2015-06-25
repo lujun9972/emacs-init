@@ -24,6 +24,11 @@
 #+END_SRC
 * 其他设置
 #+BEGIN_SRC emacs-lisp
+
+  ;; (setq eshell-glob-case-insensitive t)    ;glob不区分大小写
+  (setq eshell-error-if-no-glob t)    ;如果glob出现不匹配则认为出错，这和zsh是一样的，和bash不同
+  ;; (setq eshell-cmpl-ignore-case t) ;在补全filename的时候不区分大小写
+  ;; (setq eshell-history-size 10000) ;记录很多命令，方便直接调用
   (setq eshell-where-to-jump 'begin)
   (setq eshell-review-quick-commands nil)
   (setq eshell-smart-space-goes-to-end t)
@@ -32,9 +37,6 @@
    (lambda ()
      (setq pcomplete-cycle-completions nil)))
 
-  ;; change listing switches based on OS
-  ;; (when (not (eq system-type 'windows-nt))
-  ;;   (eshell/alias "ls" "ls --color -h --group-directories-first $*"))
 #+END_SRC
 
 * 自定义函数
@@ -48,14 +50,43 @@
 #+END_SRC
 ** 定义find-files一次打开多个文件
 #+BEGIN_SRC emacs-lisp
-  (defun eshell/find-files (&rest files)
-    "使用find-file打开多个文件"
-    (when (and (listp (car files))
-               (eql 1 (length files)))
-      (setq files (car files)))
-    (dolist (file files)
-      (find-file file)))
+  (defun eshell/find-files (&rest args)
+    (when (not (null args))
+      "使用find-file打开多个文件"
+      (mapc #'find-file (mapcar #'expand-file-name (eshell-flatten-list (reverse args))))))
 #+END_SRC
+** 定义eshell/j函数用于选择跳转到之前的哪个目录
+#+BEGIN_SRC emacs-lisp
+  (defun eshell/j ()
+    "Quickly jump to previous directories."
+    (eshell/cd (ido-completing-read "Jump to directory: "
+                                    (delete-dups (ring-elements eshell-last-dir-ring)))))
+#+END_SRC
+** 定义eshell/r使用ido方式选择eshell历史
+#+BEGIN_SRC emacs-lisp
+  (defun eshell/r ()
+    "use ido-style to read  eshell-history"
+    (interactive)
+    (let* ((index 0)
+           (peng-ido-eshell-list nil)
+           (end (point))
+           (beg (save-excursion (eshell-bol) (point)))
+           (input (buffer-substring beg end)))
+      (while (<= index eshell-history-size)
+        (add-to-list 'peng-ido-eshell-list (eshell-get-history index))
+        (setq index (1+ index)))
+      (setq peng-ido-eshell-list (delete-dups (reverse peng-ido-eshell-list)))
+      (if (equal input "")
+          (insert (ido-completing-read "Eshell-history: " peng-ido-eshell-list))
+        (goto-char beg)
+        (kill-line)
+        (insert (ido-completing-read "Eshell-history: " peng-ido-eshell-list
+                                     nil
+                                     nil
+                                     input)))))
+
+#+END_SRC
+
 * provide features
 #+BEGIN_SRC emacs-lisp
   (provide 'init-eshell)

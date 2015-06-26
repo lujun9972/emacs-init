@@ -99,6 +99,10 @@
 (add-to-list 'smart-compile-alist
 			 '("recvhvps.+\.h$" . "plink cnaps2@10.8.6.10 \". ~/.profile;cd app/hvps;make recvfromhvps\""))
 
+;; 编译recverrmsg
+(add-to-list 'smart-compile-alist
+			 '("recverrmsg\.cpp$" . "plink cnaps2@10.8.6.10 \". ~/.profile;cd app/hvps;make recverrmsg\""))
+
 ;; 编译sendtoccms
 (add-to-list 'smart-compile-alist
 			 '("sendccms.+\.cpp$" . "plink cnaps2@10.8.6.10 \". ~/.profile;cd app/ccms;make sendtoccms\""))

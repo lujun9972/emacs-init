@@ -132,10 +132,11 @@
   (interactive "s请输入ri关键字:")
   (let* ((ri-buf (get-buffer-create (format "*Ri %s*" key)))
 		 (ri-command (format "ri %s" key))
-		 (buf-content (shell-command-to-string ri-command)))
+		 (buf-content (ansi-color-apply (shell-command-to-string ri-command)))
+		 )
 	(switch-to-buffer ri-buf)
-	(delete-region (point-min) (point-max))
-	(insert buf-content)))
+	(erase-buffer)
+	(insert  buf-content)))
 
 
 (provide 'init-program-ruby)

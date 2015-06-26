@@ -108,7 +108,16 @@
             (directory-bookmark-directory (bookmark-get-filename directory-bookmark-name)))
        (eshell/cd directory-bookmark-directory)))
 #+END_SRC
-
+** 定义eshell/open使用操作系统默认设置打开文件
+#+BEGIN_SRC emacs-lisp
+  (defun eshell/open (&rest args)
+    "使用操作系统默认设置打开文件"
+    (cond ((eq system-type 'windows-nt)
+           (mapc (lambda (file)
+                   "win32环境下打开file"
+                   (w32-shell-execute "open" file)) (eshell-flatten-list (reverse args))))
+          (t (error "暂不支持该类型的操作系统%s" system-type))))
+#+END_SRC
 * provide features
 #+BEGIN_SRC emacs-lisp
   (provide 'init-eshell)

@@ -97,15 +97,16 @@
 
 ** 定义eshell/c使用ido方式选择cd某个bookmark中的目录
 #+BEGIN_SRC emacs-lisp
-   (defun eshell/c ()
-      "Quickly jump to bookmark directories."
-      (let* ((directory-bookmarks (remove-if-not (lambda (bookmark)
-                                                   (file-directory-p (bookmark-get-filename bookmark))) bookmark-alist))
-             (directory-bookmark-names (mapcar #'car directory-bookmarks))
-             (directory-bookmark-name (ido-completing-read "Jump to directory: "
-                                                           (delete-dups directory-bookmark-names)))
-             (directory-bookmark-directory (bookmark-get-filename directory-bookmark-name)))
-        (eshell/cd directory-bookmark-directory)))
+  (defun eshell/c ()
+     "Quickly jump to bookmark directories."
+     (require 'bookmark)
+     (let* ((directory-bookmarks (remove-if-not (lambda (bookmark)
+                                                  (file-directory-p (bookmark-get-filename bookmark))) bookmark-alist))
+            (directory-bookmark-names (mapcar #'car directory-bookmarks))
+            (directory-bookmark-name (ido-completing-read "Jump to directory: "
+                                                          (delete-dups directory-bookmark-names)))
+            (directory-bookmark-directory (bookmark-get-filename directory-bookmark-name)))
+       (eshell/cd directory-bookmark-directory)))
 #+END_SRC
 
 * provide features

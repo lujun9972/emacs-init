@@ -132,8 +132,10 @@
   (interactive "s请输入ri关键字:")
   (let* ((ri-buf (get-buffer-create (format "*Ri %s*" key)))
 		 (ri-command (format "ri %s" key))
-		 (buf-content (ansi-color-apply (shell-command-to-string ri-command)))
+		 (buf-content (let ((coding-system-for-read 'binary))
+						(term-handle-ansi-terminal-messages (shell-command-to-string ri-command))))
 		 )
+	(setq buf-content (replace-regexp-in-string "." "" buf-content)) ;手工处理退格键
 	(switch-to-buffer ri-buf)
 	(erase-buffer)
 	(insert  buf-content)))

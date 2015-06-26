@@ -24,17 +24,18 @@
 #+END_SRC
 * 其他设置
 #+BEGIN_SRC emacs-lisp
-  (setq eshell-where-to-jump 'begin)
-  (setq eshell-review-quick-commands nil)
-  (setq eshell-smart-space-goes-to-end t)
-  (add-hook
-   'eshell-mode-hook
-   (lambda ()
-     (setq pcomplete-cycle-completions nil)))
+    (setq eshell-where-to-jump 'begin)
+    (setq eshell-review-quick-commands nil)
+    (setq eshell-smart-space-goes-to-end t)
+    (add-hook
+     'eshell-mode-hook
+     (lambda ()
+       (setq pcomplete-cycle-completions nil)
+       (require 'eshell-ido-pcomplete)))
 
-  ;; change listing switches based on OS
-  ;; (when (not (eq system-type 'windows-nt))
-  ;;   (eshell/alias "ls" "ls --color -h --group-directories-first $*"))
+    ;; change listing switches based on OS
+    ;; (when (not (eq system-type 'windows-nt))
+    ;;   (eshell/alias "ls" "ls --color -h --group-directories-first $*"))
 #+END_SRC
 
 * 自定义函数

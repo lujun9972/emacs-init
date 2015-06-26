@@ -136,9 +136,13 @@
 						(term-handle-ansi-terminal-messages (shell-command-to-string ri-command))))
 		 )
 	(setq buf-content (replace-regexp-in-string "." "" buf-content)) ;手工处理退格键
-	(switch-to-buffer ri-buf)
+	(unless (get-buffer-window ri-buf)
+	  (split-window)
+	  (switch-to-buffer ri-buf))
+	(select-window (get-buffer-window ri-buf))
 	(erase-buffer)
-	(insert  buf-content)))
+	(insert  buf-content)
+	(goto-char (point-min))))
 
 
 (provide 'init-program-ruby)

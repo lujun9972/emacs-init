@@ -116,6 +116,11 @@
            (mapc (lambda (file)
                    "win32环境下打开file"
                    (w32-shell-execute "open" file)) (eshell-flatten-list (reverse args))))
+          ((eq system-type 'gnu/linux)
+           (mapc (lambda (file)
+                   "linux环境下打开file"
+                   (let ((process-connection-type nil))
+                     (start-process "" nil "xdg-open" file))) (eshell-flatten-list (reverse args))))
           (t (error "暂不支持该类型的操作系统%s" system-type))))
 #+END_SRC
 * provide features

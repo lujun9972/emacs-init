@@ -17,7 +17,7 @@
 ;; 设置单词检查
 (load "init-edit-spell")
 ;; 模拟vi
-(load "init-edit-vi")
+(level-require "init-edit-vi")
 ;;显示光标附近的括号匹配
 (show-paren-mode 1)
 ;; 自动插入引号/括号对

@@ -68,23 +68,17 @@
                   magit-commit-mode
                   magit-diff-mode))
     (add-to-list 'evil-motion-state-modes mode))
-  ;; progn-mode与text-mode进入normal-mode
-  (defun enable-evil-normal-mode ()
-    "开启evil-normal-mode"
+  ;; progn-mode与text-mode进入normal-state
+  (defun enable-evil-normal-when-derived-from (&rest modes)
+    "若major=mode继承自`modes'中其中一个mode,则开启evil-normal-state"
     (interactive)
-    (evil-normal-state 1))
-  (setq evil-normal-state-modes nil)
-  (dolist (mode '(prog-mode
-                  text-mode))
-    (add-hook (intern (format "%s-hook" mode)) 'enable-evil-normal-mode t)) ; 不知为何,在*Messages* buffer存在的情况下且操作系统为win时有问题
-  (dolist (mode '(prog-mode
-                  text-mode
-                  org-mode
-                  c++-mode
-                  emacs-lisp-mode))
-    (add-to-list 'evil-normal-state-modes mode))
-  ;; (setq evil-normal-state-modes nil)
+    (when (apply #'derived-mode-p modes)
+      (evil-normal-state 1)))
 
+  (add-hook 'after-change-major-mode-hook
+            (lambda ()
+              (enable-evil-normal-when-derived-from 'prog-mode 'text-mode))
+            t)                            ;必须为t,因为evil会将`evil-mode-enable-in-buffers'加入after-change-major-mode-hook中,若非t,则会evil-state又会被`evil-mode-enable-in-buffers'重新设置
 #+END_SRC
 * 其他设置
   #+BEGIN_SRC emacs-lisp

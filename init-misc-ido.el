@@ -33,4 +33,7 @@
 			   (y-or-n-p-with-timeout "是否使用sudo方式打开当前文件" 10 "n"))
 	  (find-alternate-file (concat "/sudo::" file)))))
 (advice-add 'ido-find-file :after #'alternate-current-file-as-root)
+
+;; 加载ido-pinyin,支持拼音匹配中文
+(require 'ido-pinyin)
 (provide 'init-misc-ido)

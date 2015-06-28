@@ -24,6 +24,14 @@
 #+END_SRC
 * 其他设置
 #+BEGIN_SRC emacs-lisp
+    (setq eshell-where-to-jump 'begin)
+    (setq eshell-review-quick-commands nil)
+    (setq eshell-smart-space-goes-to-end t)
+    (add-hook
+     'eshell-mode-hook
+     (lambda ()
+       (setq pcomplete-cycle-completions nil)
+       (require 'eshell-ido-pcomplete)))
 
   ;; (setq eshell-glob-case-insensitive t)    ;glob不区分大小写
   (setq eshell-error-if-no-glob t)    ;如果glob出现不匹配则认为出错，这和zsh是一样的，和bash不同
@@ -89,17 +97,27 @@
 
 ** 定义eshell/c使用ido方式选择cd某个bookmark中的目录
 #+BEGIN_SRC emacs-lisp
-   (defun eshell/c ()
-      "Quickly jump to bookmark directories."
-      (let* ((directory-bookmarks (remove-if-not (lambda (bookmark)
-                                                   (file-directory-p (bookmark-get-filename bookmark))) bookmark-alist))
-             (directory-bookmark-names (mapcar #'car directory-bookmarks))
-             (directory-bookmark-name (ido-completing-read "Jump to directory: "
-                                                           (delete-dups directory-bookmark-names)))
-             (directory-bookmark-directory (bookmark-get-filename directory-bookmark-name)))
-        (eshell/cd directory-bookmark-directory)))
+  (defun eshell/c ()
+     "Quickly jump to bookmark directories."
+     (require 'bookmark)
+     (let* ((directory-bookmarks (remove-if-not (lambda (bookmark)
+                                                  (file-directory-p (bookmark-get-filename bookmark))) bookmark-alist))
+            (directory-bookmark-names (mapcar #'car directory-bookmarks))
+            (directory-bookmark-name (ido-completing-read "Jump to directory: "
+                                                          (delete-dups directory-bookmark-names)))
+            (directory-bookmark-directory (bookmark-get-filename directory-bookmark-name)))
+       (eshell/cd directory-bookmark-directory)))
 #+END_SRC
-
+** 定义eshell/open使用操作系统默认设置打开文件
+#+BEGIN_SRC emacs-lisp
+  (defun eshell/open (&rest args)
+    "使用操作系统默认设置打开文件"
+    (cond ((eq system-type 'windows-nt)
+           (mapc (lambda (file)
+                   "win32环境下打开file"
+                   (w32-shell-execute "open" file)) (eshell-flatten-list (reverse args))))
+          (t (error "暂不支持该类型的操作系统%s" system-type))))
+#+END_SRC
 * provide features
 #+BEGIN_SRC emacs-lisp
   (provide 'init-eshell)

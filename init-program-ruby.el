@@ -132,10 +132,17 @@
   (interactive "s请输入ri关键字:")
   (let* ((ri-buf (get-buffer-create (format "*Ri %s*" key)))
 		 (ri-command (format "ri %s" key))
-		 (buf-content (shell-command-to-string ri-command)))
-	(switch-to-buffer ri-buf)
-	(delete-region (point-min) (point-max))
-	(insert buf-content)))
+		 (buf-content (let ((coding-system-for-read 'binary))
+						(term-handle-ansi-terminal-messages (shell-command-to-string ri-command))))
+		 )
+	(setq buf-content (replace-regexp-in-string "." "" buf-content)) ;手工处理退格键
+	(unless (get-buffer-window ri-buf)
+	  (split-window)
+	  (switch-to-buffer ri-buf))
+	(select-window (get-buffer-window ri-buf))
+	(erase-buffer)
+	(insert  buf-content)
+	(goto-char (point-min))))
 
 
 (provide 'init-program-ruby)

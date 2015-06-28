@@ -63,6 +63,7 @@
   "加载下一层次的配置信息
 配置文件被划分为不同层次,不同层次间用-来划分. 例如init-program-lisp.el就是init-program.el的下一层次
 因此,在init-program.el中要加载init-program-lisp.el只需要(level-load \"lisp.el\"即可"
+  (message "enter level-require %s" sublevel)
   (unless level-load-path
 	(setq level-load-path (get-load-or-default-directory)))
   (add-to-list 'load-path level-load-path)
@@ -77,13 +78,15 @@
 		   (org-babel-tangle-newer-elisp-file (expand-file-name (concat sublevel ".org") level-load-path))))
 	(or
 	 (require (obj-to-symbol level)nil t)
-	 (require (obj-to-symbol sublevel) nil t))))
+	 (require (obj-to-symbol sublevel) nil t)))
+  (message "leave level-require %s" sublevel))
 
 
 (defun level-load (sublevel &optional level-load-path)
   "加载下一层次的配置信息
 配置文件被划分为不同层次,不同层次间用-来划分. 例如init-program-lisp.el就是init-program.el的下一层次
 因此,在init-program.el中要加载init-program-lisp.el只需要(level-load \"lisp.el\"即可"
+  (message "enter level-load %s" sublevel)
   (unless level-load-path
 	(setq level-load-path (get-load-or-default-directory)))
   (add-to-list 'load-path level-load-path)
@@ -98,7 +101,8 @@
 		   ((file-exists-p (expand-file-name (concat sublevel ".org") level-load-path))
 			(org-babel-load-file (expand-file-name (concat sublevel ".org") level-load-path) t)))
 	 (load level t)
-	 (load sublevel t))))
+	 (load sublevel t)))
+  (message "leave level-load %s" sublevel))
 
 (defun sudo-apt-get-install(soft)
   "run sudo apt-get install `soft` if found no soft"

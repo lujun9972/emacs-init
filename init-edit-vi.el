@@ -10,7 +10,10 @@
 (define-key evil-normal-state-map "gsf" 'switch-current-file)
 (define-key evil-normal-state-map "gt" 'semantic-ia-fast-jump-or-back)
 (define-key evil-normal-state-map "gpt" 'preview-tag-of-current-word)
-;;dired-mode不要进入vi－mode
+
+;; 默认进入emacs-mode
+(setq evil-default-state 'emacs)
+;; 下面这些mode进入motion-mode
 (dolist (mode '(dired-mode
 				diff-mode
                 eassist-mode
@@ -24,4 +27,14 @@
                 magit-log-mode
                 magit-commit-mode
                 magit-diff-mode))
-  (add-to-list 'evil-emacs-state-modes mode))
+  (add-to-list 'evil-motion-state-modes mode))
+;; progn-mode与text-mode进入normal-mode
+(setq evil-normal-state-modes nil)
+(dolist (mode '(prog-mode
+				text-mode))
+  (add-hook (intern (format "%s-hook" mode)) (lambda()
+											   (evil-normal-state 1))))
+;; (dolist (mode '(prog-mode
+;; 				text-mode
+;; 				org-mode))
+;;   (add-to-list 'evil-normal-state-modes mode))

@@ -6,7 +6,7 @@
 (setq-default ac-expand-on-auto-complete nil)
 
 (setq-default ac-auto-start 4)			;输入4个字母后自动补全
-(ac-set-trigger-key "TAB")				;使用TAB键进行补全
+;; (ac-set-trigger-key "TAB")				;使用TAB键进行补全
 (setq-default ac-dwim nil) ; To get pop-ups with docs even if a word is uniquely completed
 (add-to-list 'ac-dictionary-directories "~/.emacs.d//ac-dict")
 (setq ac-use-quick-help t)

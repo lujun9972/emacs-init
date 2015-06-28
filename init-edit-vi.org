@@ -1,0 +1,97 @@
+* viper-mode设置
+;;自动开启viper-mode
+;(setq viper-mode t)
+;(setq viper-want-ctl-h-help t)
+;(require 'viper)
+* 启用evil-mode
+#+BEGIN_SRC emacs-lisp
+  (require-and-install 'evil)
+  (evil-mode 1)
+#+END_SRC
+* 定义快捷键
+#+BEGIN_SRC emacs-lisp
+
+  (define-key evil-normal-state-map "gsf" 'switch-current-file)
+  (define-key evil-normal-state-map "gt" 'semantic-ia-fast-jump-or-back)
+  (define-key evil-normal-state-map "gpt" 'preview-tag-of-current-word)
+
+
+
+#+END_SRC
+** emacs在进行纯输入的时候是很强大的，因此使用emacs-state代替insert-state的输入
+#+BEGIN_SRC emacs-lisp
+  ;; remove all keybindings from insert-state keymap,it is VERY VERY important
+  (setcdr evil-insert-state-map nil) 
+  (define-key evil-insert-state-map
+    (read-kbd-macro evil-toggle-key) 'evil-emacs-state)
+  ; but [escape] should switch back to normal state
+  (define-key evil-insert-state-map [escape] 'evil-normal-state)
+#+END_SRC
+
+** 设置leader-key
+#+BEGIN_SRC emacs-lisp
+  ;; ;;; normal-map
+  (define-key evil-normal-state-map ",1" 'delete-other-windows)
+  (define-key evil-normal-state-map ",0" 'delete-window)
+  (define-key evil-normal-state-map ",2" 'split-window-below)
+  (define-key evil-normal-state-map ",3" 'split-window-right)
+  (define-key evil-normal-state-map ",u" 'winner-undo)
+  (define-key evil-normal-state-map ",r" 'winner-redo)
+  (define-key evil-normal-state-map ",h" 'eshell)
+  (define-key evil-normal-state-map ",p" 'switch-to-buffer)
+  (define-key evil-normal-state-map ",n" 'save-buffer)
+  (define-key evil-normal-state-map ",k" 'kill-buffer)
+  (define-key evil-normal-state-map ",w" 'eshell)
+  (define-key evil-normal-state-map ",b" 'ibuffer)
+  (define-key evil-normal-state-map "m" 'point-to-register)
+  (define-key evil-normal-state-map "'" 'jump-to-register)
+  (define-key evil-normal-state-map "-" 'split-window-below)
+  (define-key evil-normal-state-map "|" 'split-window-right)
+  (define-key evil-normal-state-map "q" 'View-quit)
+#+END_SRC
+* 设置进入各mode时进入那个state
+#+BEGIN_SRC emacs-lisp
+  ;; 默认进入emacs-mode
+  (setq evil-default-state 'emacs)
+  ;; 下面这些mode进入motion-mode
+  (dolist (mode '(dired-mode
+                  diff-mode
+                  eassist-mode
+                  gtags-select-mode
+                  compile-mode
+                  info-mode
+                  message-mode
+                  sx-question-mode
+                  sx-question-list-mode
+                  magit-status-mode
+                  magit-log-mode
+                  magit-commit-mode
+                  magit-diff-mode))
+    (add-to-list 'evil-motion-state-modes mode))
+  ;; progn-mode与text-mode进入normal-mode
+  (defun enable-evil-normal-mode ()
+    "开启evil-normal-mode"
+    (interactive)
+    (evil-normal-state 1))
+  (setq evil-normal-state-modes nil)
+  (dolist (mode '(prog-mode
+                  text-mode))
+    (add-hook (intern (format "%s-hook" mode)) 'enable-evil-normal-mode t)) ; 不知为何,在*Messages* buffer存在的情况下且操作系统为win时有问题
+  (dolist (mode '(prog-mode
+                  text-mode
+                  org-mode
+                  c++-mode
+                  emacs-lisp-mode))
+    (add-to-list 'evil-normal-state-modes mode))
+  ;; (setq evil-normal-state-modes nil)
+
+#+END_SRC
+* 其他设置
+  #+BEGIN_SRC emacs-lisp
+    (setq evil-want-fine-undo t)
+  #+END_SRC
+
+* provide feature
+#+BEGIN_SRC emacs-lisp
+  (provide 'init-edit-vi)
+#+END_SRC

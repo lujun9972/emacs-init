@@ -35,5 +35,5 @@
 (advice-add 'ido-find-file :after #'alternate-current-file-as-root)
 
 ;; 加载ido-pinyin,支持拼音匹配中文
-(require 'ido-pinyin)
+(require 'ido-pinyin nil t)
 (provide 'init-misc-ido)

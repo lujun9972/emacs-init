@@ -26,7 +26,9 @@
 
 (defun obj-to-symbol (obj)
   "转换为symbol"
-  (intern (format "%s" obj)))
+  (unless (stringp obj)
+	(setq obj (prin1-to-string obj t)))
+  (intern obj))
 ;; 加载相关辅助函数
 (add-to-list 'load-path MY-LISP-PATH)
 (dolist (helper-package (directory-files MY-LISP-PATH nil "helper\.el"))

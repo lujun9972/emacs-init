@@ -1415,6 +1415,37 @@ orgstruct++-mode is enabled in Gnus message buffers to aid in creating structure
             next-headline))))
 
   #+END_SRC
+** 配置org link
+*** 配置org-open-at-point打开shell/elisp link
+默认情况下,调用`org-open-at-point'打开shell/elisp link时会弹出确认窗口,太麻烦
+#+BEGIN_SRC emacs-lisp
+  (setq org-confirm-elisp-link-not-regexp "")
+  (setq org-confirm-shell-link-not-regexp "^mstsc")
+#+END_SRC
+调用`org-open-at-point'还可能打开新的org shell output buffer,加个advise忽略它
+#+BEGIN_SRC emacs-lisp
+  (defun org-open-at-point-without-shell-output-buffer-advise (ori_fn &rest args)
+    ""
+    (save-window-excursion
+      (apply ori_fn args)))
+
+  (advice-add 'org-open-at-point :around #'org-open-at-point-without-shell-output-buffer-advise)
+#+END_SRC
+*** 新增ssh链接的处理
+#+BEGIN_SRC emacs-lisp
+(require 'comint)
+(org-add-link-type "ssh" 'org-ssh-open)
+(defcustom org-ssh-command "putty"
+  "The ssh client to be used to login remote server"
+  :group 'org-link
+  :type '(choice (const "putty") (const "ssh") (const "xshell")))
+
+(defun org-ssh-open (path)
+  "login remote server
+PATH should be a topic that can be thrown at the ssh client"
+  (make-comint org-ssh-command org-ssh-command nil (replace-regexp-in-string "^//" "" path)))
+
+#+END_SRC
 ** Searching and showing results
    
 I have org-mode show the hierarchy of tasks above the matched entries and also the immediately following sibling task (but not all siblings) with the following settings:

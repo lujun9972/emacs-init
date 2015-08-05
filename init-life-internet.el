@@ -7,7 +7,7 @@
 ;;配置ERC
 (level-require "init-life-internet-erc")
 ;; goto-address-mode允许你在buffer中高亮并点击URL
-(add-hook 'prog-mode-hook 'goto-address-mode)
+(add-hook 'prog-mode-hook 'goto-address-prog-mode)
 (add-hook 'text-mode-hook 'goto-address-mode)
 ;;默认链接网络浏览器打开  
 (setq browse-url-generic-program (executable-find "firefox")  

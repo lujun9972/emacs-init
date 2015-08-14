@@ -1,8 +1,11 @@
+(defvar init-files-alist '(("~/emacs-init/init.el" . nil)
+						   ("/mnt/d/spacemacs/init.el" . t)
+						   ("d:/spacemacs/init.el" . t))
+  "元素的car为初始化文件的路径,cdr为是否更改`user-emacs-directory'的值")
+
 (defvar init-files nil
   "可选的初始化文件列表")
-(dolist (init-file '("~/emacs-init/init.el"
-					 "/mnt/d/spacemacs/init.el"
-					 "d:/spacemacs/init.el"))
+(dolist (init-file (mapcar #'car init-files-alist))
   (when (file-exists-p init-file)
 	(add-to-list 'init-files init-file t)))
 
@@ -20,5 +23,6 @@
 								  (read-number (gen-select-init-files-prompt init-files))) init-files)))
   
   "加载的初始化文件")
-;; (shell-command (format "ln -s %s ~/.emacs.d" (file-name-directory init-file)))
+(when (cdr (assoc init-file init-files-alist))
+  (setq user-emacs-directory (file-name-directory init-file)))
 (load init-file)

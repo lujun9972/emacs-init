@@ -1,0 +1,18 @@
+#+TITLE: README
+#+AUTHOR: lujun9972
+#+CATEGORY: emacs-init
+#+DATE: [2015-08-11 二 21:28]
+#+OPTIONS: ^:{}
+
+* 使用方法
+1. fork emacs-init和MyLisp到$HOME目录
+   #+BEGIN_SRC sh
+     cd ~
+     git clone https://github.com/lujun9972/emacs-init
+     git clone https://github.com/lujun9972/MyLisp
+   #+END_SRC
+2. 将emacs-init/.emacs做个链接到$HOME目录
+   #+BEGIN_SRC sh
+     ln -s ~/emacs-init/.emacs ~/.emacs
+   #+END_SRC
+3. 打开.emacs,可以添加其他想尝试的配置库

@@ -36,6 +36,7 @@
 (add-hook 'lisp-interaction-mode-hook 'turn-on-eldoc-mode)
 
 ;; redshank用于重构
+(require-and-install 'paredit)			;redshank依赖paredit
 (require-and-install 'redshank)
 (add-hook 'emacs-lisp-mode-hook 'turn-on-redshank-mode)
 (add-hook 'ielm-mode-hook 'turn-on-redshank-mode)

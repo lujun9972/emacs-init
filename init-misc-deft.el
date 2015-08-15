@@ -1,4 +1,5 @@
 (require-and-install 'deft)
+(setq deft-recursive t)					;递归搜索子目录中的文件
 (setq deft-extension "org")                             ;设置默认搜索org文件
 (setq deft-directory MY-NOTE-PATH)              ;设置搜索路径
 (setq deft-text-mode 'org-mode)                 ;编辑时，默认使用org-mode

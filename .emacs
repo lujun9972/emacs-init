@@ -1,3 +1,10 @@
+
+;; Added by Package.el.  This must come before configurations of
+;; installed packages.  Don't delete this line.  If you don't want it,
+;; just comment it out by adding a semicolon to the start of the line.
+;; You may delete these explanatory comments.
+(package-initialize)
+
 (defvar init-files-alist '(("~/emacs-init/init.el" . nil)
 						   ("/mnt/d/spacemacs/init.el" . t)
 						   ("d:/spacemacs/init.el" . t))
@@ -20,7 +27,7 @@
 (defvar init-file (cond ((= 1 (length init-files))
 						 (car init-files))
 						(t (nth (with-timeout (init-file-timeout 0)
-								  (read-number (gen-select-init-files-prompt init-files))) init-files)))
+								  (read-number (gen-select-init-files-prompt init-files) 0)) init-files)))
   
   "加载的初始化文件")
 (when (cdr (assoc init-file init-files-alist))

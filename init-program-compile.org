@@ -122,12 +122,20 @@
   (add-to-list 'smart-compile-alist
                '("sendsaps.+\.h$" . "plink cnaps2@10.8.6.10 \". ~/.profile;cd app/saps;make sendtosaps\""))
 
+  (add-to-list 'smart-compile-alist
+               '("sendnets.+\.cpp$" . "plink cnaps2@10.8.6.10 \". ~/.profile;cd app/saps;make sendtosaps\""))
+  (add-to-list 'smart-compile-alist
+               '("sendnets.+\.h$" . "plink cnaps2@10.8.6.10 \". ~/.profile;cd app/saps;make sendtosaps\""))
   ;; 编译recvfromsaps
   (add-to-list 'smart-compile-alist
                '("recvsaps.+\.cpp$" . "plink cnaps2@10.8.6.10 \". ~/.profile;cd app/saps;make recvfromsaps\""))
   (add-to-list 'smart-compile-alist
                '("recvsaps.+\.h$" . "plink cnaps2@10.8.6.10 \". ~/.profile;cd app/saps;make recvfromsaps\""))
 
+  (add-to-list 'smart-compile-alist
+               '("recvnets.+\.cpp$" . "plink cnaps2@10.8.6.10 \". ~/.profile;cd app/saps;make recvfromsaps\""))
+  (add-to-list 'smart-compile-alist
+               '("recvnets.+\.h$" . "plink cnaps2@10.8.6.10 \". ~/.profile;cd app/saps;make recvfromsaps\""))
   ;; 编译sendtomb
   (add-to-list 'smart-compile-alist
                '("sendmb.+\.cpp$" . "plink cnaps2@10.8.6.10 \". ~/.profile;cd app/mb;make sendtomb\""))

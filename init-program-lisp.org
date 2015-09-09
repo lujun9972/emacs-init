@@ -16,6 +16,14 @@ lispy:Navigating to LISP tags in a directory using CEDET
   (require-and-install 'lispy)
 #+END_SRC
 
+当进入lisp-mode,elisp-mode或clojure-mode时启用lispy-mode
+#+BEGIN_SRC emacs-lisp
+  (add-hook 'emacs-lisp-mode-hook (lambda () (lispy-mode 1)))
+  (add-hook 'lisp-mode-hook (lambda () (lispy-mode 1)))
+  (add-hook 'clojure-mode-hook (lambda () (lispy-mode 1)))
+
+#+END_SRC
+
 ;; lispy-command-name-face用于标识
 ** 命令
 + g (lispy-goto) :: 本目录下查询tag,不包括子目录

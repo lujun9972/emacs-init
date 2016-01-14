@@ -47,9 +47,9 @@
 ;; 配置keyfreq用来记录按键频率,使用keyfre-show查看
 (level-require "keyfreq")
 ;; clean-buffers
-(require 'clean-buffers)
+(require-and-install 'clean-buffers)
 ;; (run-with-idle-timer 5 t #'kill-useless-buffers) ;自动清理超过无用的buffer
-(run-with-timer 0 5 #'kill-useless-buffers) ;自动清理超过无用的buffer
+(clean-buffers-turn-on-auto-clean-buffers) ;自动清理超过无用的buffer
 ;; sr-speedbar
 (level-load "sr-speedbar")
 ;; 配置ediff
@@ -96,6 +96,10 @@
 (package-install-new 'showkey)
 ;; 为防止不小心按到C-c C-x,在退出Emacs前需要确认
 (setq confirm-kill-emacs (lambda (prompt) (y-or-n-p-with-timeout "是否退出Emacs:(" 10 "y")))
-
+;; start-menu运行外部程序
+(require-and-install 'start-menu)
+(start-menu-enable)
+;; dmenu运行外部程序
+(require-and-install 'dmenu)
 
 (provide 'init-misc)
